@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+
+<channel>
+  <title>Dylan Skinner - Math, Data Science, and Machine Learning</title>
+  <link>https://dylanskinner65.github.io/blog/blog.html</link>
+  <description>What I have learned about math, data science, and machine learning.</description>
+<item>
+<title>Everyday Data Science</title>
+<link>https://andrewnc.github.io/blog/everyday_data_science.html</link>
+<description>
+
+I finished my book at the beginning of the month. I have had a great time selling and marketing so far. The community reaction has been great. I wrote up a post to give more information about what is in the book, who it was written for, and why I wrote a book in the first place.
+
+</description>
+</item>
+<item>
+<title>Poisson Distribution in Joy</title>
+<link>https://andrewnc.github.io/blog/poisson_joy.html</link>
+<description>
+
+Want to know how to optimize the number of on-call employees in your business? Come explore the Poisson distribution with the stack based programming language Joy.
+
+</description>
+</item>
+<item>
+<title>Data Normalization in Pointless</title>
+<link>https://andrewnc.github.io/blog/normalization_pointless.html</link>
+<description>
+
+When feature engineering for a predictive task, or when exploring your data, it is often wise to normalize.
+
+</description>
+</item>
+<item>
+<title>Working with decision makers in Pyth</title>
+<link>https://andrewnc.github.io/blog/decision_makers_pyth.html</link>
+<description>
+
+As data scientists, we regularly persuade with data. Brevity is an import aspect of persuasive speaking. Pyth is the ultimate brief language.
+
+</description>
+</item>
+<item>
+<title>Dashboarding in Dark and Nim</title>
+<link>https://andrewnc.github.io/blog/database_dark_nim.html</link>
+<description>
+
+Deployless programming? Automatic updates? Code with the easy of Python and speed of C? In this post we explore building Dashboards in Dark and Nim.
+
+</description>
+</item>
+<item>
+<title>Lyrics bot in V</title>
+<link>https://andrewnc.github.io/blog/json_v.html</link>
+<description>
+
+V is a fun, fast, efficient language in very early development. It has a lot of promise. In this post we explore JSON and APIs in V
+
+</description>
+</item>
+<item>
+<title>Better A/B testing with Racket</title>
+<link>https://andrewnc.github.io/blog/a_b_testing_racket.html</link>
+<description>
+
+Racket is a favorite of academics and hackers. In this post we explore reinforcement learning and Bayesian inspired A/B testing with this fun language.
+
+</description>
+</item>
+<item>
+<title>Logistic Regression in Yorick</title>
+<link>https://andrewnc.github.io/blog/logistic_regression_yorick.html</link>
+<description>
+
+Learn the relation between likelihood, the logistic function, and a dynamically typed array processing language from LLNL
+
+</description>
+</item>
+<item>
+<title>Central Tendency in Brat</title>
+<link>https://andrewnc.github.io/blog/central_tendency_brat.html</link>
+<description>
+
+How do you know where the center of your data is? What is the difference between mean, median, mode, and more? Brat is a fun little language with a fascinating syntax.
+
+</description>
+</item>
+<item>
+<title>Data Exploration in J</title>
+<link>https://andrewnc.github.io/blog/anscombe_j.html</link>
+<description>
+
+Getting started in data science? We talk about some common strategies and pitfalls for data exploration in a fun (crazy?) array processing language.
+
+</description>
+</item>
+<item>
+<title>Monte Carlo integration in Hylang</title>
+<link>https://andrewnc.github.io/blog/monte_pi_hy.html</link>
+<description>
+
+Do you want to calculate pi in a weird way? Love Lisp + Python? In this post we use Hylang and Monte Carlo integration to calculate the value of pi.
+
+</description>
+</item>
+<item>
+<title>Customer Churn in J</title>
+<link>https://andrewnc.github.io/blog/customer_churn_j.html</link>
+<description>
+
+What makes your customers leave? What makes them stay? How do you tell? We use a fancy array processing language J to answer some of these questions.
+
+</description>
+</item>
+<item>
+<title>First Plot in J</title>
+<link>https://andrewnc.github.io/blog/first_plot_j.html</link>
+<description>
+
+Time to first plot is a fun metric for new languages (some languages can't even plot at all). We explore plotting in J.
+
+</description>
+</item>
+<item>
+<title>Welcome to the Blog</title>
+<link>https://andrewnc.github.io/blog/welcome.html</link>
+<description>
+
+</description>
+</item>
+</channel>
+<atom:link href='https://dylanskinner65.github.io/blog/feed.xml' rel='self' type='application/rss+xml' /></rss>
