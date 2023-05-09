@@ -115,33 +115,33 @@ h4, h5, h6 {
 }
 
 h1 {
-    font-size: 4rem;
+    font-size: 3rem;
     line-height: 1.2em;
     letter-spacing: -2px;
     text-indent: -3px;
 }
 
 h2 {
-    font-size: 3.2rem;
+    font-size: 2.5rem;
     line-height: 1.2em;
     letter-spacing: -1px;
     text-indent: -2px;
 }
 
 h3 {
-    font-size: 3.5rem;
+    font-size: 2.25rem;
 }
 
 h4 {
-    font-size: 3rem;
+    font-size: 2rem;
 }
 
 h5 {
-    font-size: 2.5rem;
+    font-size: 1.75rem;
 }
 
 h6 {
-    font-size: 2rem;
+    font-size: 1.75rem;
 }
 
 a {
@@ -623,7 +623,7 @@ pre {
 }
 
 .archive-template .post-content h2 {
-    font-size: 3rem;
+    font-size: 2.5rem;
 }
 
 
