@@ -56,15 +56,17 @@
                 </header>
                 <section class="post-content">
                     <div class="kg-card-markdown">
+                        <p>An innovative web scraping program to generate personalized used car recommendations</p>
+
                         <blockquote>"Information is a source of learning. But unless it is organized, processed, and available to the right people in a format for decision making, it is a burden, not a benefit.</blockquote>
                         <p>- William Pollard</p>
-                        <p>An innovative web scraping program to generate personalized used car recommendations</p>
+
                         
 
 
                         <h4>Inspiration</h4>
 
-                        <p>When I took a few days off from college for Thanksgiving in 2022, I finally found myself with some much-needed free time. While I spent most of it with my family, I also wanted to embark on a personal project that would utilize the skills I had acquired that semester. With an upcoming internship at Ericsson in Dallas, Texas, I needed to buy my first car, but I knew little about the used car market. The deluge of confusing resources online left me feeling overwhelmed, so I decided to create a program to do the research for me.
+                        <p>When I took a few days off from college for Thanksgiving in 2022, I finally found myself with some much needed free time. While I spent most of it with my family, I also wanted to embark on a personal project that would utilize the skills I had acquired that semester. With an upcoming internship at Ericsson in Dallas, Texas, I needed to buy my first car, but I knew little about the used car market. The deluge of confusing resources online left me feeling overwhelmed, so I decided to create a program to do the research for me.
 </p>
                  
                         <p>Thus, Casper was born. It scours online used car retailers like AutoTrader, CarsDirect, CarGuru, Carvana, Lowbook, and KSL for used car sales data using Python’s Selenium package. While it currently only searches for cars in the Provo, Utah area, Casper scores each vehicle to generate a CSV report of the current market and records market changes since its inception in November 2022. 
@@ -142,7 +144,7 @@
 
 			<p>The scoring function I wrote is fairly simple. With more data such as branded vs clean title, condition, color, and ratings, the algorithm would be much more effective, but for what I have to work with it performs well. There are eight inputs to the function: car mileage, price, year, brand, and weights for each of those four parameters.</p>
 
-			<img src="blog_files/webscraping/car_data.png">
+			<img src="blog_files/webscraping/car_data.PNG">
 
 			<p>The weights allow the user to tell Casper how important each of those parameters are to them. For example, if mileage were twice as important as anything else, the weights would be (2, 1, 1, 1) respectively. The weights are normalized, so the actual value doesn’t matter, only the relative value does. The function computes the sum of the ratios between the recorded values and the ideal maximum values, and then multiplies that value by each weight times one hundred. This returns a number between zero and one hundred. Here is the formula for one such calculation using mileage as an example.</p>
 
@@ -163,10 +165,12 @@
 			<img src="blog_files/webscraping/car_damage.png">
 
 
-
+			<p></p>
 			<h4>Price Prediction</h4>
 
-                        <p>In an effort to further enhance the accuracy of my score calculation, I created another machine learning model that predicts a car's price based on its features. By leveraging this approach as a factor in my scoring function, I could evaluate if a listing is worth considering by comparing its offering price to my model's predicted price. Since I needed more data about each car to build a more accurate model, I started with a more comprehensive dataset I found online. With a little bit of data cleaning and feature engineering, I trained a neural network that relies on embedding the data for over 2000 epochs to achieve satisfactory performance. Although the model demonstrated impressive results on the downloaded data, I still need to adapt it to the limited data that Casper scrapes before it will be practical for this project.</p>
+                        <p>In an effort to further enhance the accuracy of my score calculation, I created another machine learning model that predicts a car's price based on its features. By leveraging this approach as a factor in my scoring function, I could evaluate if a listing is worth considering by comparing its offering price to my model's predicted price.</p>
+
+			<p>Since I needed more data about each car to build a more accurate model, I started with a more comprehensive dataset I found online. With a little bit of data cleaning and feature engineering, I trained a neural network that relies on embedding the data for over 2000 epochs to achieve satisfactory performance. Although the model demonstrated impressive results on the downloaded data, I still need to adapt it to the limited data that Casper scrapes before it will be practical for this project.</p>
 
 
 
@@ -213,8 +217,7 @@
 
 
             <footer class="site-footer">
-                <section class="copyright">Copyright <a rel="author" href="https://linkedin.com/in/dylanskinner65/">Dylan
-                        Skinner</a> © 2023<br>
+                <section class="copyright">Copyright <a rel="author" href="https://www.linkedin.com/in/dallinstewart/">Dallin Stewart</a> © 2023<br>
             </footer>
         </aside>
     </div>
