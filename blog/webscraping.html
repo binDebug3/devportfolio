@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+
+    <title>Driving by Data: My Journey to Finding the Perfect Car</title>
+    <meta name="description" content="An innovative web scraping program to generate personalized used car recommendations">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link rel="shortcut icon" href="">
+    <link rel="apple-touch-icon" href="blog_files/bloglogo.png">
+    <link rel="stylesheet" type="text/css" href="blog_files/screen.css">
+    <link rel="stylesheet" type="text/css" href="blog_files/css.css">
+    <link rel="stylesheet" type="text/css" href="blog_files/defaulten.css">
+    <!-- <script src="https://cdn.jsdelivr.net/npm/texme@0.7.0"></script> -->
+    <style>
+
+    .fblogo {
+        display: inline-block;
+        margin-left: auto;
+        margin-right: auto;
+        height: 30px;
+        width: 75%;
+    }
+
+    </style>
+
+</head>
+
+<body class="home-template">
+    <!-- Theme modified from the wonderful Coding Horror blog https://blog.codinghorror.com/ -->
+
+    <header class="site-head">
+        <div class="site-head-content">
+            <a class="blog-logo" href="/blog/mathbytes.html"><img src="blog_files/bloglogo.png" alt="Dallin Stewart Logo" width="64"
+                    height="64"></a>
+            <h1 class="blog-title"><a href="/blog/mathbytes.html">Math Bytes</a></h1>
+            <h2 class="blog-description">Math, Data Science, and Machine Learning</h2>
+        </div>
+    </header>
+
+    <div class="wrap clearfix">
+        <div class="clearfix"></div>
+
+        <main class="content" role="main">
+
+            <article class="post">
+                <header class="post-header">
+                    <span class="post-meta"><time datetime="2023-05-16">16 May 2023</time> </span>
+                    <h2 class="post-title"><a href="/blog/webscraping.html">Driving by Data: My Journey to Finding the Perfect Car</a></h2>
+                </header>
+                <section class="post-content">
+                    <div class="kg-card-markdown">
+                        <blockquote>"Information is a source of learning. But unless it is organized, processed, and available to the right people in a format for decision making, it is a burden, not a benefit.</blockquote>
+                        <p>- William Pollard</p>
+                        <p>An innovative web scraping program to generate personalized used car recommendations</p>
+                        
+
+
+                        <h4>Inspiration</h4>
+
+                        <p>When I took a few days off from college for Thanksgiving in 2022, I finally found myself with some much-needed free time. While I spent most of it with my family, I also wanted to embark on a personal project that would utilize the skills I had acquired that semester. With an upcoming internship at Ericsson in Dallas, Texas, I needed to buy my first car, but I knew little about the used car market. The deluge of confusing resources online left me feeling overwhelmed, so I decided to create a program to do the research for me.
+</p>
+                 
+                        <p>Thus, Casper was born. It scours online used car retailers like AutoTrader, CarsDirect, CarGuru, Carvana, Lowbook, and KSL for used car sales data using Python’s Selenium package. While it currently only searches for cars in the Provo, Utah area, Casper scores each vehicle to generate a CSV report of the current market and records market changes since its inception in November 2022. 
+</p>
+                 
+                        <p>When Casper finds good deals, it alerts me so that I can look into the cars it found in more detail and decide if I want to make a purchase or move on. Casper has quickly grown to become one of my largest projects yet, and now has a variety of capabilities I’ve organized into different sections of this article. While the system isn’t perfect, it significantly reduced the amount of time I spent researching and made my final decision much more informed.</p>
+
+                        <p>The name Casper is a nod to the Spanish word "raspar," which means "to scrape." Additionally, it pays homage to "Casper the Friendly Ghost," as when the program is running, it looks like a ghost is controlling your computer!</p>
+
+                        
+
+                        <h4>Web Scraping</h4>
+
+                        <p>My primary goal when I started this project was to develop my web scraping skills. Web scraping is a catch-all term that refers to extracting meaningful data from websites. By following a set of programmed instructions, a web scraping program can identify and extract data and store it in a database or export it to a spreadsheet. I decided to build Casper using the testing and automation package Selenium to do my “research” for me.
+</p>
+
+                        <p>As I was residing in Provo, Utah at the time, my focus was on dealerships with the most extensive presence in that region. Although Casper can be reconfigured to search other zip codes and larger areas, the program can’t run in the background and gets slowed easily by long page loading times. I found it most useful to limit the search criteria as well. Fortunately, Casper permits users to input specific search parameters, including price ranges, mileage ranges, production years, city of sale and radius, and new or used cars only. With this input, Casper scours popular used car platforms and scrapes their relevant information such as production year, make, model, price, image, and listing link from the search results.
+</p>
+
+			<img src="blog_files/webscraping/car_listing_annot.jpg">
+
+                        <p>The program has an object-oriented code structure. I instantiate an object for each website in the main function. Since each website is unique and requires several distinct steps, it made more sense to create a separate class object for each one instead of abstracting them to a single object. The constructor opens the corresponding website via Selenium, and sets up the page by adding any necessary user filters not included in the URL. Finally, the constructor calls each of the finding methods, such as the method described below.</p>
+
+			<img src="blog_files/webscraping/car_html_annot.jpg">
+
+                        <p>This function finds all of the prices visible on the current page. In this example, I’m searching by xpath, which means that Casper will search the HTML code structure until it finds a block that matches priceClass using the find_elements method of the Selenium driver object. The priceClass string variable tells Casper to look for a “div” element with a “data-qa” attribute that has a value equal to “price”. The for loop at the bottom then parses the corresponding list so that the string objects can eventually be cast to int objects.</p>
+
+
+
+                        <pre>
+                            <code class="language-python">
+    def findPrices(self):
+        """
+        Find the prices for each car
+        :param self
+        :return: prices (list): list of price strings
+        """
+	# initialize a list of prices to return
+        prices = []
+
+	# define the X-Path to search the HTML code
+        priceClass = "//div[@data-qa='price']"
+
+        # get a list of price elements and save the parsed text content
+        priceElems = self.driver.find_elements(By.XPATH, priceClass)
+
+	# add the text from the elements to the list
+        for elem in priceElems:
+            prices.append(elem.text.replace(",", "").replace("$", "").split()[0])
+
+	# return the list of prices
+        return prices
+
+                            </code>
+                        </pre>
+
+                        <p>After Casper scrapes the data from the search results, it creates a list of Car objects by matching each car with its relevant parameters. Each Car object is essentially a dictionary that also calculates the car's overall score and detects any scraping errors. Once all the Car objects have been created, Casper appends the cleaned results to a CSV file corresponding to the current website.
+</p>
+                        
+                        <p>Since most searches yield multiple pages of only 20-50 sales each, Casper moves on to the next page after scraping the first page, resets the filters, and continues the process until it has found all the results. The complete process takes around 30 minutes to scrape an average of 500 listings between all six websites.</p>
+
+  
+
+                        <h4>Image Compression</h4>
+
+                        <p>Collecting up to 500 images every day is a significant task, and it can quickly consume a computer’s available storage. To fix this problem, I needed to compress the images so that they take up less space and become more manageable. Although packages like OpenCV provide built-in image compression techniques, I opted to leverage a linear algebra technique I learned in one of my ACME <add link> classes to create my custom algorithm to compress the images efficiently. You can find detailed information about the algorithm in my other blog post, “Unlocking the Secrets of Image Compression with Vectors” <add link>.</p>
+
+			<img src="blog_files/webscraping/compression.png">
+
+                        <p>In essence, a method called Singular Value Decomposition allows you to split an image into its component parts, identify the most important ones, and remove the least important parts along with the data it took to store them. When you recombine these components, the resulting image looks similar if not indistinguishable to the human eye, but requires significantly less space to store.</p>
+
+  
+
+                        <h4>Scoring Algorithm</h4>
+
+			<p>The scoring function I wrote is fairly simple. With more data such as branded vs clean title, condition, color, and ratings, the algorithm would be much more effective, but for what I have to work with it performs well. There are eight inputs to the function: car mileage, price, year, brand, and weights for each of those four parameters.</p>
+
+			<img src="blog_files/webscraping/car_data.png">
+
+			<p>The weights allow the user to tell Casper how important each of those parameters are to them. For example, if mileage were twice as important as anything else, the weights would be (2, 1, 1, 1) respectively. The weights are normalized, so the actual value doesn’t matter, only the relative value does. The function computes the sum of the ratios between the recorded values and the ideal maximum values, and then multiplies that value by each weight times one hundred. This returns a number between zero and one hundred. Here is the formula for one such calculation using mileage as an example.</p>
+
+			<p>$ \frac{2 \times milesInt - \text{int}(\text{self.miles})}{2 \times milesInt} \times \frac{p[\text{mileageWeight}]}{numParam} $</p>
+
+			<p>I made the output nonlinear by modifying the output slightly before returning it. This formula is designed to make the bad scores worse and the good scores better, so that it would be easier to find the cars that stand out.</p>
+
+			<p>$ \texttt{self.score = } score \cdot (score + 0.4) \cdot 100 $</p>
+
+
+
+			<h4>Damage Detection</h4>
+
+                        <p>While the scoring algorithm worked consistently, it had a significant flaw that inhibited its practicality. The highest scoring cars were sometimes ranked well because they had visible and sometimes severe damage. While the damage is clear to the human eye, all the scoring function could see was a severely reduced offering price.</p>
+                        
+                        <p>To address this issue, I developed a machine learning model capable of detecting damage in car images with an accuracy of over 99%. This feature was actually the final project for my Deep Learning class, and it turned out to be more challenging than I had initially anticipated. I believe it also deserves its own post, so you can find more information about it in my other blog post, “Detecting Vehicle Damage with Advanced Deep Learning Technology” <add link>. I spent over thirty hours augmenting the vehicle image data with publicly available car damage datasets to train a U-Net deep convolutional neural network to classify vehicles as damaged or undamaged.</p>
+
+			<img src="blog_files/webscraping/car_damage.png">
+
+
+
+			<h4>Price Prediction</h4>
+
+                        <p>In an effort to further enhance the accuracy of my score calculation, I created another machine learning model that predicts a car's price based on its features. By leveraging this approach as a factor in my scoring function, I could evaluate if a listing is worth considering by comparing its offering price to my model's predicted price. Since I needed more data about each car to build a more accurate model, I started with a more comprehensive dataset I found online. With a little bit of data cleaning and feature engineering, I trained a neural network that relies on embedding the data for over 2000 epochs to achieve satisfactory performance. Although the model demonstrated impressive results on the downloaded data, I still need to adapt it to the limited data that Casper scrapes before it will be practical for this project.</p>
+
+
+
+			<h4>Future Work</h4>
+
+                        <p>As you may have discerned from the multiple steps I have taken to improve the scoring function, further enhancements to its accuracy and usefulness of the car scoring algorithm remain the most important next steps. While the current version provides a helpful baseline for buyers, gathering more data about each car would enable even more precise scoring and more helpful recommendations. However, the task of gathering additional data is complicated by the online software that detects bots and thwarts Casper's attempts to view more detailed information on the listings. Bypassing this obstacle would allow me to obtain more comprehensive data and improve the scoring function.</p>
+
+                        <p>In addition to improving the vehicle scoring algorithm, expanding Casper's capabilities to include market analytics would be an interesting and engaging challenge. With several months of data, Casper would be able to identify trends in the local used car market and provide even more helpful insights for buyers. For instance, it could pinpoint the best time of year to buy, how long specific cars tend to stay on the market, and how local market trends compare to national ones.</p>
+
+                        <p>Finally, Casper will require continual updates to adapt to any design changes that occur on the constantly changing websites. This maintenance will ensure that Casper continues to function smoothly and provide accurate and up-to-date information for its users.</p>
+
+                        <p>I hope you learned something from this project and the algorithms and techniques that I applied to handle the challenges and develop the features that the project parameters required. If you’d like to view the code repository, you can visit my GitHub here. I’d appreciate any contributions or feedback you have to offer!</p>
+                        
+                    </div>
+                </section>
+               
+
+            </article>
+            <nav class="pagination" role="navigation">
+                <!-- <span class="page-number">Page 1 of 286</span> -->
+                <a class="older-posts" href="/blog/list.html">Other Posts <span aria-hidden="true">→</span></a>
+            </nav>
+
+
+        </main>
+        <aside class="sidebar">
+
+<!-- Add a hire me link -->
+<h3>Resources</h3>
+
+<ul>
+    <li><a href="https://dallinstewart.com/">About Me</a></li>
+    <li><a href="https://www.linkedin.com/in/dallinstewart/">LinkedIn</a></li>
+    <li><a href="https://github.com/binDebug3">GitHub</a></li>
+    <li><a href="https://dallinstewart.com/#contact">Contact</a></li>
+    <!-- <li><a href="https://forms.gle/iahqDwnmJWUfA1oL7">Subscribe for email updates</a></li>  -->
+    <!-- <li><a href="/blog/feed.xml">RSS Feed</a></li> -->
+</ul>
+
+<ul>
+</ul>
+
+<p>This blog has been continuously published since 2023.</p>
+
+
+            <footer class="site-footer">
+                <section class="copyright">Copyright <a rel="author" href="https://linkedin.com/in/dylanskinner65/">Dylan
+                        Skinner</a> © 2023<br>
+            </footer>
+        </aside>
+    </div>
+</body>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-100415142-2"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'UA-100415142-2');
+</script>
+
+<!-- This is how you load math if you want to -->
+<script>
+    MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']]
+        }
+    };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+<script> src="https://prismjs.com/download.html#themes=prism&languages=markup+css+clike+javascript+abap+abnf+actionscript+ada+agda+al+antlr4+apacheconf+apex+apl+applescript+aql+arduino+arff+armasm+arturo+asciidoc+aspnet+asm6502+asmatmel+autohotkey+autoit+avisynth+avro-idl+awk+bash+basic+batch+bbcode+bbj+bicep+birb+bison+bnf+bqn+brainfuck+brightscript+bro+bsl+c+csharp+cpp+cfscript+chaiscript+cil+cilkc+cilkcpp+clojure+cmake+cobol+coffeescript+concurnas+csp+cooklang+coq+crystal+css-extras+csv+cue+cypher+d+dart+dataweave+dax+dhall+diff+django+dns-zone-file+docker+dot+ebnf+editorconfig+eiffel+ejs+elixir+elm+etlua+erb+erlang+excel-formula+fsharp+factor+false+firestore-security-rules+flow+fortran+ftl+gml+gap+gcode+gdscript+gedcom+gettext+gherkin+git+glsl+gn+linker-script+go+go-module+gradle+graphql+groovy+haml+handlebars+haskell+haxe+hcl+hlsl+hoon+http+hpkp+hsts+ichigojam+icon+icu-message-format+idris+ignore+inform7+ini+io+j+java+javadoc+javadoclike+javastacktrace+jexl+jolie+jq+jsdoc+js-extras+json+json5+jsonp+jsstacktrace+js-templates+julia+keepalived+keyman+kotlin+kumir+kusto+latex+latte+less+lilypond+liquid+lisp+livescript+llvm+log+lolcode+lua+magma+makefile+markdown+markup-templating+mata+matlab+maxscript+mel+mermaid+metafont+mizar+mongodb+monkey+moonscript+n1ql+n4js+nand2tetris-hdl+naniscript+nasm+neon+nevod+nginx+nim+nix+nsis+objectivec+ocaml+odin+opencl+openqasm+oz+parigp+parser+pascal+pascaligo+psl+pcaxis+peoplecode+perl+php+phpdoc+php-extras+plant-uml+plsql+powerquery+powershell+processing+prolog+promql+properties+protobuf+pug+puppet+pure+purebasic+purescript+python+qsharp+q+qml+qore+r+racket+cshtml+jsx+tsx+reason+regex+rego+renpy+rescript+rest+rip+roboconf+robotframework+ruby+rust+sas+sass+scss+scala+scheme+shell-session+smali+smalltalk+smarty+sml+solidity+solution-file+soy+sparql+splunk-spl+sqf+sql+squirrel+stan+stata+iecst+stylus+supercollider+swift+systemd+t4-templating+t4-cs+t4-vb+tap+tcl+tt2+textile+toml+tremor+turtle+twig+typescript+typoscript+unrealscript+uorazor+uri+v+vala+vbnet+velocity+verilog+vhdl+vim+visual-basic+warpscript+wasm+web-idl+wgsl+wiki+wolfram+wren+xeora+xml-doc+xojo+xquery+yaml+yang+zig&plugins=line-numbers"</script>
+
+</html>
