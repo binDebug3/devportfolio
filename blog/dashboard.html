@@ -63,12 +63,12 @@
 
             <article class="post">
                 <header class="post-header">
-                    <span class="post-meta"><time datetime="2023-05-16">16 May 2023</time> </span>
+                    <span class="post-meta"><time datetime="2023-05-23">23 May 2023</time> </span>
                     <h2 class="post-title"><a href="/blog/dashboard.html">Winning with Data: A Dashboard for Formula E Vehicle Analytics</a></h2>
                 </header>
                 <section class="post-content">
                     <div class="kg-card-markdown">
-                        <p>A clean and interactive custom dashboard for visualizing racing performance data<a href='https://github.com/davider3/FormulaE/tree/main/Visualization' target="_blank">View Code</a></p>
+                        <p>A clean and interactive custom dashboard for visualizing racing performance data | <a href='https://github.com/davider3/FormulaE/tree/main/Visualization' target="_blank">View Code</a></p>
 
                         <blockquote>"The goal is to turn data into information, and information into insight."</blockquote>
                         <p>- Carly Fiorina</p>
@@ -106,17 +106,17 @@
 </p>
 
 			<img src="blog_files/dashboard/plotly.png">
-			<figcaption>Plotly</figcaption>
+			<figcaption></figcaption>
 
                         <p>Dash is a web application framework for Python that makes it easy to build analytical web applications. It is built on top of Flask, React, and Plotly.js, and it allows you to create interactive web applications with just a few lines of code. Dash is a popular choice for data scientists and machine learning engineers who want to build web applications to share their work.
 </p>
 
 			<img src="blog_files/dashboard/dash.png">
-			<figcaption>Dash</figcaption>
+			<figcaption></figcaption>
 
 
 
-
+			<p></p>
                         <h4>Capabilities</h4>
 
                         <p>AVA can provide drivers with a wealth of information about their vehicle's performance, driving behavior, and overall safety. With the ability to display all sensor data simultaneously, drivers and engineers can easily compare and infer important trends and patterns with just a quick glance. They can also focus on specific sensors to gain a deeper understanding of particular aspects of their driving experience, while still being able to hide other sensors for a streamlined view.
@@ -143,7 +143,7 @@
 
 
 
-
+			<p></p>
                         <h4>Binary to Decimal Conversion</h4>
 
                         <p>Every sensor on our electric race car sends data in an analog or binary format. When we load the SD with all the data from a race onto our computer, AVA has to convert the binary data into a decimal format before it can be displayed. I created a function that can quickly and easily convert the data into a more human-readable format that is easier to analyze and work with.
@@ -168,8 +168,6 @@ def convertBinaryData(data):
 
     # case if parameter is a dataframe
     return pd.DataFrame([BitArray(bin=str(d)).float for d in data])
-
-
                             </code>
                         </pre>
 
@@ -213,8 +211,6 @@ def convertData(data, sensor_id):
 
     # case if parameter is a dataframe
     return pd.DataFrame((np.array([float(d) for d in data]) - mini) * slope + bias)
-
-
                             </code>
                         </pre>
 
@@ -270,8 +266,6 @@ def convert_position(speed, time, angle):
         y_val[i] = y
 
     return x_val, y_val
-
-
                             </code>
                         </pre>
 
@@ -322,8 +316,6 @@ def steering(angle=0, theme="Dark", size="medium"):
     y_right = x * s + y * c
     x_left = x1 * c - y1 * s
     y_left = x1 * s + y1 * c
-
-
                             </code>
                         </pre>
 
@@ -335,11 +327,13 @@ def steering(angle=0, theme="Dark", size="medium"):
                         <p>Developing an analytics dashboard for the BYU racing team was an exciting and rewarding experience that allowed me to apply my college skills to a real-world challenge. Collaborating with the team and leveraging our unique strengths, I was able to create a user-friendly dashboard that offered valuable insights. Although it was my first time developing a dashboard, I relished the opportunity to learn about UX design and GUIs. I’ve also appreciated working with engineers on physical problems. It is a nice change of pace from many of the assignments I work on for class, and it has been a good experience learning how to work alongside people with different backgrounds, skills, and experience towards a common goal.
 </p>
 
+			<img src="blog_files/dashboard/chassis.jpg">
+			<figcaption>Chassis Prototype</figcaption>
+
                         <p>The project is far from over, and I eagerly await more user feedback to further enhance the dashboard. I discovered that Plotly and Dash run slowly, so I need to explore other software options to improve the dashboard’s speed. Despite these setbacks, the experience has been an enriching journey, and I look forward to refining the dashboard and delivering even better results.
 </p>
 
-			<img src="blog_files/dashboard/chassis.jpg">
-			<figcaption>Chassis Prototype</figcaption>
+
 
 
                         
