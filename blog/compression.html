@@ -68,7 +68,7 @@
                 </header>
                 <section class="post-content">
                     <div class="kg-card-markdown">
-                        <p>An image compression algorithm powered by singular value decomposition (SVD) | <a href='https://github.com/binDebug3/Cool_Math/tree/main/Image_Compression' target="_blank">View Code</a></p>
+                        <p>An image compression algorithm powered by singular value decomposition (SVD) | <a href='https://github.com/binDebug3/Cool_Math/blob/main/Image_Compression/svd_image_compression.py' target="_blank">View Code</a></p>
 
                         <blockquote>"Mathematics is the art of reducing any problem to linear algebra."</blockquote>
                         <p>- William Stein</p>
@@ -76,7 +76,7 @@
                         
 
 
-                        <h4>Why Bother?</h4>
+                        <h4>Why Compression Matters</h4>
 
                  
                         <p>In today's digital age, images are an integral part of our lives, from personal photographs to business marketing materials. However, as image files become more complex and high-resolution, their file sizes also increase, causing problems such as slow loading times, limited storage space, and high data transfer costs. Image compression techniques provide a handy solution to this problem by reducing file sizes while preserving image quality. 
@@ -107,7 +107,7 @@
                         <p>The singular value decomposition (SVD) of a matrix allows us to decompose a matrix into its fundamental building blocks: orthonormal (perpendicular) columns, diagonal singular values, and orthonormal rows. In other words, it provides a way to break down a complex matrix into simpler components, which can then be more easily understood and manipulated.
 </p>
 
-			<img src="blog_files/compression/notation.png">
+			<img src="blog_files/compression/notation.PNG">
 			<figcaption>$A = \sum_{i=1}^{r} \sigma_i u_i v_i^H$</figcaption>
 
                         <p>The SVD works because it identifies the most important features of a matrix. The singular values, which are the diagonal entries of the Σ matrix, tell us how much each column and row of the matrix contributes to its overall structure. The larger the singular value, the more important that component is to the matrix as a whole. Moreover, the singular values are always non-negative, which gives us a natural way to rank the importance of the components.
@@ -199,7 +199,7 @@ def svd_approx(A, s):
 
 
 
-
+                        <p></p>
                         <h4>Constructing a Dataset of Images</h4>
 
                         <p>During the development of my used car web scraper project <add link>, I encountered a challenge while attempting to store all the car images I found online. The sheer volume quickly became overwhelming. While there were existing packages available for image compression, I was excited to apply a technique I had recently learned, so I implemented a resizing and compression class called Compressor that reduced the images to a rank of 100. 
@@ -207,28 +207,27 @@ def svd_approx(A, s):
 
                         <pre>
                             <code class="language-python">
-        for elem in imageElems:
-            # get the link to the element
-            src = elem.get_attribute('src')
+for elem in imageElems:
+    # get the link to the element
+    src = elem.get_attribute('src')
 
-            # build a name for the image based on its alt text
-            alt = "_".join(elem.get_attribute('alt').split())
-            path = "Images/" + alt + ".png"
+    # build a name for the image based on its alt text
+    alt = "_".join(elem.get_attribute('alt').split())
+    path = "Images/" + alt + ".png"
 
-            # save the image
-            try:
-                urllib.request.urlretrieve(src, path)
+    # save the image
+    try:
+        urllib.request.urlretrieve(src, path)
 
-            except URLError as ex:
-                print("Error retrieving image")
-                print(path)
-                print(ex)
+    except URLError as ex:
+        print("Error retrieving image")
+        print(path)
+        print(ex)
 
-            # compress with image with our custom compression algorithm woot woot
-            try:
-                Compresser.compress_image(path, self.compression)
-                images.append(alt)
-	…
+    # compress with image with our custom compression algorithm woot             try:
+        Compresser.compress_image(path, self.compression)
+        images.append(alt)
+    …
                             </code>
                         </pre>
 
