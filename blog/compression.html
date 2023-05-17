@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+
+    <title>Unlocking the Secrets of Image Compression with Vectors</title>
+    <meta name="description" content="An image compression algorithm powered by singular value decomposition (SVD)">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link rel="shortcut icon" href="">
+    <link rel="apple-touch-icon" href="blog_files/bloglogo.png">
+    <link rel="stylesheet" type="text/css" href="blog_files/screen.css">
+    <link rel="stylesheet" type="text/css" href="blog_files/css.css">
+    <link rel="stylesheet" type="text/css" href="blog_files/defaulten.css">
+    <!-- <script src="https://cdn.jsdelivr.net/npm/texme@0.7.0"></script> -->
+    <style>
+
+    .fblogo {
+        display: inline-block;
+        margin-left: auto;
+        margin-right: auto;
+        height: 30px;
+        width: 75%;
+    }
+
+    </style>
+
+</head>
+
+
+<!-- Google tag (gtag.js) Dallin Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LT97T5DE19"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-LT97T5DE19');
+</script>
+
+
+<body class="home-template">
+    <!-- Theme modified from the wonderful Coding Horror blog https://blog.codinghorror.com/ -->
+
+    <header class="site-head">
+        <div class="site-head-content">
+            <a class="blog-logo" href="/blog/mathbytes.html"><img src="blog_files/bloglogo.png" alt="Dallin Stewart Logo" width="64"
+                    height="64"></a>
+            <h1 class="blog-title"><a href="/blog/mathbytes.html">Math Bytes</a></h1>
+            <h2 class="blog-description">Math, Data Science, and Machine Learning</h2>
+        </div>
+    </header>
+
+    <div class="wrap clearfix">
+        <div class="clearfix"></div>
+
+        <main class="content" role="main">
+
+            <article class="post">
+                <header class="post-header">
+                    <span class="post-meta"><time datetime="2023-05-30">30 May 2023</time> </span>
+                    <h2 class="post-title"><a href="/blog/compression.html">Unlocking the Secrets of Image Compression with Vectors</a></h2>
+                </header>
+                <section class="post-content">
+                    <div class="kg-card-markdown">
+                        <p>An image compression algorithm powered by singular value decomposition (SVD) | <a href='https://github.com/binDebug3/Cool_Math/tree/main/Image_Compression' target="_blank">View Code</a></p>
+
+                        <blockquote>"Mathematics is the art of reducing any problem to linear algebra."</blockquote>
+                        <p>- William Stein</p>
+
+                        
+
+
+                        <h4>Why Bother?</h4>
+
+                 
+                        <p>In today's digital age, images are an integral part of our lives, from personal photographs to business marketing materials. However, as image files become more complex and high-resolution, their file sizes also increase, causing problems such as slow loading times, limited storage space, and high data transfer costs. Image compression techniques provide a handy solution to this problem by reducing file sizes while preserving image quality. 
+</p>
+
+                        <p>Linear algebra provides a valuable set of tools for image compression techniques. The SVD algorithm in particular has become a powerful resource for this task. By breaking an image down into its constituent parts, SVD can identify the most critical information within an image and store it more efficiently, resulting in smaller files without sacrificing essential details. This modification allows for faster loading times, lower storage requirements, and more cost-effective data transfer, making image compression an essential component of modern computing and communication technologies.
+</p>
+
+
+
+
+                        <h4>How to Manipulate Images</h4>
+
+                        <p>When we take a digital image, our cameras capture the photo in the form of a grid of pixels, with each pixel assigned a color value. These values are then stored as a matrix on our computers, where the matrix is essentially a table of numbers that represent the colors of each pixel. The dimensions of this matrix are M x N x 3, where M is the height of the matrix, N is its width, and 3 represents the three color channels of red, green, and blue, which are used to create the full spectrum of colors visible to the human eye. 
+</p>
+
+			<img src="blog_files/compression/image_rgb.png">
+			<figcaption>A photo of a Dodge Charger split into its red, green, and blue channels</figcaption>
+
+                        <p>Each entry in the matrix corresponds to a specific pixel in the image, and the values of the entries indicate the intensity of the respective color channels at that pixel. By using matrix representation, computers can efficiently process and store images, and image compression techniques like SVD can help optimize this process by identifying and preserving the essential information in the matrix while reducing the overall file size.
+</p>
+
+
+
+
+                        <h4>Singular Value Decomposition</h4>
+
+                        <p>The singular value decomposition (SVD) of a matrix allows us to decompose a matrix into its fundamental building blocks: orthonormal (perpendicular) columns, diagonal singular values, and orthonormal rows. In other words, it provides a way to break down a complex matrix into simpler components, which can then be more easily understood and manipulated.
+</p>
+
+			<img src="blog_files/compression/notation.png">
+			<figcaption>$A = \sum_{i=1}^{r} \sigma_i u_i v_i^H$</figcaption>
+
+                        <p>The SVD works because it identifies the most important features of a matrix. The singular values, which are the diagonal entries of the Σ matrix, tell us how much each column and row of the matrix contributes to its overall structure. The larger the singular value, the more important that component is to the matrix as a whole. Moreover, the singular values are always non-negative, which gives us a natural way to rank the importance of the components.
+</p>
+
+                        <p>We can identify the most important components of a matrix by sorting the singular values in decreasing order. The first r columns of U and V span the range and null space of A, respectively, and the corresponding singular values σi tell us how important each of these components is to the matrix. The range is the collection of all possible outputs of the matrix A, while the nullspace is the collection of all inputs that map to zero. The SVD also provides an outer product expansion (a special type of matrix multiplication) of A in terms of the singular values and the columns of U and V.
+</p>
+
+                        <p>The SVD works by breaking down a matrix transformation into three key components: two rotations and a scaling.
+</p>
+
+                        <ol>
+    <li>The first rotation, represented by the matrix U, rotates the vector in Rn (a space with n dimensions) to a new position. 
+</li>
+    <li>The second rotation, represented by the matrix VH, then rotates the vector again, this time in Rm. These two rotations work together to give us a clear understanding of how the original vector has been transformed.
+</li>
+    <li>The scaling is represented by the matrix Σ, which scales the vector along the principal axes. This rescaling is critical to understanding the impact of the transformation on the vector.
+</li>
+</ol>
+
+                        <p>Together, the three components of the SVD give us a clear geometric picture of the linear transformation defined by matrix A. By applying the two rotations and the scaling in sequence, we can easily describe the transformation and understand its impact on any vector in Rn.
+</p>
+
+			<img src="blog_files/compression/svd.png">
+			<figcaption>Geometric transformations of the SVD in 2D space</figcaption>
+
+                        <p>The beauty of the SVD lies in its simplicity and elegance. By decomposing a complex linear transformation into its fundamental building blocks, we gain a deeper understanding of how it works and how we can manipulate it to our advantage. This has profound implications in fields such as image compression, signal processing, and data analysis, where understanding the geometry of a transformation is essential.
+</p>
+
+
+
+
+
+                        <h4>Data Compression</h4>
+
+                        <p>The SVD also allows us to compress data in general without losing significant information. By decomposing a matrix into two rotations and a scaling, the SVD allows us to store only a subset of the matrix's values, significantly reducing its memory footprint. The compact SVD takes this a step further by only keeping the most important information, corresponding to the largest singular values. This approximation can be thought of as a compressed version of the original matrix, and it is remarkably accurate. It is especially useful in cases where the matrix has a low rank (has redundant information) because it allows us to identify the most important components and discard the rest.
+</p>
+
+                        <pre>
+                            <code class="language-python">
+def svd_approx(A, s):
+    """Return the best rank s approximation to A with respect to the 2-norm
+    and the Frobenius norm, along with the number of bytes needed to store
+    the approximation via the truncated SVD.
+    Parameters:
+        A ((m,n), ndarray)
+        s (int): The rank of the desired approximation.
+    Returns:
+        ((m,n), ndarray) The best rank s approximation of A.
+        (int) The number of entries needed to store the truncated SVD.
+    """
+    # get the SVD of A and compact it using s
+    U, W, V = la.svd(A)
+    if s > len(W):
+        raise ValueError("Rank request is too big")
+    UHat = U[:,:s]
+    WHat = W[:s]
+    VHat = V[:s,:]
+
+    # calculate the number of elements to store and return compressed A
+    size = UHat.size + WHat.size + VHat.size
+    return UHat @ np.diag(WHat) @ VHat, size
+                            </code>
+                        </pre>
+
+                        <p>In fact, the compact SVD provides the best possible approximation of a matrix of a given rank, with respect to both the 2-norm and the Frobenius norm (methods of abstractly measuring distance and size). By using the SVD to compress data, we can store and analyze large datasets more efficiently, making it possible to perform complex computations on data that would otherwise be too large to handle.
+</p>
+
+
+
+
+
+
+                        <h4>Image Compression</h4>
+
+                        <p>Images are a ubiquitous form of visual data, and storing and transmitting large image files can be a daunting task. However, by compressing an image into a low-rank SVD approximation, we can significantly reduce the amount of data that needs to be stored or transmitted.
+</p>
+
+                        <p>Moreover, the SVD allows us to selectively retain important features of the image, such as its structure and texture, while discarding minor details that may not be as important. We can achieve this by analyzing the singular values of the image, which give us insight into its rank and level of detail. By discarding smaller singular values, we can construct a compressed image that retains the essential features of the original, but with a significantly lower storage size.
+</p>
+
+                        <p>Displayed below are several approximations of an image of a car at various low ranks. Despite having a reduced rank, the image remains easily recognizable. At a rank of 120, the approximation is nearly identical to the original image. In the case of an image, you can think of the rank as the number of columns of pixels which was originally 236.
+</p>
+
+			<img src="blog_files/compression/press_all.jpg">
+			<figcaption>Dodge image with various levels of compression</figcaption>
+
+
+
+
+
+
+                        <h4>Constructing a Dataset of Images</h4>
+
+                        <p>During the development of my used car web scraper project <add link>, I encountered a challenge while attempting to store all the car images I found online. The sheer volume quickly became overwhelming. While there were existing packages available for image compression, I was excited to apply a technique I had recently learned, so I implemented a resizing and compression class called Compressor that reduced the images to a rank of 100. 
+</p>
+
+                        <pre>
+                            <code class="language-python">
+        for elem in imageElems:
+            # get the link to the element
+            src = elem.get_attribute('src')
+
+            # build a name for the image based on its alt text
+            alt = "_".join(elem.get_attribute('alt').split())
+            path = "Images/" + alt + ".png"
+
+            # save the image
+            try:
+                urllib.request.urlretrieve(src, path)
+
+            except URLError as ex:
+                print("Error retrieving image")
+                print(path)
+                print(ex)
+
+            # compress with image with our custom compression algorithm woot woot
+            try:
+                Compresser.compress_image(path, self.compression)
+                images.append(alt)
+	…
+                            </code>
+                        </pre>
+
+                        <p>This level of detail struck a perfect balance for my application—clear enough for visual clarity, yet compact enough to support the damage classification system I later developed. It was a small addition, but it made a significant impact, saving me a substantial amount of storage space. I'm delighted to have acquired this knowledge and put it to practical use in my project.
+</p>
+
+
+
+
+
+
+                        
+                    </div>
+                </section>
+               
+
+            </article>
+            <nav class="pagination" role="navigation">
+                <!-- <span class="page-number">Page 1 of 286</span> -->
+                <a class="older-posts" href="/blog/list.html">Other Posts <span aria-hidden="true">→</span></a>
+            </nav>
+
+
+        </main>
+        <aside class="sidebar">
+
+<!-- Add a hire me link -->
+<h3>Resources</h3>
+
+<ul>
+    <li><a href="https://dallinstewart.com/">About Me</a></li>
+    <li><a href="https://www.linkedin.com/in/dallinstewart/">LinkedIn</a></li>
+    <li><a href="https://github.com/binDebug3">GitHub</a></li>
+    <li><a href="https://dallinstewart.com/#contact">Contact</a></li>
+    <!-- <li><a href="https://forms.gle/iahqDwnmJWUfA1oL7">Subscribe for email updates</a></li>  -->
+    <!-- <li><a href="/blog/feed.xml">RSS Feed</a></li> -->
+</ul>
+
+<ul>
+</ul>
+
+<p>This blog has been continuously published since 2023.</p>
+
+
+            <footer class="site-footer">
+                <section class="copyright">Copyright <a rel="author" href="https://www.linkedin.com/in/dallinstewart/">Dallin Stewart</a> © 2023<br>
+            </footer>
+        </aside>
+    </div>
+</body>
+
+
+<!-- This is how you load math if you want to -->
+<script>
+    MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']]
+        }
+    };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+<script> src="https://prismjs.com/download.html#themes=prism&languages=markup+css+clike+javascript+abap+abnf+actionscript+ada+agda+al+antlr4+apacheconf+apex+apl+applescript+aql+arduino+arff+armasm+arturo+asciidoc+aspnet+asm6502+asmatmel+autohotkey+autoit+avisynth+avro-idl+awk+bash+basic+batch+bbcode+bbj+bicep+birb+bison+bnf+bqn+brainfuck+brightscript+bro+bsl+c+csharp+cpp+cfscript+chaiscript+cil+cilkc+cilkcpp+clojure+cmake+cobol+coffeescript+concurnas+csp+cooklang+coq+crystal+css-extras+csv+cue+cypher+d+dart+dataweave+dax+dhall+diff+django+dns-zone-file+docker+dot+ebnf+editorconfig+eiffel+ejs+elixir+elm+etlua+erb+erlang+excel-formula+fsharp+factor+false+firestore-security-rules+flow+fortran+ftl+gml+gap+gcode+gdscript+gedcom+gettext+gherkin+git+glsl+gn+linker-script+go+go-module+gradle+graphql+groovy+haml+handlebars+haskell+haxe+hcl+hlsl+hoon+http+hpkp+hsts+ichigojam+icon+icu-message-format+idris+ignore+inform7+ini+io+j+java+javadoc+javadoclike+javastacktrace+jexl+jolie+jq+jsdoc+js-extras+json+json5+jsonp+jsstacktrace+js-templates+julia+keepalived+keyman+kotlin+kumir+kusto+latex+latte+less+lilypond+liquid+lisp+livescript+llvm+log+lolcode+lua+magma+makefile+markdown+markup-templating+mata+matlab+maxscript+mel+mermaid+metafont+mizar+mongodb+monkey+moonscript+n1ql+n4js+nand2tetris-hdl+naniscript+nasm+neon+nevod+nginx+nim+nix+nsis+objectivec+ocaml+odin+opencl+openqasm+oz+parigp+parser+pascal+pascaligo+psl+pcaxis+peoplecode+perl+php+phpdoc+php-extras+plant-uml+plsql+powerquery+powershell+processing+prolog+promql+properties+protobuf+pug+puppet+pure+purebasic+purescript+python+qsharp+q+qml+qore+r+racket+cshtml+jsx+tsx+reason+regex+rego+renpy+rescript+rest+rip+roboconf+robotframework+ruby+rust+sas+sass+scss+scala+scheme+shell-session+smali+smalltalk+smarty+sml+solidity+solution-file+soy+sparql+splunk-spl+sqf+sql+squirrel+stan+stata+iecst+stylus+supercollider+swift+systemd+t4-templating+t4-cs+t4-vb+tap+tcl+tt2+textile+toml+tremor+turtle+twig+typescript+typoscript+unrealscript+uorazor+uri+v+vala+vbnet+velocity+verilog+vhdl+vim+visual-basic+warpscript+wasm+web-idl+wgsl+wiki+wolfram+wren+xeora+xml-doc+xojo+xquery+yaml+yang+zig&plugins=line-numbers"</script>
+
+</html>
