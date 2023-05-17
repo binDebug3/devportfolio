@@ -114,28 +114,27 @@
 
                         <pre>
                             <code class="language-python">
-    def findPrices(self):
-        """
-        Find the prices for each car
-        :param self
-        :return: prices (list): list of price strings
-        """
-	# initialize a list of prices to return
-        prices = []
+def findPrices(self):
+    """
+    Find the prices for each car
+    :param self
+    :return: prices (list): list of price strings
+    """
+    # initialize a list of prices to return
+    prices = []
 
-	# define the X-Path to search the HTML code
-        priceClass = "//div[@data-qa='price']"
+    # define the X-Path to search the HTML code
+    priceClass = "//div[@data-qa='price']"
 
-        # get a list of price elements and save the parsed text content
-        priceElems = self.driver.find_elements(By.XPATH, priceClass)
+    # get a list of price elements and save the parsed text content
+    priceElems = self.driver.find_elements(By.XPATH, priceClass)
 
-	# add the text from the elements to the list
-        for elem in priceElems:
-            prices.append(elem.text.replace(",", "").replace("$", "").split()[0])
+    # add the text from the elements to the list
+    for elem in priceElems:
+        prices.append(elem.text.replace(",", "").replace("$", "").split()[0])
 
-	# return the list of prices
-        return prices
-
+    # return the list of prices
+    return prices
                             </code>
                         </pre>
 
@@ -148,7 +147,7 @@
 
                         <h4>Image Compression</h4>
 
-                        <p>Collecting up to 500 images every day is a significant task, and it can quickly consume a computer’s available storage. To fix this problem, I needed to compress the images so that they take up less space and become more manageable. Although packages like OpenCV provide built-in image compression techniques, I opted to leverage a linear algebra technique I learned in one of my ACME <add link> classes to create my custom algorithm to compress the images efficiently. You can find detailed information about the algorithm in my other blog post, “Unlocking the Secrets of Image Compression with Vectors” <add link>.</p>
+                        <p>Collecting up to 500 images every day is a significant task, and it can quickly consume a computer’s available storage. To fix this problem, I needed to compress the images so that they take up less space and become more manageable. Although packages like OpenCV provide built-in image compression techniques, I opted to leverage a linear algebra technique I learned in one of my <a href="https://acme.byu.edu/">ACME</a> classes to create my custom algorithm to compress the images efficiently. You can find detailed information about the algorithm in my other blog post, <a href="https://dallinstewart.com/blog/compression.html">"Unlocking the Secrets of Image Compression with Vectors"</a>.</p>
 
 			<img src="blog_files/compression/press120.png">
 
