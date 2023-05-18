@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+
+    <title>Performing Facial Recognition Without Machine Learning</title>
+    <link rel="shortcut icon" type="image/jpg" href="favicon.jpg">
+    <meta name="description" content="Leveraging the Eigenfaces method to perform facial recognition without machine learning techniques">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link rel="shortcut icon" href="">
+    <link rel="apple-touch-icon" href="blog_files/bloglogo.png">
+    <link rel="stylesheet" type="text/css" href="blog_files/screen.css">
+    <link rel="stylesheet" type="text/css" href="blog_files/css.css">
+    <link rel="stylesheet" type="text/css" href="blog_files/defaulten.css">
+    <!-- <script src="https://cdn.jsdelivr.net/npm/texme@0.7.0"></script> -->
+    <style>
+
+    .fblogo {
+        display: inline-block;
+        margin-left: auto;
+        margin-right: auto;
+        height: 30px;
+        width: 75%;
+    }
+
+    </style>
+
+</head>
+
+
+<!-- Google tag (gtag.js) Dallin Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LT97T5DE19"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-LT97T5DE19');
+</script>
+
+
+
+<body class="home-template">
+    <!-- Theme modified from the wonderful Coding Horror blog https://blog.codinghorror.com/ -->
+
+    <header class="site-head">
+        <div class="site-head-content">
+            <a class="blog-logo" href="/blog/mathbytes.html"><img src="blog_files/bloglogo.png" alt="Dallin Stewart Logo" width="64"
+                    height="64"></a>
+            <h1 class="blog-title"><a href="/blog/mathbytes.html">Math Bytes</a></h1>
+            <h2 class="blog-description">Math, Data Science, and Machine Learning</h2>
+        </div>
+    </header>
+
+    <div class="wrap clearfix">
+        <div class="clearfix"></div>
+
+        <main class="content" role="main">
+
+            <article class="post">
+                <header class="post-header">
+                    <span class="post-meta"><time datetime="2023-05-30">30 May 2023</time> </span>
+                    <h2 class="post-title"><a href="/blog/facial_recognition.html">Performing Facial Recognition Without Machine Learning</a></h2>
+                </header>
+                <section class="post-content">
+                    <div class="kg-card-markdown">
+                        <p>Leveraging the Eigenfaces method to perform facial recognition without machine learning techniques | <a href='https://github.com/binDebug3/Cool_Math/tree/main/Facial_Recognition' target="_blank">View Code</a></p>
+
+                        <blockquote>"The Matrix is everywhere. It is all around us. Even now, in this very room. You can see it when you look out your window, or when you turn on your television. You can feel it when you go to work, when you go to church, when you pay your taxes. It is the world that has been pulled over your eyes to blind you from the truth. 
+"</blockquote>
+                        <p>- Morpheus, The Matrix</p>
+
+                        
+
+
+                        <h4>How to Manipulate Images</h4>
+
+                        <p>When we take a digital image, our cameras or devices capture it in the form of a grid of pixels, with each pixel assigned a color value. These values are then stored as a matrix on our computers, where the matrix is essentially a table of numbers that represent the colors of each pixel. The dimensions of this matrix are M x N x 3, where M is the height of the matrix, N is its width, and 3 represents the three color channels of red, green, and blue, which are used to create the full spectrum of colors visible to the human eye. 
+</p>
+
+			<img src="blog_files/facial_recognition/image_rgb.png">
+			<figcaption>An image split into its red, green, and blue channels</figcaption>
+
+                        <p>Each entry in the matrix corresponds to a specific pixel in the image, and the values of the entries indicate the intensity of the respective color channels at that pixel. By using matrix representation, computers can efficiently process and store images, and image compression techniques like SVD can help optimize this process by identifying and preserving the essential information in the matrix while reducing the overall file size.
+</p>
+
+
+
+
+                        <h4>How to Compare Images</h4>
+
+                        <p>The two-norm difference, mathematically represented as $\lVert g - f_i \rVert_2$, is a method of computing the distance between two vectors that provides a straightforward method for facial recognition or image comparison. We can thus compare an image to any other image with simple vector arithmetic by converting an image into a vector where each pixel becomes a component of the vector. 
+</p>
+
+                        <p>Specifically, if g represents a vector of our face, the $f_i$ that minimizes the two-norm difference $\lVert g - f_i \rVert_2$ will be the closest matching face. The norm, represented by $\lVert x \rVert_2$, measures the magnitude of a vector, and works in any dimension or size, even the several thousand dimensional vectors that represent images. In our case, the two-norm computes a distance equivalent to the largest singular value of the matrix formed by the images. The singular values are the square roots of the eigenvalues, which are fundamental attributes of a matrix and play a crucial role in image compression and dimensionality reduction. 
+</p>
+
+                        <p>However, calculating singular values is very computationally expensive. The Eigenfaces method reduces the computational cost of finding the closest matching face by focusing on only the most important features of each face.
+</p>
+
+
+
+
+                        <h3>The Eigenfaces Method</h3>
+
+
+                        <h4>Mean Shifted Face</h4>
+
+                        <p>As the average of all the images in a dataset, the mean faces identifies the most common and least distinguishing features of a dataset. For facial recognition, it outputs the fuzzy, generic face shown below. 
+</p>
+
+                        <p>Before performing facial recognition on a particular image, the Eigenfaces algorithm first shifts the image by the mean face, emphasizing the unique characteristics of each person's face. By subtracting the mean face from each image, the algorithm highlights the distinguishing features of each entry, accentuating the unique traits that set each person apart. The mean face µ is calculated as the element-wise average of the f_i images vectors stored in F. 
+</p>
+
+			<img src="blog_files/facial_recognition/mean_face.png">
+			<figcaption>Mean Shifted Celebrity Face</figcaption>
+
+                        <p>This technique is crucial in the Eigenfaces method as it helps to eliminate any variations in lighting, orientation, and expression across different images, allowing the algorithm to focus on the inherent features of each face. The result is a more accurate and reliable facial recognition system that can quickly identify faces even under different lighting conditions or when wearing accessories like glasses or hats.
+</p>
+
+
+
+
+                        <h4>Computational Efficiency</h4>
+
+                        <p>To optimize efficiency and reduce space requirements, we can represent facial images with fewer values by projecting the image vectors onto a lower-dimensional subspace. This projection is possible by computing the SVD of the image matrix F, which results in a new matrix U whose first 'r' columns serve as a basis for F. 
+</p>
+
+                        <pre>
+                            <code class="language-python">
+class FacialRec(object):
+    """Class for storing a database of face images, with methods for
+    matching other faces to the database.
+    
+    Attributes:
+        F ((mn,k) ndarray): The flatten images of the dataset, where
+            k is the number of people, and each original image is mxn.
+        mu ((mn,) ndarray): The mean of all flatten images.
+        Fbar ((mn,k) ndarray): The images shifted by the mean.
+        U ((mn,k) ndarray): The U in the compact SVD of Fbar;
+            the columns are the eigenfaces.
+    """
+    # initialize the class with vectors of faces
+    def __init__(self, path='./celebrities/'):
+        """Initialize the F, mu, Fbar, and U attributes.
+        This is the main part of the computation.
+        """
+        # get F, compute the mean_face and compute Fbar
+        self.F, self.ind_name_map = get_faces(path=path)
+        self.mu = self.F.mean(axis=1)
+        self.Fbar = (self.F.T - self.mu).T
+        
+        # get the SVD of Fbar and save U
+        U, Sigma, Vh = la.svd(self.Fbar, full_matrices=False)
+        self.U = U
+
+    def project(self, A, s):
+        """Project a face vector onto the subspace spanned by the first s
+        eigenfaces, and represent that projection in terms of those eigenfaces.
+        
+        Parameters:
+            A((mn,) or (mn,l) ndarray): The array to be projected. 
+            s(int): the number of eigenfaces.
+        Returns: 
+            ((s,) ndarray): An array of the projected image of s eigenfaces.
+        """
+        return self.U[:,:s].T @ A
+                            </code>
+                        </pre>
+
+                        <p>This new matrix enables us to calculate the most accurate rank 'r' approximation $F_s$ of the original image matrix $F$. These projected vectors are aptly named "eigenfaces" because they are eigenvectors of $F \cdot F^T$ and share similarities with facial images. By using this technique, we can drastically reduce the storage space needed for facial recognition tasks and increase the efficiency of the algorithm. 
+</p>
+
+			<img src="blog_files/facial_recognition/eigenfaces.png">
+			<figcaption>Selected elements in our basis (fundamental features) of faces
+</figcaption>
+
+                 
+
+
+
+                        <h4>Matching Faces</h4>
+
+                        <p>Suppose we have an unidentified face 'g', and we want to identify which image in our database is most similar to it. The first step is to compare the unknown face 'g' to each image in our database, which allows us to determine the closest match. 
+</p>
+
+                        <pre>
+                            <code class="language-python">
+def find_nearest(self, g, s=38):
+    """Find the index j such that the jth column of F is the face that is
+    closest to the face image 'g'.
+   
+    Parameters:
+        g ((mn,) ndarray): A flattened face image.
+        s (int): the number of eigenfaces to use in the projection.
+
+    Returns:
+        (int): the index of the column of F that is the best match to
+               the input face image 'g'.
+    """
+    # get F_hat
+    F_ = self.project(self.Fbar, s)
+        
+    # get g_bar_hat
+    g_ = self.project(g-self.mu, s)
+        
+    # find argmin ||F_ - g_||_2 and return it
+    diff = (F_.T - g_).T
+    j = np.argmin(np.linalg.norm(diff, axis=0))
+
+    # return the index of the closest face
+    return j
+                            </code>
+                        </pre>
+
+                        <p>Next, we shift the face vector $g$ by the mean face of the database, which accentuates the unique features of the face. This shift results in a new vector $g$ that we can then project onto a lower-dimensional subspace using a predetermined number of eigenfaces. By doing this, we can represent the facial image with fewer values, which makes comparisons more efficient. 
+</p>
+
+                        <p>The next step is to compute the Euclidean distance (the most intuitive one) between the projected face vector $g$ and each of the image vectors in our database. We select the image vector $f_i$ that has the smallest Euclidean distance from $g$, which indicates the closest match. 
+</p>
+
+                        <p>Finally, we return the corresponding image $f_j$ as the best match for the unknown face $g$. This process is an example of how linear algebra can be used in facial recognition to efficiently and accurately identify unknown faces.
+</p>
+
+			<img src="blog_files/facial_recognition/matches.png">
+			<figcaption>Aaron Eckhart with his celebrity lookalike, Neil Patrick Harris</figcaption>
+
+
+
+
+                        <h4>Winning a Hackathon</h4>
+
+                        <p>I took advantage of the Eigenfaces technique to build a program that won Best AI from BENlabs at the 2023 ACM YHack Hackathon. The Association for Computing Machinery (<a href=’’ target=”_blank”>ACM</a>) club chapter at my college is an organization designed to unify computer science students by hosting seminars, activities, and recruitment events on campus. 
+</p>
+
+			<img src="blog_files/facial_recognition/acm.png">
+			<figcaption><a href='https://awards.acm.org/fellows'>https://awards.acm.org/fellows</a></figcaption>
+
+                        <p>Every year they host a hackathon called the YHack where students have 24 hours to complete a project and demo it to a team of judges composed of university professors and industry professionals from the hosting company. If you are not familiar, a hackathon is simply a collaborative event where groups of people work together to create innovative software or hardware projects (not necessarily hacking) within a set time frame. 
+</p>
+
+                        <p><a href=’https://www.benlabs.com/’ target=’_blank’>BENlabs</a> is an AI company that empowers brands and creators to drive engaged human attention across social media, streaming, TV, music and film content. They were generous enough to host the hackathon with lots of pizza and prizes and chose the theme of “identity” for our competition.</p>
+
+			<img src="blog_files/facial_recognition/benlabs.png">
+			<figcaption><a href='https://www.benlabs.com/' target='_blank'>https://www.benlabs.com/</a></figcaption>
+                        
+
+
+
+
+                        <h4>Your Identity</h4>
+
+                        <p>I worked with two of my friends from my math classes, <a href=”https://github.com/jeffxhansen”>Jeff Hansen</a> and <a href=”https://github.com/benjaminmcmullin4” target=_blank”>Benj McMullin</a>. We decided to build a face detection algorithm that uses the webcam to find the user’s celebrity lookalike and tell them about their identity.
+</p>
+
+                        <p>It relied on OpenCV for some of the image processing, speech_recognition and pytts3 for a voice interface, tkinter for the graphical user interface, and the Eigenfaces method to perform the facial recognition. I explain this project in more detail in a dedicated post <a href=”https://dallinstewart.com/blog/mathbytes.html”>here</a> if you’d like to learn more about some of the awesome packages we used.
+</p>
+
+                        <p>Our innovative project began with crafting a user-friendly interface that displayed real-time images captured by the webcam, complemented by additional white space for auxiliary functions. Our program was designed to interact with users through a voice interface, initially prompting them to reveal their name. Using OpenCV, we implemented a face detection algorithm that captured images of users and compared them with a database of celebrity faces scraped from the top 1000 actors in Hollywood on IMDB. Our team took special care to center the faces of each celebrity in the database to construct a high-quality mean eigenface. 
+</p>
+
+                        <p>By implementing the Eigenfaces SVD technique, our program was able to accurately determine the closest actor to the user's captured image. After identifying the celebrity look-alike, the program utilized a text-to-speech engine to describe the results, along with estimates of their age and gender powered by pre-trained models from OpenCV. To further enhance the experience, the program utilized openAI GPT-3 API to generate a unique and captivating story about the person, and finished with a fond farewell.
+</p>
+
+
+
+
+                        <h4>Conclusion</h4>
+
+                        <p>Participating in the hackathon was an exciting experience, especially because I was able to apply one of the skills I had learned in class to a project I was truly invested in. My teammate Jeff and I managed to quickly implement the eigenfaces facial recognition feature, which allowed us to spend the rest of the time creatively adding more features like age and gender detection.
+</p>
+
+                        <p>One of the most engaging experiences during the hackathon was coding collaboratively - an opportunity I hadn't had very often before. It was refreshing to have a partner and be able to bounce ideas off each other in contrast to the dozens of individual projects I have worked on before for my classes. As we developed our project, Jeff focused primarily on the interface and overall integration, while I handled each of the various functionalities. Our partnership allowed me to develop specific parts of the project in isolation, which helped me to thoroughly test different aspects and features.
+</p>
+
+                        <p>Whenever we ran into roadblocks or encountered bugs, we were able to quickly find and fix them with the help of a second set of eyes. This interactive process was incredibly rewarding and allowed us to focus on different aspects of the project without feeling overwhelmed.
+</p>
+
+                        <p>Although I was initially nervous about dedicating so much time on the weekend and neglecting my looming math exams, the hackathon was an incredibly fun and rewarding experience that I am glad to have been a part of. Winning a prize - a pretty sweet phone holder for my car - was just the icing on the cake. It was an exciting and enriching experience that I will never forget, and I’m glad I took the time out of my week for this unique opportunity.
+</p>
+
+
+
+                    </div>
+                </section>
+               
+
+            </article>
+            <nav class="pagination" role="navigation">
+                <!-- <span class="page-number">Page 1 of 286</span> -->
+                <a class="older-posts" href="/blog/list.html">Other Posts <span aria-hidden="true">→</span></a>
+            </nav>
+
+
+        </main>
+        <aside class="sidebar">
+
+<!-- Add a hire me link -->
+<h3>Resources</h3>
+
+<ul>
+    <li><a href="https://dallinstewart.com/">About Me</a></li>
+    <li><a href="https://www.linkedin.com/in/dallinstewart/">LinkedIn</a></li>
+    <li><a href="https://github.com/binDebug3">GitHub</a></li>
+    <li><a href="https://dallinstewart.com/#contact">Contact</a></li>
+    <!-- <li><a href="https://forms.gle/iahqDwnmJWUfA1oL7">Subscribe for email updates</a></li>  -->
+    <!-- <li><a href="/blog/feed.xml">RSS Feed</a></li> -->
+</ul>
+
+<ul>
+</ul>
+
+<p>This blog has been continuously published since 2023.</p>
+
+
+            <footer class="site-footer">
+                <section class="copyright">Copyright <a rel="author" href="https://www.linkedin.com/in/dallinstewart/">Dallin Stewart</a> © 2023<br>
+            </footer>
+        </aside>
+    </div>
+</body>
+
+
+<!-- This is how you load math if you want to -->
+<script>
+    MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']]
+        }
+    };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+<script> src="https://prismjs.com/download.html#themes=prism&languages=markup+css+clike+javascript+abap+abnf+actionscript+ada+agda+al+antlr4+apacheconf+apex+apl+applescript+aql+arduino+arff+armasm+arturo+asciidoc+aspnet+asm6502+asmatmel+autohotkey+autoit+avisynth+avro-idl+awk+bash+basic+batch+bbcode+bbj+bicep+birb+bison+bnf+bqn+brainfuck+brightscript+bro+bsl+c+csharp+cpp+cfscript+chaiscript+cil+cilkc+cilkcpp+clojure+cmake+cobol+coffeescript+concurnas+csp+cooklang+coq+crystal+css-extras+csv+cue+cypher+d+dart+dataweave+dax+dhall+diff+django+dns-zone-file+docker+dot+ebnf+editorconfig+eiffel+ejs+elixir+elm+etlua+erb+erlang+excel-formula+fsharp+factor+false+firestore-security-rules+flow+fortran+ftl+gml+gap+gcode+gdscript+gedcom+gettext+gherkin+git+glsl+gn+linker-script+go+go-module+gradle+graphql+groovy+haml+handlebars+haskell+haxe+hcl+hlsl+hoon+http+hpkp+hsts+ichigojam+icon+icu-message-format+idris+ignore+inform7+ini+io+j+java+javadoc+javadoclike+javastacktrace+jexl+jolie+jq+jsdoc+js-extras+json+json5+jsonp+jsstacktrace+js-templates+julia+keepalived+keyman+kotlin+kumir+kusto+latex+latte+less+lilypond+liquid+lisp+livescript+llvm+log+lolcode+lua+magma+makefile+markdown+markup-templating+mata+matlab+maxscript+mel+mermaid+metafont+mizar+mongodb+monkey+moonscript+n1ql+n4js+nand2tetris-hdl+naniscript+nasm+neon+nevod+nginx+nim+nix+nsis+objectivec+ocaml+odin+opencl+openqasm+oz+parigp+parser+pascal+pascaligo+psl+pcaxis+peoplecode+perl+php+phpdoc+php-extras+plant-uml+plsql+powerquery+powershell+processing+prolog+promql+properties+protobuf+pug+puppet+pure+purebasic+purescript+python+qsharp+q+qml+qore+r+racket+cshtml+jsx+tsx+reason+regex+rego+renpy+rescript+rest+rip+roboconf+robotframework+ruby+rust+sas+sass+scss+scala+scheme+shell-session+smali+smalltalk+smarty+sml+solidity+solution-file+soy+sparql+splunk-spl+sqf+sql+squirrel+stan+stata+iecst+stylus+supercollider+swift+systemd+t4-templating+t4-cs+t4-vb+tap+tcl+tt2+textile+toml+tremor+turtle+twig+typescript+typoscript+unrealscript+uorazor+uri+v+vala+vbnet+velocity+verilog+vhdl+vim+visual-basic+warpscript+wasm+web-idl+wgsl+wiki+wolfram+wren+xeora+xml-doc+xojo+xquery+yaml+yang+zig&plugins=line-numbers"</script>
+
+</html>
