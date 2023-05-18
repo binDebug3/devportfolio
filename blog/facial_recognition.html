@@ -187,14 +187,14 @@ class FacialRec(object):
                         <p></p>
                         <h4>Matching Faces</h4>
 
-                        <p>Suppose we have an unidentified face 'g', and we want to identify which image in our database is most similar to it. The first step is to compare the unknown face 'g' to each image in our database, which allows us to determine the closest match. 
+                        <p>Suppose we have an unidentified face $g$, and we want to identify which image in our database is most similar to it. The first step is to compare the unknown face $g$ to each image in our database, which allows us to determine the closest match. 
 </p>
 
                         <pre>
                             <code class="language-python">
 def find_nearest(self, g, s=38):
     """Find the index j such that the jth column of F is the face that is
-    closest to the face image 'g'.
+    closest to the face image $g$.
    
     Parameters:
         g ((mn,) ndarray): A flattened face image.
@@ -202,7 +202,7 @@ def find_nearest(self, g, s=38):
 
     Returns:
         (int): the index of the column of F that is the best match to
-               the input face image 'g'.
+               the input face image $g$.
     """
     # get F_hat
     F_ = self.project(self.Fbar, s)
