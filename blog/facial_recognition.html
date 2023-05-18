@@ -115,7 +115,7 @@
                         <p>As the average of all the images in a dataset, the mean faces identifies the most common and least distinguishing features of a dataset. For facial recognition, it outputs the fuzzy, generic face shown below. 
 </p>
 
-                        <p>Before performing facial recognition on a particular image, the Eigenfaces algorithm first shifts the image by the mean face, emphasizing the unique characteristics of each person's face. By subtracting the mean face from each image, the algorithm highlights the distinguishing features of each entry, accentuating the unique traits that set each person apart. The mean face µ is calculated as the element-wise average of the f_i images vectors stored in F. 
+                        <p>Before performing facial recognition on a particular image, the Eigenfaces algorithm first shifts the image by the mean face, emphasizing the unique characteristics of each person's face. By subtracting the mean face from each image, the algorithm highlights the distinguishing features of each entry, accentuating the unique traits that set each person apart. The mean face µ is calculated as the element-wise average of the $f_i$ images vectors stored in F. 
 </p>
 
 			<img src="blog_files/facial_recognition/mean_face.png">
@@ -129,7 +129,7 @@
 
                         <h4>Computational Efficiency</h4>
 
-                        <p>To optimize efficiency and reduce space requirements, we can represent facial images with fewer values by projecting the image vectors onto a lower-dimensional subspace. This projection is possible by computing the SVD of the image matrix F, which results in a new matrix U whose first 'r' columns serve as a basis for F. 
+                        <p>To optimize efficiency and reduce space requirements, we can represent facial images with fewer values by projecting the image vectors onto a lower-dimensional subspace. This projection is possible by computing the SVD of the image matrix F, which results in a new matrix U whose first $r$ columns serve as a basis for F. 
 </p>
 
                         <pre>
@@ -174,7 +174,7 @@ class FacialRec(object):
                             </code>
                         </pre>
 
-                        <p>This new matrix enables us to calculate the most accurate rank 'r' approximation $F_s$ of the original image matrix $F$. These projected vectors are aptly named "eigenfaces" because they are eigenvectors of $F \cdot F^T$ and share similarities with facial images. By using this technique, we can drastically reduce the storage space needed for facial recognition tasks and increase the efficiency of the algorithm. 
+                        <p>This new matrix enables us to calculate the most accurate rank $r$ approximation $F_s$ of the original image matrix $F$. These projected vectors are aptly named "eigenfaces" because they are eigenvectors of $F \cdot F^T$ and share similarities with facial images. By using this technique, we can drastically reduce the storage space needed for facial recognition tasks and increase the efficiency of the algorithm. 
 </p>
 
 			<img src="blog_files/facial_recognition/eigenfaces.png">
@@ -236,16 +236,16 @@ def find_nearest(self, g, s=38):
                         <p></p>
                         <h4>Winning a Hackathon</h4>
 
-                        <p>I took advantage of the Eigenfaces technique to build a program that won Best AI from BENlabs at the 2023 ACM YHack Hackathon. The Association for Computing Machinery (<a href=’’ target=”_blank”>ACM</a>) club chapter at my college is an organization designed to unify computer science students by hosting seminars, activities, and recruitment events on campus. 
+                        <p>I took advantage of the Eigenfaces technique to build a program that won Best AI from BENlabs at the 2023 ACM YHack Hackathon. The Association for Computing Machinery (<a href='acm.byu.edu' target=”_blank”>ACM</a>) club chapter at my college is an organization designed to unify computer science students by hosting seminars, activities, and recruitment events on campus. 
 </p>
 
 			<img src="blog_files/facial_recognition/acm.png">
-			<figcaption><a href='https://awards.acm.org/fellows'>https://awards.acm.org/fellows</a></figcaption>
+			<figcaption><a href='https://awards.acm.org/fellows' target="_blank">https://awards.acm.org/fellows</a></figcaption>
 
                         <p>Every year they host a hackathon called the YHack where students have 24 hours to complete a project and demo it to a team of judges composed of university professors and industry professionals from the hosting company. If you are not familiar, a hackathon is simply a collaborative event where groups of people work together to create innovative software or hardware projects (not necessarily hacking) within a set time frame. 
 </p>
 
-                        <p><a href=’https://www.benlabs.com/’ target=’_blank’>BENlabs</a> is an AI company that empowers brands and creators to drive engaged human attention across social media, streaming, TV, music and film content. They were generous enough to host the hackathon with lots of pizza and prizes and chose the theme of “identity” for our competition.</p>
+                        <p><a href=’https://www.benlabs.com/’ target='_blank'>BENlabs</a> is an AI company that empowers brands and creators to drive engaged human attention across social media, streaming, TV, music and film content. They were generous enough to host the hackathon with lots of pizza and prizes and chose the theme of “identity” for our competition.</p>
 
 			<img src="blog_files/facial_recognition/benlabs.png">
 			<figcaption><a href='https://www.benlabs.com/' target='_blank'>https://www.benlabs.com/</a></figcaption>
@@ -256,10 +256,10 @@ def find_nearest(self, g, s=38):
                         <p></p>
                         <h4>Your Identity</h4>
 
-                        <p>I worked with two of my friends from my math classes, <a href=”https://github.com/jeffxhansen”>Jeff Hansen</a> and <a href=”https://github.com/benjaminmcmullin4” target=_blank”>Benj McMullin</a>. We decided to build a face detection algorithm that uses the webcam to find the user’s celebrity lookalike and tell them about their identity.
+                        <p>I worked with two of my friends from my math classes, <a href="https://github.com/jeffxhansen" target="_blank">Jeff Hansen</a> and <a href="https://github.com/benjaminmcmullin4" target="_blank">Benj McMullin</a>. We decided to build a face detection algorithm that uses the webcam to find the user’s celebrity lookalike and tell them about their identity.
 </p>
 
-                        <p>It relied on OpenCV for some of the image processing, speech_recognition and pytts3 for a voice interface, tkinter for the graphical user interface, and the Eigenfaces method to perform the facial recognition. I explain this project in more detail in a dedicated post <a href=”https://dallinstewart.com/blog/mathbytes.html”>here</a> if you’d like to learn more about some of the awesome packages we used.
+                        <p>It relied on OpenCV for some of the image processing, speech_recognition and pytts3 for a voice interface, tkinter for the graphical user interface, and the Eigenfaces method to perform the facial recognition. I explain this project in more detail in a dedicated post <a href="https://dallinstewart.com/blog/hackathon.html">here</a> if you’d like to learn more about some of the awesome packages we used.
 </p>
 
                         <p>Our innovative project began with crafting a user-friendly interface that displayed real-time images captured by the webcam, complemented by additional white space for auxiliary functions. Our program was designed to interact with users through a voice interface, initially prompting them to reveal their name. Using OpenCV, we implemented a face detection algorithm that captured images of users and compared them with a database of celebrity faces scraped from the top 1000 actors in Hollywood on IMDB. Our team took special care to center the faces of each celebrity in the database to construct a high-quality mean eigenface. 
@@ -282,7 +282,7 @@ def find_nearest(self, g, s=38):
                         <p>Whenever we ran into roadblocks or encountered bugs, we were able to quickly find and fix them with the help of a second set of eyes. This interactive process was incredibly rewarding and allowed us to focus on different aspects of the project without feeling overwhelmed.
 </p>
 
-                        <p>Although I was initially nervous about dedicating so much time on the weekend and neglecting my looming math exams, the hackathon was an incredibly fun and rewarding experience that I am glad to have been a part of. Winning a prize - a pretty sweet phone holder for my car - was just the icing on the cake. It was an exciting and enriching experience that I will never forget, and I’m glad I took the time out of my week for this unique opportunity.
+                        <p>Although I was initially nervous about dedicating so much time on the weekend and neglecting my looming math exams, the hackathon was an incredibly fun and rewarding experience that I am glad to have been a part of. Winning a prize - a pretty sweet phone holder for my car - was just the icing on the cake. It was an exciting and enriching experience that I will never forget, and I’m glad I took the time out of my week for this unique opportunity. For more details about implementing the Eigenfaces method, visit my <a href="https://github.com/binDebug3/Cool_Math/blob/main/Facial_Recognition/facial_recognition.ipynb">GitHub</a>.
 </p>
 
 
