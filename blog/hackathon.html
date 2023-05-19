@@ -116,7 +116,8 @@
 </p>
 
                         <pre>
-                            <code class="language-python">def findNames(self):
+                            <code class="language-python">
+def findNames(self):
     """
     Find the names of each celebrity on the page
     :return: names (list): list of names as strings
@@ -157,7 +158,8 @@
 </p>
 
                         <pre>
-                            <code class="language-python">def mic_input(prompt=None):
+                            <code class="language-python">
+def mic_input(prompt=None):
     """
     Takes input from the microphone and returns it as a string
     :return: (string) input from the microphone, (boolean) False if failure
@@ -194,7 +196,8 @@
 </p>
 
                         <pre>
-                            <code class="language-python">def speak(text):
+                            <code class="language-python">
+def speak(text):
     """
     Text to speech function
     :param text: (string) text to be spoken
@@ -233,7 +236,8 @@
 </p>
 
                         <pre>
-                            <code class="language-python">def face_recognition(frame):
+                            <code class="language-python">
+def face_recognition(frame):
     """
     Takes in a frame and checks to see if a person is in that frame/image
     it returns a boolean value representing on if their is a person in the frame
@@ -292,7 +296,8 @@
 </p>
 
                         <pre>
-                            <code class="language-python">def age_gender_detector(frame):
+                            <code class="language-python">
+def age_gender_detector(frame):
     """
     Predicts the age and gender of the person in an image
     """
@@ -338,7 +343,8 @@
 </p>
 
                         <pre>
-                            <code class="language-python">def generate_paragraph(input_string):
+                            <code class="language-python">
+def generate_paragraph(input_string):
     prompt = f"Please write a 100 word funny story about the time when {input_string}."
     model_engine = "text-davinci-002" # replace with the GPT-3 model engine you want to use
     response = openai.Completion.create(
