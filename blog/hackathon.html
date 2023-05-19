@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+
+    <title>Stepping into the World of College Hackathons</title>
+    <link rel="shortcut icon" type="image/jpg" href="favicon.jpg">
+    <meta name="description" content="A facial recognition algorithm that uses AI to find your celebrity look alike and learn about your identity">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link rel="shortcut icon" href="">
+    <link rel="apple-touch-icon" href="blog_files/bloglogo.png">
+    <link rel="stylesheet" type="text/css" href="blog_files/screen.css">
+    <link rel="stylesheet" type="text/css" href="blog_files/css.css">
+    <link rel="stylesheet" type="text/css" href="blog_files/defaulten.css">
+    <!-- <script src="https://cdn.jsdelivr.net/npm/texme@0.7.0"></script> -->
+    <style>
+
+    .fblogo {
+        display: inline-block;
+        margin-left: auto;
+        margin-right: auto;
+        height: 30px;
+        width: 75%;
+    }
+
+    </style>
+
+</head>
+
+
+<!-- Google tag (gtag.js) Dallin Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LT97T5DE19"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-LT97T5DE19');
+</script>
+
+
+<body class="home-template">
+    <!-- Theme modified from the wonderful Coding Horror blog https://blog.codinghorror.com/ -->
+
+    <header class="site-head">
+        <div class="site-head-content">
+            <a class="blog-logo" href="/blog/mathbytes.html"><img src="blog_files/bloglogo.png" alt="Dallin Stewart Logo" width="64"
+                    height="64"></a>
+            <h1 class="blog-title"><a href="/blog/mathbytes.html">Math Bytes</a></h1>
+            <h2 class="blog-description">Math, Data Science, and Machine Learning</h2>
+        </div>
+    </header>
+
+    <div class="wrap clearfix">
+        <div class="clearfix"></div>
+
+        <main class="content" role="main">
+
+            <article class="post">
+                <header class="post-header">
+                    <span class="post-meta"><time datetime="2023-06-06">6 June 2023</time> </span>
+                    <h2 class="post-title"><a href="/blog/hackathon.html">Stepping into the World of College Hackathons</a></h2>
+                </header>
+                <section class="post-content">
+                    <div class="kg-card-markdown">
+                        <p>A facial recognition algorithm that uses AI to find your celebrity look alike and learn about your identity | <a href='https://github.com/binDebug3/your_identity' target="_blank">View Code</a></p>
+
+                        <blockquote>"If you want to be inventive – you have to be willing to fail."</blockquote>
+                        <p>- Jeff Bezos</p>
+
+                        
+
+
+                        <h4>What is a Hackathon?</h4>
+
+                        <p>Stepping into the realm of hackathon for the first time was a surprisingly exciting adventure where time became a blur and innovation abounded amidst a whirlwind of ideas. For computer science enthusiasts like myself, the opportunity to participate in the YHack Hackathon organized by the Association for Computing Machinery (ACM) chapter at my college was a memorable occasion. 
+</p>
+
+			<img src="blog_files/hackathon/acm.png">
+			<figcaption><a href="https://acm.byu.edu">https://acm.byu.edu</a></figcaption>
+                 
+                        <p>In the backdrop of the vibrant tech community, this 24-hour event brought together brilliant minds, professors, and industry professionals to foster collaboration and showcase the potential of artificial intelligence projects. Hosted graciously by BENlabs, an esteemed AI company, this year's theme of "identity" ignited our creativity, sparking a journey that would culminate in an award-winning program utilizing the powerful Eigenfaces technique. Join me as I recount my first hackathon experience, where the pursuit of innovation merged seamlessly with the exploration of our individual and collective identities.
+</p>
+
+                        <p>Every year they host a hackathon called the YHack where students have 24 hours to complete a project and demo it to a team of judges composed of university professors and industry professionals from the hosting company. If you are not familiar, a hackathon is simply a collaborative event where groups of people work together to create innovative software or hardware projects (not necessarily hacking) within a set time frame. 
+</p>
+
+                        <p><a href=’https://www.benlabs.com/’ target=’_blank’>BENlabs</a> is an AI company that empowers brands and creators to drive engaged human attention across social media, streaming, TV, music and film content. They were generous enough to host the hackathon with lots of pizza and prizes and chose the theme of “identity” for our competition.
+</p>
+
+			<img src="blog_files/hackathon/benlabs.png">
+			<figcaption><a href=”https://www.benlabs.com/” target=”_blank”>https://www.benlabs.com/</a></figcaption>
+
+
+
+
+
+                        <h4>Your Identity</h4>
+
+                        <p>I worked with two of my friends from my math classes, <a href="https://github.com/jeffxhansen" target="_blank">Jeff Hansen</a> and <a href="https://github.com/benjaminmcmullin4" target="_blank">Benj McMullin</a>. We decided to build a face detection algorithm that uses the webcam to find the user’s celebrity lookalike and tell them about their identity. It relied on OpenCV for some of the image processing, speech_recognition and pytts3 for a voice interface, tkinter for the graphical user interface, and the Eigenfaces method to perform the facial recognition. I’ve broken the project down into its component parts to explain them in more detail below
+</p>
+
+
+
+
+
+                        <h4>Web Scraping</h4>
+
+                        <p>We started by building a comprehensive database of images to effectively compare and identify celebrity lookalikes. Unfortunately, our search for an existing dataset came up short, so instead we decided to use web scraping to build our own and extracted over one thousand celebrity images from IMDB with the Python package Selenium. This algorithm allowed us to create a custom dataset that perfectly suited parameters of our project. We began the web scraping process by building a class called Celebrities with a method creatively named ‘scrape’. This method works by iteratively constructing a list of celebrities names and images, since each page only has one hundred celebrities.
+</p>
+
+                        <pre>
+                            <code class="language-python">
+def findNames(self):
+    """
+    Find the names of each celebrity on the page
+    :return: names (list): list of names as strings
+    """
+    # list of names to build
+    names = []
+        
+    # xpath to the name elements
+    nameClass = "//div[@class='lister-item-image']/a/img"
+
+    # get a list of name elements and save the text content
+    nameElems = self.driver.find_elements(By.XPATH, nameClass)
+
+    # construct the list of names
+    for elem in nameElems:
+        names.append(elem.get_attribute('alt'))
+
+    return names
+                            </code>
+                        </pre>
+
+
+                        <p>This function extracts the names of celebrities from IMDB by identifying the HTML elements on the page that contain the name information using an XPATH expression and the find_elements() method of the Selenium web driver. Once the name elements have been identified, the code loops through each element and extracts the name string from the 'alt' attribute of the image tag. These name strings are appended to the previously initialized list and then returned as the output of the function. The code and process for extracting images is similar. 
+</p>
+
+			<img src="blog_files/webscraping/celebrity.jpg">
+			<figcaption>Aaron Eckhart</figcaption>
+
+                        <p>After scraping all the data on one page, the program clicks the “Next” button to move onto the next page. After collecting all 1000 celebrities, the program saves the images to a separate folder and saves the corresponding list of names to a text file.
+</p>
+
+
+
+
+
+                        <h4>User Interface</h4>
+
+                        <p>We completed our goal for the minimum viable product within the first few hours, so we had time to get creative with the rest of the project. We decided to implement both a voice interface and a graphical interface to enhance the user experience and make the program feel more engaging, interactive, and effortless. Fortunately, Python packages like pyttsx3 and speech_recognition made implementing the voice interface very simple and accessible.
+</p>
+
+                        <pre>
+                            <code class="language-python">
+def mic_input(prompt=None):
+    """
+    Takes input from the microphone and returns it as a string
+    :return: (string) input from the microphone, (boolean) False if failure
+    """
+    try:
+        r = sr.Recognizer()
+        with sr.Microphone() as source:
+            
+            if not prompt is None:
+                speak(prompt)
+            
+            r.energy_threshold = 3000
+            print("Listening...")
+            audio = r.listen(source)
+
+        try:
+            print("Recognizing...")
+            command = r.recognize_google(audio, language='en-in').lower()
+            print(f"User said: {command}\n")
+        except Exception as ex:
+            print(ex)
+            print("Say that again please...")
+            command = mic_input(prompt)
+        return command
+    except Exception as ex:
+        print(ex)
+        return False
+                            </code>
+                        </pre>
+
+                        <p>This function defines a function mic_input that takes input from the microphone and returns it as a string. The function first initializes a Recognizer object from the SpeechRecognition library and sets the energy threshold to 3000. If a prompt is provided, it is spoken aloud using the speak function and the listen method of the Recognizer object captures the audio input from the microphone.
+</p>
+
+                        <p>Next, the function uses Google's speech recognition service to recognize the audio input as a string. If the recognition is successful, the function prints the recognized string; otherwise, it prints an error message and calls the mic_input function again to try to capture the input again.
+</p>
+
+                        <pre>
+                            <code class="language-python">
+def speak(text):
+    """
+    Text to speech function
+    :param text: (string) text to be spoken
+    :return: (boolean) True if successful, False if failure
+    """
+    try:
+        engine.say(text)
+        engine.runAndWait()
+        engine.setProperty('rate', 175)
+        return True
+    except Exception as ex:
+        print("Error in tts function")
+        print(ex)
+        return False
+
+                            </code>
+                        </pre>
+
+                        <p>This function utilizes the Python Text-to-Speech (TTS) library pyttsx3 to convert text input into audible speech output. The function takes a single argument, "text," which is the string of text to be spoken.
+</p>
+
+                        <p>Inside the function, the "engine" variable initializes a pyttsx3 TTS engine. Then the function calls the  engine's "say" method with the "text" argument to convert it into speech. The "runAndWait" method is called to play the generated speech and halt the program's execution until the speech is completed. Finally, the "setProperty" method is called to set the speed of the speech, measured in words per minute.
+</p>
+
+                        <p>Furthermore, our program's graphical interface utilizes tkinter to create an intuitive and interactive window for the user. The left half of the window displays the live camera feed that captures the user's facial features, while the right half of the window remains blank until the program identifies a celebrity look-alike to display to the user, along with helpful text output.
+</p>
+
+
+
+
+
+                        <h4>OpenCV</h4>
+
+                        <p>OpenCV (Open Source Computer Vision Library) is an open-source computer vision and machine learning software library. It provides a wide range of image and video processing algorithms, such as image and video I/O, filtering, color conversion, feature detection, object detection, and machine learning. We employed OpenCV for its face detection feature which rely on pre-trained Haar cascades classifiers for detecting faces. These classifiers are capable of detecting objects in an image or a video by analyzing various features, such as edges, lines, and corners.
+</p>
+
+                        <p>The other important feature we took advantage of is OpenCV's image modification feature, which enables image processing techniques such as resizing, blurring, and color space conversion. These features preprocess images after capture to improve the accuracy of our face detection algorithm and apply visual effects to the images.
+</p>
+
+                        <pre>
+                            <code class="language-python">
+def face_recognition(frame):
+    """
+    Takes in a frame and checks to see if a person is in that frame/image
+    it returns a boolean value representing on if their is a person in the frame
+    and the frame with the bounding box drawn around the face
+    :param frame: the frame to be analyzed
+    :return: frame (cv2 image)
+             box (list of ints) the boundary where the face is located
+    """
+
+    # Convert the frame to grayscale
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+
+    # Detect the faces in the grayscale frame
+    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5)
+
+    # Check if any faces are detected
+    if len(faces) > 0:
+        # Draw rectangles around the detected face regions
+        box = []
+        for (x, y, w, h) in faces:
+            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+            box = [x, y, x + w, y + h]
+
+        # return the frame with the bounding box drawn around the face
+        return frame, [box]
+    
+    else:
+        return frame, []
+                            </code>
+                        </pre>
+
+                        <p>This function checks if there is a person's face in the input frame with a machine learning-based approach for object detection in images. The function converts the input frame to grayscale and applies the face cascade classifier to detect faces in the frame. If any face is detected, the function draws a rectangle around the face region in the frame and returns the frame with the bounding box drawn around the face, along with the list of coordinates that define the bounding box. If no face is detected, the function returns the input frame and an empty list.
+</p>
+
+
+
+
+
+                        <h4>Facial Recognition</h4>
+
+                        <p>Facial recognition technology has become increasingly prevalent in modern society, from unlocking your phone to airport security checks. But have you ever wondered how it works? At its core, facial recognition relies on finding similarities between images. One way to do this is through singular value decomposition (SVD), a mathematical technique that breaks down images into their component parts.
+</p>
+
+                        <p>To use SVD for facial recognition, we first compile a database of known faces. Each face is then represented as a set of numbers using SVD. When a new face is presented, it too is represented as a set of numbers using SVD. The computer can then compare the two sets of numbers to determine how similar they are, and therefore whether they belong to the same person.
+</p>
+
+                        <p>What makes SVD particularly useful for facial recognition is its ability to compress information. Rather than storing the full image, only the most important information is kept. This means that large databases of faces can be efficiently searched in real-time, making facial recognition an increasingly practical technology. This type of recognition algorithm was the inspiration for the entire project, but I felt it deserved its own post, so I described this part of our project in detail in another article, check it out <a href=’https://dallinstewart.com/blog/facial_recognition.html’>here</a>!
+</p>
+
+
+
+
+                        <h4>Feature Identification</h4>
+
+                        <p>We used a few pre-trained models from other packages to add additional capabilities to our project as timed allowed.
+</p>
+
+                        <pre>
+                            <code class="language-python">
+def age_gender_detector(frame):
+    """
+    Predicts the age and gender of the person in an image
+    """
+
+    # Read frame and get the face
+    frameFace, bboxes = face_recognition(frame)
+
+    for bbox in bboxes:
+        # crop the face
+        face = frame[max(0,bbox[1]-padding):min(bbox[3]+padding,frame.shape[0]-1),max(0,bbox[0]-padding):min(bbox[2]+padding, frame.shape[1]-1)]
+
+        # predict gender
+        blob = cv2.dnn.blobFromImage(face, 1.0, (227, 227), MODEL_MEAN_VALUES, swapRB=False)
+        genderNet.setInput(blob)
+        genderPreds = genderNet.forward()
+        gender = genderList[genderPreds[0].argmax()]
+
+        # predict age
+        ageNet.setInput(blob)
+        agePreds = ageNet.forward()
+        age = ageList[agePreds[0].argmax()]
+
+        # detect emotion
+        emotions = detector.detect_emotions(frame)[0]['emotions']
+        emotion = max(emotions, key=emotions.get)'''
+
+    return gender, genderPreds[0].max(), age, agePreds[0].max()
+                            </code>
+                        </pre>
+
+                        <p>This function predicts the age and gender of a person in an image using deep learning models. It  takes an image as input and first detects the face using the "face_recognition" function. It then crops the detected face and passes it through two deep learning models: one for gender prediction and another for age prediction. The function uses OpenCV's deep neural network module to load the pre-trained models and make predictions on the face.
+</p>
+
+                        <p>The gender and age models were trained on a large dataset of images and have learned to recognize patterns that correspond to certain gender and age ranges. The function uses the outputs of these models to make predictions about the gender and age of the person in the image. The predictions come with a confidence score that represents how confident the model is in its prediction. Once finished, it returns the predicted gender, gender confidence score, age range, and age confidence score.
+</p>
+
+
+
+
+
+                        <h4>Creating a Story with Chat GPT</h4>
+
+                        <p>We finish the interaction with a fun story about the user getting mistaken for their celebrity look alike.
+</p>
+
+                        <pre>
+                            <code class="language-python">
+
+def generate_paragraph(input_string):
+    prompt = f"Please write a 100 word funny story about the time when {input_string}."
+    model_engine = "text-davinci-002" # replace with the GPT-3 model engine you want to use
+    response = openai.Completion.create(
+        engine=model_engine,
+        prompt=prompt,
+        max_tokens=500,
+        n=1,
+        stop=None,
+        temperature=0.5,
+    )
+    paragraph = response.choices[0].text.strip()
+    return paragraph
+                            </code>
+                        </pre>
+
+                        <p>This function generates a funny paragraph by utilizing OpenAI's GPT-3 language model. The function takes a string as input, then generates a prompt. The GPT-3 model then creates a silly story about the input event based on its extensive knowledge of the English language and its ability to generate coherent text. Here’s an example:
+</p>
+
+                        <p><i>"Matt couldn't believe his luck when he was recruited to join a team of Hollywood actors in a high-stakes heist. It was a dream come true for the 27-year-old man who had always dreamed of making it big in showbiz. The only problem was that Matt looked eerily similar to Adam Sandler, and he was worried that people might mistake him for the real deal. But Matt was a quick thinker, and he came up with a plan. He told his fellow heist team members that he was Adam's long-lost twin brother, and they bought it. The heist was a success, and Matt even managed to land a role in Adam Sandler's next movie."</i>
+</p>
+
+
+
+
+                        <h4>Conclusion</h4>
+
+
+                        <p>Participating in the hackathon was an exciting experience, especially because I was able to apply one of the skills I had learned in class to a project I was truly invested in. My teammate Jeff and I managed to quickly implement the eigenfaces facial recognition feature, which allowed us to spend the rest of the time creatively adding more features like age and gender detection.
+</p>
+
+                        <p>One of the most engaging experiences during the hackathon was coding collaboratively - an opportunity I hadn't had very often before. It was refreshing to have a partner and be able to bounce ideas off each other in contrast to the dozens of individual projects I have worked on before for my classes. As we developed our project, Jeff focused primarily on the interface and overall integration, while I handled each of the various functionalities. Our partnership allowed me to develop specific parts of the project in isolation, which helped me to thoroughly test different aspects and features.
+</p>
+
+                        <p>Whenever we ran into roadblocks or encountered bugs, we were able to quickly find and fix them with the help of a second set of eyes. This interactive process was incredibly rewarding and allowed us to focus on different aspects of the project without feeling overwhelmed.
+</p>
+
+                        <p>Although I was initially nervous about dedicating so much time on the weekend and neglecting my looming math exams, the hackathon was an incredibly fun and rewarding experience that I am glad to have been a part of. Winning a prize - a pretty sweet phone holder for my car - was just the icing on the cake. It was an exciting and enriching experience that I will never forget, and I’m glad I took the time out of my week for this unique opportunity. Check out the full repository on my <a href="https://github.com/binDebug3/your_identity" target="_blank">GitHub</a>!
+</p>
+
+
+
+
+
+
+
+
+                    </div>
+                </section>
+               
+
+            </article>
+            <nav class="pagination" role="navigation">
+                <!-- <span class="page-number">Page 1 of 286</span> -->
+                <a class="older-posts" href="/blog/list.html">Other Posts <span aria-hidden="true">→</span></a>
+            </nav>
+
+
+        </main>
+        <aside class="sidebar">
+
+<!-- Add a hire me link -->
+<h3>Resources</h3>
+
+<ul>
+    <li><a href="https://dallinstewart.com/">About Me</a></li>
+    <li><a href="https://www.linkedin.com/in/dallinstewart/">LinkedIn</a></li>
+    <li><a href="https://github.com/binDebug3">GitHub</a></li>
+    <li><a href="https://dallinstewart.com/#contact">Contact</a></li>
+    <!-- <li><a href="https://forms.gle/iahqDwnmJWUfA1oL7">Subscribe for email updates</a></li>  -->
+    <!-- <li><a href="/blog/feed.xml">RSS Feed</a></li> -->
+</ul>
+
+<ul>
+</ul>
+
+<p>This blog has been continuously published since 2023.</p>
+
+
+            <footer class="site-footer">
+                <section class="copyright">Copyright <a rel="author" href="https://www.linkedin.com/in/dallinstewart/">Dallin Stewart</a> © 2023<br>
+            </footer>
+        </aside>
+    </div>
+</body>
+
+
+<!-- This is how you load math if you want to -->
+<script>
+    MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']]
+        }
+    };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+<script> src="https://prismjs.com/download.html#themes=prism&languages=markup+css+clike+javascript+abap+abnf+actionscript+ada+agda+al+antlr4+apacheconf+apex+apl+applescript+aql+arduino+arff+armasm+arturo+asciidoc+aspnet+asm6502+asmatmel+autohotkey+autoit+avisynth+avro-idl+awk+bash+basic+batch+bbcode+bbj+bicep+birb+bison+bnf+bqn+brainfuck+brightscript+bro+bsl+c+csharp+cpp+cfscript+chaiscript+cil+cilkc+cilkcpp+clojure+cmake+cobol+coffeescript+concurnas+csp+cooklang+coq+crystal+css-extras+csv+cue+cypher+d+dart+dataweave+dax+dhall+diff+django+dns-zone-file+docker+dot+ebnf+editorconfig+eiffel+ejs+elixir+elm+etlua+erb+erlang+excel-formula+fsharp+factor+false+firestore-security-rules+flow+fortran+ftl+gml+gap+gcode+gdscript+gedcom+gettext+gherkin+git+glsl+gn+linker-script+go+go-module+gradle+graphql+groovy+haml+handlebars+haskell+haxe+hcl+hlsl+hoon+http+hpkp+hsts+ichigojam+icon+icu-message-format+idris+ignore+inform7+ini+io+j+java+javadoc+javadoclike+javastacktrace+jexl+jolie+jq+jsdoc+js-extras+json+json5+jsonp+jsstacktrace+js-templates+julia+keepalived+keyman+kotlin+kumir+kusto+latex+latte+less+lilypond+liquid+lisp+livescript+llvm+log+lolcode+lua+magma+makefile+markdown+markup-templating+mata+matlab+maxscript+mel+mermaid+metafont+mizar+mongodb+monkey+moonscript+n1ql+n4js+nand2tetris-hdl+naniscript+nasm+neon+nevod+nginx+nim+nix+nsis+objectivec+ocaml+odin+opencl+openqasm+oz+parigp+parser+pascal+pascaligo+psl+pcaxis+peoplecode+perl+php+phpdoc+php-extras+plant-uml+plsql+powerquery+powershell+processing+prolog+promql+properties+protobuf+pug+puppet+pure+purebasic+purescript+python+qsharp+q+qml+qore+r+racket+cshtml+jsx+tsx+reason+regex+rego+renpy+rescript+rest+rip+roboconf+robotframework+ruby+rust+sas+sass+scss+scala+scheme+shell-session+smali+smalltalk+smarty+sml+solidity+solution-file+soy+sparql+splunk-spl+sqf+sql+squirrel+stan+stata+iecst+stylus+supercollider+swift+systemd+t4-templating+t4-cs+t4-vb+tap+tcl+tt2+textile+toml+tremor+turtle+twig+typescript+typoscript+unrealscript+uorazor+uri+v+vala+vbnet+velocity+verilog+vhdl+vim+visual-basic+warpscript+wasm+web-idl+wgsl+wiki+wolfram+wren+xeora+xml-doc+xojo+xquery+yaml+yang+zig&plugins=line-numbers"</script>
+
+</html>
