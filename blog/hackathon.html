@@ -100,7 +100,7 @@
 
 
 
-
+                        <p></p>
                         <h4>Your Identity</h4>
 
                         <p>I worked with two of my friends from my math classes, <a href="https://github.com/jeffxhansen" target="_blank">Jeff Hansen</a> and <a href="https://github.com/benjaminmcmullin4" target="_blank">Benj McMullin</a>. We decided to build a face detection algorithm that uses the webcam to find the user’s celebrity lookalike and tell them about their identity. It relied on OpenCV for some of the image processing, speech_recognition and pytts3 for a voice interface, tkinter for the graphical user interface, and the Eigenfaces method to perform the facial recognition. I’ve broken the project down into its component parts to explain them in more detail below
@@ -116,8 +116,7 @@
 </p>
 
                         <pre>
-                            <code class="language-python">
-def findNames(self):
+                            <code class="language-python">def findNames(self):
     """
     Find the names of each celebrity on the page
     :return: names (list): list of names as strings
@@ -135,15 +134,14 @@ def findNames(self):
     for elem in nameElems:
         names.append(elem.get_attribute('alt'))
 
-    return names
-                            </code>
+    return names</code>
                         </pre>
 
 
                         <p>This function extracts the names of celebrities from IMDB by identifying the HTML elements on the page that contain the name information using an XPATH expression and the find_elements() method of the Selenium web driver. Once the name elements have been identified, the code loops through each element and extracts the name string from the 'alt' attribute of the image tag. These name strings are appended to the previously initialized list and then returned as the output of the function. The code and process for extracting images is similar. 
 </p>
 
-			<img src="blog_files/webscraping/celebrity.jpg">
+			<img src="blog_files/hackathon/celebrity.jpg">
 			<figcaption>Aaron Eckhart</figcaption>
 
                         <p>After scraping all the data on one page, the program clicks the “Next” button to move onto the next page. After collecting all 1000 celebrities, the program saves the images to a separate folder and saves the corresponding list of names to a text file.
@@ -159,8 +157,7 @@ def findNames(self):
 </p>
 
                         <pre>
-                            <code class="language-python">
-def mic_input(prompt=None):
+                            <code class="language-python">def mic_input(prompt=None):
     """
     Takes input from the microphone and returns it as a string
     :return: (string) input from the microphone, (boolean) False if failure
@@ -187,8 +184,7 @@ def mic_input(prompt=None):
         return command
     except Exception as ex:
         print(ex)
-        return False
-                            </code>
+        return False</code>
                         </pre>
 
                         <p>This function defines a function mic_input that takes input from the microphone and returns it as a string. The function first initializes a Recognizer object from the SpeechRecognition library and sets the energy threshold to 3000. If a prompt is provided, it is spoken aloud using the speak function and the listen method of the Recognizer object captures the audio input from the microphone.
@@ -198,8 +194,7 @@ def mic_input(prompt=None):
 </p>
 
                         <pre>
-                            <code class="language-python">
-def speak(text):
+                            <code class="language-python">def speak(text):
     """
     Text to speech function
     :param text: (string) text to be spoken
@@ -213,9 +208,7 @@ def speak(text):
     except Exception as ex:
         print("Error in tts function")
         print(ex)
-        return False
-
-                            </code>
+        return False</code>
                         </pre>
 
                         <p>This function utilizes the Python Text-to-Speech (TTS) library pyttsx3 to convert text input into audible speech output. The function takes a single argument, "text," which is the string of text to be spoken.
@@ -240,8 +233,7 @@ def speak(text):
 </p>
 
                         <pre>
-                            <code class="language-python">
-def face_recognition(frame):
+                            <code class="language-python">def face_recognition(frame):
     """
     Takes in a frame and checks to see if a person is in that frame/image
     it returns a boolean value representing on if their is a person in the frame
@@ -270,8 +262,7 @@ def face_recognition(frame):
         return frame, [box]
     
     else:
-        return frame, []
-                            </code>
+        return frame, []</code>
                         </pre>
 
                         <p>This function checks if there is a person's face in the input frame with a machine learning-based approach for object detection in images. The function converts the input frame to grayscale and applies the face cascade classifier to detect faces in the frame. If any face is detected, the function draws a rectangle around the face region in the frame and returns the frame with the bounding box drawn around the face, along with the list of coordinates that define the bounding box. If no face is detected, the function returns the input frame and an empty list.
@@ -301,8 +292,7 @@ def face_recognition(frame):
 </p>
 
                         <pre>
-                            <code class="language-python">
-def age_gender_detector(frame):
+                            <code class="language-python">def age_gender_detector(frame):
     """
     Predicts the age and gender of the person in an image
     """
@@ -329,8 +319,7 @@ def age_gender_detector(frame):
         emotions = detector.detect_emotions(frame)[0]['emotions']
         emotion = max(emotions, key=emotions.get)'''
 
-    return gender, genderPreds[0].max(), age, agePreds[0].max()
-                            </code>
+    return gender, genderPreds[0].max(), age, agePreds[0].max()</code>
                         </pre>
 
                         <p>This function predicts the age and gender of a person in an image using deep learning models. It  takes an image as input and first detects the face using the "face_recognition" function. It then crops the detected face and passes it through two deep learning models: one for gender prediction and another for age prediction. The function uses OpenCV's deep neural network module to load the pre-trained models and make predictions on the face.
@@ -349,9 +338,7 @@ def age_gender_detector(frame):
 </p>
 
                         <pre>
-                            <code class="language-python">
-
-def generate_paragraph(input_string):
+                            <code class="language-python">def generate_paragraph(input_string):
     prompt = f"Please write a 100 word funny story about the time when {input_string}."
     model_engine = "text-davinci-002" # replace with the GPT-3 model engine you want to use
     response = openai.Completion.create(
@@ -363,8 +350,7 @@ def generate_paragraph(input_string):
         temperature=0.5,
     )
     paragraph = response.choices[0].text.strip()
-    return paragraph
-                            </code>
+    return paragraph</code>
                         </pre>
 
                         <p>This function generates a funny paragraph by utilizing OpenAI's GPT-3 language model. The function takes a string as input, then generates a prompt. The GPT-3 model then creates a silly story about the input event based on its extensive knowledge of the English language and its ability to generate coherent text. Here’s an example:
