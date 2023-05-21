@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+
+    <title>Detecting Vehicle Damage with Advanced Deep Learning Technology</title>
+    <link rel="shortcut icon" type="image/jpg" href="favicon.jpg">
+    <meta name="description" content="A deep learning U-Net model that classifies damaged automobiles">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link rel="shortcut icon" href="">
+    <link rel="apple-touch-icon" href="blog_files/bloglogo.png">
+    <link rel="stylesheet" type="text/css" href="blog_files/screen.css">
+    <link rel="stylesheet" type="text/css" href="blog_files/css.css">
+    <link rel="stylesheet" type="text/css" href="blog_files/defaulten.css">
+    <!-- <script src="https://cdn.jsdelivr.net/npm/texme@0.7.0"></script> -->
+    <style>
+
+    .fblogo {
+        display: inline-block;
+        margin-left: auto;
+        margin-right: auto;
+        height: 30px;
+        width: 75%;
+    }
+
+    </style>
+
+</head>
+
+
+<!-- Google tag (gtag.js) Dallin Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LT97T5DE19"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-LT97T5DE19');
+</script>
+
+
+<body class="home-template">
+    <!-- Theme modified from the wonderful Coding Horror blog https://blog.codinghorror.com/ -->
+
+    <header class="site-head">
+        <div class="site-head-content">
+            <a class="blog-logo" href="/blog/mathbytes.html"><img src="blog_files/bloglogo.png" alt="Dallin Stewart Logo" width="64"
+                    height="64"></a>
+            <h1 class="blog-title"><a href="/blog/mathbytes.html">Math Bytes</a></h1>
+            <h2 class="blog-description">Math, Data Science, and Machine Learning</h2>
+        </div>
+    </header>
+
+    <div class="wrap clearfix">
+        <div class="clearfix"></div>
+
+        <main class="content" role="main">
+
+            <article class="post">
+                <header class="post-header">
+                    <span class="post-meta"><time datetime="2023-06-20">20 June 2023</time> </span>
+                    <h2 class="post-title"><a href="/blog/classifier.html">Detecting Vehicle Damage with Advanced Deep Learning Technology</a></h2>
+                </header>
+                <section class="post-content">
+                    <div class="kg-card-markdown">
+                        <p>A deep learning U-Net model that classifies damaged automobiles | <a href='https://github.com/binDebug3/Casper/tree/master/DeepLearning' target="_blank">View Code</a></p>
+
+                        <blockquote>"Machine intelligence is the last invention that humanity will ever need to make."</blockquote>
+                        <p>- Nick Bostrom</p>
+
+                        
+
+
+
+
+                        <h4>CS 474</h4>
+
+                 
+                        <p>When my CS 474 Deep Learning class announced that our final exam would be replaced with a project of our choosing, I immediately knew the project I wanted to tackle. I had been working on <a href='https://dallinstewart.com/blog/webscraping.html'>Casper</a>, a used car web scraping program for months, but consistently ran into a challenge: Casper marked cars as "best deals" that were often damaged, and sometimes severely so. As a human, I could easily spot the damage in the picture of the vehicle, but I wanted to create a fully automated process for detecting these types of sales. In the final weeks of the semester, I devoted over 30 hours to developing my first deep learning model from start to finish.
+</p>
+
+			<img src="blog_files/unet/damaged_volks.png">
+			<figcaption>$10,000, what a great deal!</figcaption>
+
+                      
+
+
+
+                        <p></p>
+                        <h4>Data Analysis</h4>
+
+                        <p>In my quest to create a robust deep learning model for car damage detection and price prediction, I scoured the internet for appropriate databases. After sifting through numerous options, I compiled a dataset of nearly 3,000 images. I scraped about half by myself from various online retailers, but the other half I found from pre-made datasets by Stanford and Roboflow. The images I scraped were from online used car retailers like AutoTrader using Selenium. After building this dataset however, I discovered a significant issue with the annotations in the pre-made datasets, leading to a mismatch of information that I addressed by removing location annotations and marking entire images as damaged or undamaged.
+</p>
+
+                        <p>As I delved deeper into the data analysis process, I discovered more discrepancies. Specifically, I noticed that the online dataset images were typically zoomed in on the damaged area of the car, while my scraped images were often pictures of an entire, undamaged car. To address this inconsistency, I utilized normalization techniques, including cropping the images square, zooming in on the center, and resizing them for uniformity. With the data normalized and organized, I was finally able to move on from the most challenging portion of the project.
+</p>
+
+			<img src="blog_files/unet/split_mismatch.jpg">
+			<figcaption>The label doesn’t quite match up with the damage here</figcaption>
+
+
+
+
+
+
+                        <p></p>
+                        <h4>Technical Approach</h4>
+
+                        <p>In designing my damage detection model, I chose to utilize a highly effective design called U-net CNN architecture. This model consists of four convolutional blocks, which downsample and upsample the input image to create a segmentation map. At each scale, the model extracts and combines features to enable accurate identification of damage.
+</p>
+
+			<img src="blog_files/unet/u-net-architecture.png">
+			<figcaption>U-Net Architecture</figcaption>
+
+                        <p>Each downsampling block is composed of four layers, which apply convolution, batch normalization, and ReLU to progressively increase the number of channels from three to 256, while reducing the spatial dimensions of the output through max pooling. The upsampling blocks use four layers as well, but utilize transposed convolution to increase the spatial dimensions of the input. Furthermore, each layer reduces the number of output channels by half while doubling the input channels with skip connections. Theses connections preserve much of the original, unconvoluted information from the image further down in the neural net, which makes training much easier.
+</p>
+
+                        <pre>
+                            <code class="language-python">
+class DamageDetection(nn.Module):
+  def __init__(self):
+    super(DamageDetection, self).__init__()
+    # Downsample convolution blocks
+    self.dblock1 = ConvBlock(3, 32)
+    self.dblock2 = ConvBlock(32, 64)
+    self.dblock3 = ConvBlock(64, 128)
+    self.dblock4 = ConvBlock(128, 256)
+    # Upsample convolution blocks
+    self.ublock1 = ConvBlock(256, 512, True)
+    # The next 4 blocks have doubled input channels due to concatenation of skip connections
+    self.ublock2 = ConvBlock(512, 256, True)
+    self.ublock3 = ConvBlock(256, 128, True)
+    self.ublock4 = ConvBlock(128, 64, True)
+    # Output "block"
+    self.convf1 = nn.Conv2d(64, 32, (3,3), padding=(1,1))
+    self.convf2 = nn.Conv2d(32, 32, (3,3), padding=(1,1))
+    self.convf3 = nn.Conv2d(32, 2, (1,1), padding=(0,0))
+
+    self.down = nn.MaxPool2d(2)
+ 
+  def forward(self, input):
+    # Save the last feature maps on each level! Pass an instance forward, but keep the variable referencing the same feature map for concatenation
+    l1 = self.dblock1(input)
+    l2 = self.dblock2(self.down(l1))
+    l3 = self.dblock3(self.down(l2))
+    l4 = self.dblock4(self.down(l3))
+    # Concatinate l1 - l4 on inputs across the U in reverse order, matching sizes
+    u = self.ublock1(self.down(l4))
+    u = self.ublock2(torch.cat((l4, u), dim=1))
+    u = self.ublock3(torch.cat((l3, u), dim=1))
+    u = self.ublock4(torch.cat((l2, u), dim=1))
+    out = F.relu(self.convf1(torch.cat((l1, u), dim=1)))
+    out = F.relu(self.convf2(out))
+    out = self.convf3(out)
+    return out
+                            </code>
+                        </pre>
+
+                        <p>Here's the ConvBlock object for reference:</p>
+
+                        <pre>
+                            <code class="language-python">
+class ConvBlock(nn.Module):
+  def __init__(self, in_channels, out_channels, up_sample=False):
+    super(ConvBlock, self).__init__()
+    self.conv1 = nn.Conv2d(in_channels, out_channels, (3,3), padding=(1,1))
+    self.conv2 = nn.Conv2d(out_channels, out_channels, (3,3), padding=(1,1))
+    self.up_sample = up_sample
+    if up_sample:    
+      # Up sample with up-conv 2x2, doubling along each dimension
+      self.up = nn.ConvTranspose2d(out_channels, out_channels//2, 2, stride=2)
+    # We do not want to down sample in the block, since we need the non-down-sampled output for skip connections
+
+  def forward(self, input):
+    x = F.relu(self.conv1(input))
+    x = F.relu(self.conv2(x))
+    if self.up_sample:
+      x = self.up(x)
+    return x
+                            </code>
+                        </pre>
+
+                        <p>As I mentioned earlier, I discovered through a process of trial and error that rather than annotating images with the specific location of damage didn’t work well. Instead, my model performed better when images were labeled as either damaged or undamaged with corresponding masks of all ones or all zeros. This approach allowed the model to discern damage location and severity on its own, without relying on exact damage location annotations for all 3,000 images.
+</p>
+
+
+
+
+
+                        <h4>Results</h4>
+
+                        <p>After twenty rigorous epochs, the damage detection model reached an impressive level of proficiency. By the fifth epoch, the model was already able to detect the overall shape of cars with reasonable accuracy and identified damaged areas in images. As the model continued training, its accuracy steadily improved until it plateaued around the 16th epoch, achieving a remarkable accuracy of 93% in pinpointing the location of damage in an image.
+</p>
+
+                        <p>However, it's worth noting that this accuracy pertains solely to the detection of specific damaged areas in an image, while the accuracy of distinguishing between clean and damaged cars soared to nearly 99%. Although the final error rate in detecting the location of damage on an image was around 20%, the model still performed remarkably well in detecting damage in images with high accuracy and considerable proficiency in identifying the general shape of cars. As a side note, you’ll be happy to hear that I got a 100 on the final project so it all worked out in the end. If you'd like to see more of the code for this project, you can find it all on my <a href='https://github.com/binDebug3/Casper/tree/master/DeepLearning' target='_blank'>GitHub</a>.
+</p>
+
+
+			<img src="blog_files/unet/prediction.PNG">
+			<figcaption>Not too bad!</figcaption>
+
+                       
+
+
+
+
+
+
+
+                        
+                    </div>
+                </section>
+               
+
+            </article>
+            <nav class="pagination" role="navigation">
+                <!-- <span class="page-number">Page 1 of 286</span> -->
+                <a class="older-posts" href="/blog/list.html">Other Posts <span aria-hidden="true">→</span></a>
+            </nav>
+
+
+        </main>
+        <aside class="sidebar">
+
+<!-- Add a hire me link -->
+<h3>Resources</h3>
+
+<ul>
+    <li><a href="https://dallinstewart.com/">About Me</a></li>
+    <li><a href="https://www.linkedin.com/in/dallinstewart/">LinkedIn</a></li>
+    <li><a href="https://github.com/binDebug3">GitHub</a></li>
+    <li><a href="https://dallinstewart.com/#contact">Contact</a></li>
+    <!-- <li><a href="https://forms.gle/iahqDwnmJWUfA1oL7">Subscribe for email updates</a></li>  -->
+    <!-- <li><a href="/blog/feed.xml">RSS Feed</a></li> -->
+</ul>
+
+<ul>
+</ul>
+
+<p>This blog has been continuously published since 2023.</p>
+
+
+            <footer class="site-footer">
+                <section class="copyright">Copyright <a rel="author" href="https://www.linkedin.com/in/dallinstewart/">Dallin Stewart</a> © 2023<br>
+            </footer>
+        </aside>
+    </div>
+</body>
+
+
+<!-- This is how you load math if you want to -->
+<script>
+    MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']]
+        }
+    };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+<script> src="https://prismjs.com/download.html#themes=prism&languages=markup+css+clike+javascript+abap+abnf+actionscript+ada+agda+al+antlr4+apacheconf+apex+apl+applescript+aql+arduino+arff+armasm+arturo+asciidoc+aspnet+asm6502+asmatmel+autohotkey+autoit+avisynth+avro-idl+awk+bash+basic+batch+bbcode+bbj+bicep+birb+bison+bnf+bqn+brainfuck+brightscript+bro+bsl+c+csharp+cpp+cfscript+chaiscript+cil+cilkc+cilkcpp+clojure+cmake+cobol+coffeescript+concurnas+csp+cooklang+coq+crystal+css-extras+csv+cue+cypher+d+dart+dataweave+dax+dhall+diff+django+dns-zone-file+docker+dot+ebnf+editorconfig+eiffel+ejs+elixir+elm+etlua+erb+erlang+excel-formula+fsharp+factor+false+firestore-security-rules+flow+fortran+ftl+gml+gap+gcode+gdscript+gedcom+gettext+gherkin+git+glsl+gn+linker-script+go+go-module+gradle+graphql+groovy+haml+handlebars+haskell+haxe+hcl+hlsl+hoon+http+hpkp+hsts+ichigojam+icon+icu-message-format+idris+ignore+inform7+ini+io+j+java+javadoc+javadoclike+javastacktrace+jexl+jolie+jq+jsdoc+js-extras+json+json5+jsonp+jsstacktrace+js-templates+julia+keepalived+keyman+kotlin+kumir+kusto+latex+latte+less+lilypond+liquid+lisp+livescript+llvm+log+lolcode+lua+magma+makefile+markdown+markup-templating+mata+matlab+maxscript+mel+mermaid+metafont+mizar+mongodb+monkey+moonscript+n1ql+n4js+nand2tetris-hdl+naniscript+nasm+neon+nevod+nginx+nim+nix+nsis+objectivec+ocaml+odin+opencl+openqasm+oz+parigp+parser+pascal+pascaligo+psl+pcaxis+peoplecode+perl+php+phpdoc+php-extras+plant-uml+plsql+powerquery+powershell+processing+prolog+promql+properties+protobuf+pug+puppet+pure+purebasic+purescript+python+qsharp+q+qml+qore+r+racket+cshtml+jsx+tsx+reason+regex+rego+renpy+rescript+rest+rip+roboconf+robotframework+ruby+rust+sas+sass+scss+scala+scheme+shell-session+smali+smalltalk+smarty+sml+solidity+solution-file+soy+sparql+splunk-spl+sqf+sql+squirrel+stan+stata+iecst+stylus+supercollider+swift+systemd+t4-templating+t4-cs+t4-vb+tap+tcl+tt2+textile+toml+tremor+turtle+twig+typescript+typoscript+unrealscript+uorazor+uri+v+vala+vbnet+velocity+verilog+vhdl+vim+visual-basic+warpscript+wasm+web-idl+wgsl+wiki+wolfram+wren+xeora+xml-doc+xojo+xquery+yaml+yang+zig&plugins=line-numbers"</script>
+
+</html>
