@@ -119,12 +119,12 @@
                         <p>The first step is to represent each string as a vector of character frequencies, where the values in each vector correspond to the frequency of each character in the string. The cosine similarity between two vectors can then be calculated using the following formula:
 </p>
 
-                        <p>$\[
+                        <p>$
 \text{cosine similarity} = \frac{{A \cdot B}}{{\|A\| \cdot \|B\|}}
-\]$
+$
 </p>
 
-                        <p>where A and B are the vectors of character frequencies for the two strings being compared, and “dot” represents the <a href="https://en.wikipedia.org/wiki/Dot_product" target="_blank">dot product</a> of the two vectors. The $\|\|A\|\| and \|\|B\|\| represent the magnitudes of the two vectors.
+                        <p>where A and B are the vectors of character frequencies for the two strings being compared, and “dot” represents the <a href="https://en.wikipedia.org/wiki/Dot_product" target="_blank">dot product</a> of the two vectors. The $\|\|A\|\|$ and $\|\|B\|\|$ represent the magnitudes of the two vectors.
 </p>
 
                         <p>For example, let's consider the two strings "apple" and "banana". We can represent these strings as vectors of character frequencies, as follows:
@@ -137,9 +137,9 @@
                         <p>We can then calculate the cosine similarity between these two vectors using the formula above:
 </p>
 
-                        <p>$\[
+                        <p>$
 \text{cosine similarity} = \frac{{(1 \cdot 0) + (1 \cdot 3) + (0 \cdot 2) + (2 \cdot 0) + (1 \cdot 0)}}{{\sqrt{{1^2 + 2^2 + 1^2 + 1^2}} \cdot \sqrt{{1^2 + 3^2 + 2^2}}}} = 0.29
-\]$</p>
+$</p>
 
                         <p>This indicates that the strings "apple" and "banana" have a relatively low similarity score based on their character frequencies.
 </p>
@@ -162,6 +162,7 @@
 
 <table>
   <tr>
+    <th></th>
     <th></th>
     <th>s</th>
     <th>i</th>
