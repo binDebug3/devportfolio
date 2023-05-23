@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+
+    <title>Fuzzy Matching in Action: Real-World Use Cases and Best Practices</title>
+    <link rel="shortcut icon" type="image/jpg" href="favicon.jpg">
+    <meta name="description" content="An application of entity matching I implemented while interning at Wells Fargo">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link rel="shortcut icon" href="">
+    <link rel="apple-touch-icon" href="blog_files/bloglogo.png">
+    <link rel="stylesheet" type="text/css" href="blog_files/screen.css">
+    <link rel="stylesheet" type="text/css" href="blog_files/css.css">
+    <link rel="stylesheet" type="text/css" href="blog_files/defaulten.css">
+    <!-- <script src="https://cdn.jsdelivr.net/npm/texme@0.7.0"></script> -->
+    <style>
+
+    .fblogo {
+        display: inline-block;
+        margin-left: auto;
+        margin-right: auto;
+        height: 30px;
+        width: 75%;
+    }
+
+    </style>
+
+</head>
+
+
+<!-- Google tag (gtag.js) Dallin Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LT97T5DE19"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-LT97T5DE19');
+</script>
+
+
+<body class="home-template">
+    <!-- Theme modified from the wonderful Coding Horror blog https://blog.codinghorror.com/ -->
+
+    <header class="site-head">
+        <div class="site-head-content">
+            <a class="blog-logo" href="/blog/mathbytes.html"><img src="blog_files/bloglogo.png" alt="Dallin Stewart Logo" width="64"
+                    height="64"></a>
+            <h1 class="blog-title"><a href="/blog/mathbytes.html">Math Bytes</a></h1>
+            <h2 class="blog-description">Math, Data Science, and Machine Learning</h2>
+        </div>
+    </header>
+
+    <div class="wrap clearfix">
+        <div class="clearfix"></div>
+
+        <main class="content" role="main">
+
+            <article class="post">
+                <header class="post-header">
+                    <span class="post-meta"><time datetime="2023-05-30">30 May 2023</time> </span>
+                    <h2 class="post-title"><a href="/blog/compression.html">Fuzzy Matching in Action: Real-World Use Cases and Best Practices</a></h2>
+                </header>
+                <section class="post-content">
+                    <div class="kg-card-markdown">
+                        <p>An application of entity matching I implemented while interning at Wells Fargo.</p>
+
+                        <blockquote>"An algorithm must be seen to be believed."</blockquote>
+                        <p>- Donald Knuth</p>
+
+                        
+
+
+                        <h4>Wells Fargo Climate Initiative</h4>
+
+                 
+                        <p>In the summer of 2022 I worked for the Climate Initiative Analytics team at Wells Fargo. The team had been recently founded in order to help the company reach its goal to help accelerate the transition to a low-carbon economy and reduce the impacts of climate change. Wells Fargo has committed to achieving net-zero greenhouse gas emissions by 2050, including financed emissions, and has set a goal of deploying $500 billion in sustainable finance between 2021 and 2030. Financed emissions refer to the greenhouse gas emissions that result from the projects and activities that a financial institution invests in or finances rather than direct emissions from a company building, for example.
+</p>
+
+                        <p>To achieve these goals, Wells Fargo is working with clients to help finance their emissions reduction efforts, driving innovation and accelerating market-based solutions to the climate crisis, and enhancing energy and resource efficiency in its own physical assets. They have already achieved carbon neutrality for Scope 1 and Scope 2 emissions.
+</p>
+
+                        <p>Before Wells Fargo could begin working with their clients, they needed to develop a method of reporting on their financed emissions. While they had all of their investment records stored internally, and every company’s emissions records were publicly available, not every company had an available ID, so the only way to match some of our internal data with the external data was with the name of the company. However, company names were not always consistent between databases. For example, our data might call one company “Pacific Gas and Electric” why the other dataset simply refers to the same company as “PG&E.”
+</p>
+
+
+
+
+
+
+
+                        <h4>Fuzzy String Matching</h4>
+
+
+                        <p>The time I spent developing a fuzzy string matching algorithm played a vital role in tackling this challenge to match internal data with external records based on company names. Fuzzy string matching is a technique used to compare two strings of text and determine how similar they are to each other, even if they are not an exact match. 
+</p>
+
+                        <p>Unlike exact string matching, fuzzy string matching takes into account variations in spelling, punctuation, and other factors that can make two strings appear different but still convey the same or a similar meaning. This comparison is possible because of algorithms such as Levenshtein distance, cosine-similarity, and Soundex. They assign scores to the degree of similarity between two strings based on specific criteria, allowing for efficient and accurate matching of text data. 
+</p>
+
+                        <p>The challenge then becomes deciding which algorithm works best for a given dataset, and what types of data cleaning lead to the most accurate results. Taking steps like removing extra whitespace, standardizing capitalization, removing certain punctuation marks, and modifying abbreviations can all have a significant impact on accuracy and reliability, but not always a positive one. In the next few sections, I will discuss the various algorithms I tested and the method I developed to compare them and identify the best algorithm for our requirements. 
+</p>
+
+
+
+
+
+                        <h4>Cosine Similarity</h4>
+
+                        <p>The <a href="https://en.wikipedia.org/wiki/Cosine_similarity" target="_blank">cosine similarity algorithm</a> is a measure of similarity between two non-zero vectors of an inner product space that measures the cosine of the angle between them. That’s a lot of math words. Heuristically, this method relies on representing objects, such as the name of a company, as vectors, and then finding the closest two vectors. In our case, we can compare the similarity between two strings by representing them as vectors of their character frequencies.
+</p>
+
+                        <p>The first step is to represent each string as a vector of character frequencies, where the values in each vector correspond to the frequency of each character in the string. The cosine similarity between two vectors can then be calculated using the following formula:
+</p>
+
+                        <p>$\[
+\text{cosine similarity} = \frac{{A \cdot B}}{{\|A\| \cdot \|B\|}}
+\]$
+</p>
+
+                        <p>where A and B are the vectors of character frequencies for the two strings being compared, and “dot” represents the <a href="https://en.wikipedia.org/wiki/Dot_product" target="_blank">dot product</a> of the two vectors. The $\|\|A\|\| and \|\|B\|\| represent the magnitudes of the two vectors.
+</p>
+
+                        <p>For example, let's consider the two strings "apple" and "banana". We can represent these strings as vectors of character frequencies, as follows:
+</p>
+
+                        <p>"apple" = [a:1, p:2, l:1, e:1]</br>
+"banana" = [b:1, a:3, n:2]
+</p>
+
+                        <p>We can then calculate the cosine similarity between these two vectors using the formula above:
+</p>
+
+                        <p>$\[
+\text{cosine similarity} = \frac{{(1 \cdot 0) + (1 \cdot 3) + (0 \cdot 2) + (2 \cdot 0) + (1 \cdot 0)}}{{\sqrt{{1^2 + 2^2 + 1^2 + 1^2}} \cdot \sqrt{{1^2 + 3^2 + 2^2}}}} = 0.29
+\]$</p>
+
+                        <p>This indicates that the strings "apple" and "banana" have a relatively low similarity score based on their character frequencies.
+</p>
+
+
+
+
+
+
+                        <h4>Levenshtein Distance Algorithm</h4>
+
+                        <p>The <a href="https://en.wikipedia.org/wiki/Levenshtein_distance" target="_blank">Levenshtein distance algorithm</a> is a technique used to measure the difference between two strings of text by counting the minimum number of operations (insertions, deletions, or substitutions) needed to transform one string into the other. The algorithm works by constructing a matrix where each cell represents the distance between two substrings of the input strings. 
+</p>
+
+                        <p>Starting from the top left corner of the matrix, the algorithm compares each pair of corresponding characters in the input strings and calculates the distance between them. It then populates the matrix by taking the minimum value of the three possible operations (insertion, deletion, or substitution) needed to transform one substring into the other, and repeats this process for every cell in the matrix until the bottom right corner is reached. The final value in the bottom right corner of the matrix represents the Levenshtein distance between the two input strings.
+</p>
+
+                        <p>For example, let's consider the strings "kitten" and "sitting". The matrix for these strings would look like this:
+</p>
+
+<table>
+  <tr>
+    <th></th>
+    <th>s</th>
+    <th>i</th>
+    <th>t</th>
+    <th>t</th>
+    <th>i</th>
+    <th>n</th>
+    <th>g</th>
+  </tr>
+  <tr>
+    <th></th>
+    <th>0</th>
+    <th>1</th>
+    <th>2</th>
+    <th>3</th>
+    <th>4</th>
+    <th>5</th>
+    <th>6</th>
+    <th>7</th>
+  </tr>
+  <tr>
+    <th>k</th>
+    <td>1</td>
+    <td>1</td>
+    <td>2</td>
+    <td>3</td>
+    <td>4</td>
+    <td>5</td>
+    <td>6</td>
+    <td>7</td>
+  </tr>
+  <tr>
+    <th>i</th>
+    <td>2</td>
+    <td>2</td>
+    <td>1</td>
+    <td>2</td>
+    <td>3</td>
+    <td>4</td>
+    <td>5</td>
+    <td>6</td>
+  </tr>
+  <tr>
+    <th>t</th>
+    <td>3</td>
+    <td>3</td>
+    <td>2</td>
+    <td>1</td>
+    <td>2</td>
+    <td>3</td>
+    <td>4</td>
+    <td>5</td>
+  </tr>
+  <tr>
+    <th>t</th>
+    <td>4</td>
+    <td>4</td>
+    <td>3</td>
+    <td>2</td>
+    <td>1</td>
+    <td>2</td>
+    <td>3</td>
+    <td>4</td>
+  </tr>
+  <tr>
+    <th>e</th>
+    <td>5</td>
+    <td>5</td>
+    <td>4</td>
+    <td>3</td>
+    <td>2</td>
+    <td>2</td>
+    <td>3</td>
+    <td>4</td>
+  </tr>
+  <tr>
+    <th>n</th>
+    <td>6</td>
+    <td>6</td>
+    <td>5</td>
+    <td>4</td>
+    <td>3</td>
+    <td>3</td>
+    <td>2</td>
+    <td>3</td>
+  </tr>
+</table>
+
+                        <p>The top row and left column of the matrix represent the empty string and the characters of the two input strings. The value in each cell represents the Levenshtein distance between the substrings formed by the row and column indices. For example, the value in cell (3,4) represents the distance between the substrings "kit" and "sitt". The final value in the bottom right corner of the matrix is 3, which means that the Levenshtein distance between "kitten" and "sitting" is 3, indicating that three operations (substitute "k" with "s", insert "i", and insert "g") are needed to transform one string into the other.
+</p>
+
+
+
+
+
+
+                        <h4>Scoring</h4>
+
+                        <p>When it comes to fuzzy string matching, it is important to understand that the scores obtained are not measures of correctness, but rather indicators of confidence. Although these scores may resemble percentages, they do not represent an absolute degree of similarity between two strings. Instead, they serve as relative measures, comparing the similarity of one string to another within a given context.
+</p>
+
+                        <p>To determine the most effective method for fuzzy string matching, these algorithms are compared using benchmark datasets or test cases with known correct matches. The performance of each algorithm is evaluated based on factors such as accuracy, efficiency, and robustness. This comparison helps in selecting the most suitable algorithm for a specific use case, taking into account the specific requirements and constraints of the matching task.
+</p>
+
+                        <p>In summary, fuzzy string matching scores should not be interpreted as absolute measures of correctness, but rather as relative indicators of confidence. By leveraging various algorithms and comparing their performance, it becomes possible to achieve efficient and accurate matching of text data despite variations in spelling, punctuation, and other factors that can affect string similarity.
+</p>
+
+
+
+
+
+
+                        <h4>Conclusion</h4>
+
+                        <p>My internship with Wells Fargo implementing fuzzy string matching algorithms was a great experience. Working with such a reputable and sustainability-focused company was very inspiring for me, and I loved the invaluable opportunity to apply data science techniques in real world problems. Fuzzy string matching proved to be a powerful solution to identify matching records across different data sources accurately. I am grateful to have worked with such an amazing team, and for the chance to contribute to the company's efforts towards a sustainable future. The experience has reinforced my passion for data science and the positive impact it can have on society.
+</p>
+
+
+                    
+
+
+
+                        
+                    </div>
+                </section>
+               
+
+            </article>
+            <nav class="pagination" role="navigation">
+                <!-- <span class="page-number">Page 1 of 286</span> -->
+                <a class="older-posts" href="/blog/list.html">Other Posts <span aria-hidden="true">→</span></a>
+            </nav>
+
+
+        </main>
+        <aside class="sidebar">
+
+<!-- Add a hire me link -->
+<h3>Resources</h3>
+
+<ul>
+    <li><a href="https://dallinstewart.com/">About Me</a></li>
+    <li><a href="https://www.linkedin.com/in/dallinstewart/">LinkedIn</a></li>
+    <li><a href="https://github.com/binDebug3">GitHub</a></li>
+    <li><a href="https://dallinstewart.com/#contact">Contact</a></li>
+    <!-- <li><a href="https://forms.gle/iahqDwnmJWUfA1oL7">Subscribe for email updates</a></li>  -->
+    <!-- <li><a href="/blog/feed.xml">RSS Feed</a></li> -->
+</ul>
+
+<ul>
+</ul>
+
+<p>This blog has been continuously published since 2023.</p>
+
+
+            <footer class="site-footer">
+                <section class="copyright">Copyright <a rel="author" href="https://www.linkedin.com/in/dallinstewart/">Dallin Stewart</a> © 2023<br>
+            </footer>
+        </aside>
+    </div>
+</body>
+
+
+<!-- This is how you load math if you want to -->
+<script>
+    MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']]
+        }
+    };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+<script> src="https://prismjs.com/download.html#themes=prism&languages=markup+css+clike+javascript+abap+abnf+actionscript+ada+agda+al+antlr4+apacheconf+apex+apl+applescript+aql+arduino+arff+armasm+arturo+asciidoc+aspnet+asm6502+asmatmel+autohotkey+autoit+avisynth+avro-idl+awk+bash+basic+batch+bbcode+bbj+bicep+birb+bison+bnf+bqn+brainfuck+brightscript+bro+bsl+c+csharp+cpp+cfscript+chaiscript+cil+cilkc+cilkcpp+clojure+cmake+cobol+coffeescript+concurnas+csp+cooklang+coq+crystal+css-extras+csv+cue+cypher+d+dart+dataweave+dax+dhall+diff+django+dns-zone-file+docker+dot+ebnf+editorconfig+eiffel+ejs+elixir+elm+etlua+erb+erlang+excel-formula+fsharp+factor+false+firestore-security-rules+flow+fortran+ftl+gml+gap+gcode+gdscript+gedcom+gettext+gherkin+git+glsl+gn+linker-script+go+go-module+gradle+graphql+groovy+haml+handlebars+haskell+haxe+hcl+hlsl+hoon+http+hpkp+hsts+ichigojam+icon+icu-message-format+idris+ignore+inform7+ini+io+j+java+javadoc+javadoclike+javastacktrace+jexl+jolie+jq+jsdoc+js-extras+json+json5+jsonp+jsstacktrace+js-templates+julia+keepalived+keyman+kotlin+kumir+kusto+latex+latte+less+lilypond+liquid+lisp+livescript+llvm+log+lolcode+lua+magma+makefile+markdown+markup-templating+mata+matlab+maxscript+mel+mermaid+metafont+mizar+mongodb+monkey+moonscript+n1ql+n4js+nand2tetris-hdl+naniscript+nasm+neon+nevod+nginx+nim+nix+nsis+objectivec+ocaml+odin+opencl+openqasm+oz+parigp+parser+pascal+pascaligo+psl+pcaxis+peoplecode+perl+php+phpdoc+php-extras+plant-uml+plsql+powerquery+powershell+processing+prolog+promql+properties+protobuf+pug+puppet+pure+purebasic+purescript+python+qsharp+q+qml+qore+r+racket+cshtml+jsx+tsx+reason+regex+rego+renpy+rescript+rest+rip+roboconf+robotframework+ruby+rust+sas+sass+scss+scala+scheme+shell-session+smali+smalltalk+smarty+sml+solidity+solution-file+soy+sparql+splunk-spl+sqf+sql+squirrel+stan+stata+iecst+stylus+supercollider+swift+systemd+t4-templating+t4-cs+t4-vb+tap+tcl+tt2+textile+toml+tremor+turtle+twig+typescript+typoscript+unrealscript+uorazor+uri+v+vala+vbnet+velocity+verilog+vhdl+vim+visual-basic+warpscript+wasm+web-idl+wgsl+wiki+wolfram+wren+xeora+xml-doc+xojo+xquery+yaml+yang+zig&plugins=line-numbers"</script>
+
+</html>
