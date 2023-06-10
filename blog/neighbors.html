@@ -65,7 +65,7 @@
             <article class="post">
                 <header class="post-header">
                     <span class="post-meta"><time datetime="2023-04-07">4 July 2023</time> </span>
-                    <h2 class="post-title"><a href="/blog/compression.html">Mastering Handwritten Digit Recognition without Neural Networks</a></h2>
+                    <h2 class="post-title"><a href="/blog/neighbors.html">Mastering Handwritten Digit Recognition without Neural Networks</a></h2>
                 </header>
                 <section class="post-content">
                     <div class="kg-card-markdown">
@@ -87,7 +87,7 @@
                         <p>Writing a program to classify hand-written digits is one of the classic introductory challenges for students new to artificial intelligence and neural networks. The problem requires the program to look at a small (28x28) grayscale image of a single digit and output the correct number, which is challenging because a computer doesn’t process data and images the same way we do. 
 </p>
 
-			<img src="blog_files/compression/digit.png">
+			<img src="blog_files/neighbors/digit.png">
 			<figcaption>A 28x28 image of a handwritten digit</figcaption>
 
                         <p>Machine learning is a branch of artificial intelligence that refers to any algorithm that modifies itself to optimize a certain task or goal. Today, the most popular AI implementations rely on algorithms like neural networks (AlphaGo) and transformers (ChatGPT), but there are a lot of other methods like the one we’ll explore today. We can actually solve this particular class of problem without any fancy neural networks by cleverly restructuring the problem and applying a much (mathematically) simpler algorithm called K-Nearest Neighbors instead. With an accuracy of about 90%, it is not the most powerful technique, but performs surprisingly well for such a fundamentally simple idea. 
@@ -114,7 +114,7 @@
                         <p>Part of the nearest neighbor problem requires finding the closest data point or object to a given reference point among a set of scattered points or objects. The goal is to determine the most similar or proximate entity based on the metric we just defined. For example, we might be looking for the friend closest to us in a crowded market, deciding which fruits in a basket have the most similar color, or identifying the closest two vectors in an abstract vector space.
 </p>
 
-			<img src="blog_files/compression/crowd.jpg">
+			<img src="blog_files/neighbors/crowd.jpg">
 			<figcaption></figcaption>
 
 
@@ -126,7 +126,7 @@
                         <p>One approach to finding the closest friend is to check every single point, or friend, compute the distance, and return the closest one. This exhaustive search approach takes so long that it only works on relatively small datasets. Fortunately, we have an alternative in K-D trees.
 </p>
 
-			<img src="blog_files/compression/tree.jpg">
+			<img src="blog_files/neighbors/tree.jpg">
 			<figcaption>No, not that kind of tree</figcaption>
 
                         <p>A K-D tree (short for K-Dimensional tree or a tree in the Kth dimension) is a data structure that organizes points in a multi-dimensional space. It enables efficient searching and retrieval of points based on their proximity to a query point. The process of construction and application of a K-D tree can be understood as follows:
@@ -145,7 +145,7 @@
 </li>
 </ol>
 
-			<img src="blog_files/compression/KDtree.png">
+			<img src="blog_files/neighbors/KDtree.png">
 			<figcaption>(<a href="https://opendsa-server.cs.vt.edu/ODSA/Books/Everything/html/KDtree.html" target="_blank">OpenDSA</a>)
 </figcaption>
 
@@ -176,7 +176,10 @@
 </li>
 </ol>
 
-                        <p>The k-NN algorithm is flexible and can be adapted to handle different scenarios. The choice of the value for k, the number of neighbors to consider, is crucial and depends on the dataset and problem at hand. A smaller k value leads to more local and potentially noisy decisions, while a larger k value captures more global information but may overlook local patterns. Here’s part of the code that implements this algorithm.
+                        <p>The k-NN algorithm is flexible and can be adapted to handle different scenarios. The choice of the value for k, the number of neighbors to consider, is crucial and depends on the dataset and problem at hand. A smaller k value leads to more local and potentially noisy decisions, while a larger k value captures more global information but may overlook local patterns. 
+</p>
+
+                        <p>I've included the most complicated part of the program below. I'll explain how the code gets to this method for a little bit of context. When we want to classify a new image, we pass it to the "predit" method of the KNeighborsClassifier class. This class already has the constructed K-D tree as an attribute. The predict method returns the best result by calling the tree's query method, which is described in detail below.
 </p>
 
                         <pre>
@@ -225,7 +228,7 @@
 
 
 
-			<img src="blog_files/compression/digit.png">
+			<img src="blog_files/neighbors/digit.png">
 			<figcaption>7!</figcaption>
 
                         <p>In my exploration of handwritten digit classification using the k-nearest neighbors algorithm, I've been captivated by the remarkable ways in which mathematics can uncover meaningful patterns in images and data. It's truly amazing to witness how mathematical concepts can be applied to accurately recognize and differentiate handwritten digits. This experience demonstrates the potential of mathematics in unraveling new insights and making advancements in data analysis. I am excited to see how mathematics will continue to play a vital role in applications like this, expanding our understanding and shaping the world around us in remarkable ways. Please visit my <a href="https://github.com/binDebug3/Cool_Math/blob/main/Handwritten_Digits/nearest_neighbor.py" target="_blank">GitHub</a> repository if you’d like to view the full program.
