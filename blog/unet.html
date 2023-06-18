@@ -82,23 +82,33 @@
                         <h4>CS 474</h4>
 
                  
-                        <p>When my CS 474 Deep Learning class announced that our final exam would be replaced with a project of our choosing, I immediately knew the project I wanted to tackle. I had been working on <a href='https://dallinstewart.com/blog/webscraping.html'>Casper</a>, a used car web scraping program for months, but consistently ran into a challenge: Casper marked cars as "best deals" that were often damaged, and sometimes severely so. As a human, I could easily spot the damage in the picture of the vehicle, but I wanted to create a fully automated process for detecting these types of sales. In the final weeks of the semester, I devoted over 30 hours to developing my first deep learning model from start to finish.
-</p>
+                        <p>When my Deep Learning professor announced that he was replacing our final exam with a project of our choice, I immediately knew the program I wanted to tackle. I had been working on <a href="https://dallinstewart.com/blog/webscraping.html">Casper</a>, a used car web scraping program for months, but consistently ran into a challenge - the cars Casper marked as "best deals" were often damaged, and sometimes severely so. A human could easily spot the damage in the picture of the vehicle on the website, but I wanted to create a fully automated process for detecting these types of sales. In the final weeks of the semester, I devoted over 30 hours to developing my first independent deep learning model from start to finish.</p>
 
-			<img src="blog_files/unet/damaged_volks.png">
+			<img src="blog_files/unet/damaged.png">
 			<figcaption>$10,000, what a great deal!</figcaption>
 
-                      
+
 
 
 
                         <p></p>
                         <h4>Data Analysis</h4>
+                        <p>Deep learning is a powerful subset of artificial intelligence that enables computers to learn and make decisions by processing vast amounts of data. In the context of computer vision for detecting damaged vehicles, deep learning algorithms can automatically analyze images or videos to identify signs of vehicle damage. By training on large datasets of labeled images, deep learning models can learn complex patterns and features specific to damaged vehicles. These models employ neural networks with multiple layers to extract hierarchical representations of the input data, allowing them to automatically learn and adapt to new data. This capability makes it an invaluable tool in the field of computer vision, especially as I worked on identifying and assessing damaged vehicles efficiently and reliably.
+</p>
+                      
 
-                        <p>In my quest to create a robust deep learning model for car damage detection and price prediction, I scoured the internet for appropriate databases. After sifting through numerous options, I compiled a dataset of nearly 3,000 images. I scraped about half by myself from various online retailers, but the other half I found from pre-made datasets by Stanford and Roboflow. The images I scraped were from online used car retailers like AutoTrader using Selenium. After building this dataset however, I discovered a significant issue with the annotations in the pre-made datasets, leading to a mismatch of information that I addressed by removing location annotations and marking entire images as damaged or undamaged.
+
+
+                        
+                        <h4>Data Analysis</h4>
+
+                        <p>In my quest to create a robust deep learning model for car damage detection and price prediction, I scoured the internet for relevant and available databases. After sifting through numerous options, I compiled a dataset of nearly 3,000 images. I scraped about half by myself from various online retailers, but the other half I found from pre-made datasets by Stanford and Roboflow. The images I scraped were from online used car retailers like AutoTrader using Selenium. 
 </p>
 
-                        <p>As I delved deeper into the data analysis process, I discovered more discrepancies. Specifically, I noticed that the online dataset images were typically zoomed in on the damaged area of the car, while my scraped images were often pictures of an entire, undamaged car. To address this inconsistency, I utilized normalization techniques, including cropping the images square, zooming in on the center, and resizing them for uniformity. With the data normalized and organized, I was finally able to move on from the most challenging portion of the project.
+                        <p>After building this dataset however, I discovered a significant issue with the annotations in the pre-made datasets, leading to a mismatch of information.I addressed this issue by removing location annotations and marking entire images as damaged or undamaged.
+</p>
+
+                        <p>Upon further exploration of the data analysis process, I uncovered additional inconsistencies. Particularly, I observed that the images in the online dataset predominantly focused on the damaged section of the vehicle, while the images obtained through web scraping depicted intact cars in their entirety. To address this disparity, I employed normalization techniques such as cropping the images to a square shape, zooming in on the central area, and resizing them to ensure uniformity. By normalizing and organizing the data, I successfully overcame the most difficult initial phase of the project.
 </p>
 
 			<img src="blog_files/unet/split_mismatch.jpg">
@@ -112,7 +122,7 @@
                         <p></p>
                         <h4>Technical Approach</h4>
 
-                        <p>In designing my damage detection model, I chose to utilize a highly effective design called U-net CNN architecture. This model consists of four convolutional blocks, which downsample and upsample the input image to create a segmentation map. At each scale, the model extracts and combines features to enable accurate identification of damage.
+                        <p>In designing my damage detection model, I chose to utilize a highly effective design called <a href="https://en.wikipedia.org/wiki/U-Net" target="_blank">U-net</a> CNN architecture. This model consists of four convolutional blocks, which downsample and upsample the input image to create a segmentation map. It’s called a U-net because the graphical structure of the convolutional blocks makes the most sense in a “u” shape. At each scale, the model extracts and combines features to enable accurate identification of damage.
 </p>
 
 			<img src="blog_files/unet/u-net-architecture.png">
@@ -206,6 +216,18 @@ class ConvBlock(nn.Module):
 			<figcaption>Not too bad!</figcaption>
 
                        
+
+
+
+
+			<p></p>
+                        <h4>Limitless Applications</h4>
+
+			<p>As you can tell, deep learning is an incredibly captivating application of mathematics that has opened up a world of astonishing possibilities. By utilizing principles from linear algebra, calculus, and probability theory, models like this one can effectively process vast amounts of data and extract meaningful insights. This powerful combination of math and data has led to all kinds of other impressive use cases such as learning intricate patterns to identify diseases and help with medical diagnoses. 
+</p>
+
+			<p>These models employ convolutional neural networks (CNNs) to capture spatial features in the images and recurrent neural networks (RNNs) to analyze sequential data such as patient histories. The diverse applications of deep learning continue to demonstrate the incredible potential of combining mathematics and artificial intelligence, and I was thrilled by the opportunity I had to explore even one use case. If you’d like to learn more, visit my <a href="https://github.com/binDebug3/Casper/tree/master/DeepLearning" target="_blank:>GitHub</a> to view the full repository.
+</p>
 
 
 
