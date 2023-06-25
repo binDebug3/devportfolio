@@ -100,7 +100,7 @@
 
 
 
-                        <h4>Recognizing Handwritten Digits</h4>
+                        <h4>Computing Distance</h4>
 
                         <p>The first thing we have to do before we can start classifying images is define distance, also known as choosing a “metric”. This may feel a little silly and completely irrelevant - distance after all is just the amount of space between two objects! However, a lot of the power and utility of mathematics comes from rigorously defining even the most complex ideas by stripping away all of the semantic ambiguity. This approach allows us to consistently and reliably create and apply theorems that lead to amazing results like this classification solution.
 </p>
@@ -120,7 +120,7 @@
 
 
 
-
+			<p></p>
                         <h4>K-D Trees</h4>
 
                         <p>One approach to finding the closest friend is to check every single point, or friend, compute the distance, and return the closest one. This exhaustive search approach takes so long that it only works on relatively small datasets. Fortunately, we have an alternative in K-D trees.
@@ -179,7 +179,7 @@
                         <p>The k-NN algorithm is flexible and can be adapted to handle different scenarios. The choice of the value for k, the number of neighbors to consider, is crucial and depends on the dataset and problem at hand. A smaller k value leads to more local and potentially noisy decisions, while a larger k value captures more global information but may overlook local patterns. 
 </p>
 
-                        <p>I've included the most complicated part of the program below. I'll explain how the code gets to this method for a little bit of context. When we want to classify a new image, we pass it to the "predit" method of the KNeighborsClassifier class. This class already has the constructed K-D tree as an attribute. The predict method returns the best result by calling the tree's query method, which is described in detail below.
+                        <p>I've included the most complicated part of the program below. I'll explain how the code gets to this method for a little bit of context. When we want to classify a new image, we pass it to the "predict" method of the KNeighborsClassifier class. This class already has the constructed K-D tree as an attribute. The predict method returns the best result by calling the tree's query method, which is described in detail below.
 </p>
 
                         <pre>
