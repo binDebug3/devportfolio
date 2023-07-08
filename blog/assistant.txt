@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+
+    <title>How to Create Iron Man’s Jarvis with Python</title>
+    <link rel="shortcut icon" type="image/jpg" href="favicon.jpg">
+    <meta name="description" content="A customized virtual assistant inspired by Jarvis from Iron Man">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link rel="shortcut icon" href="">
+    <link rel="apple-touch-icon" href="blog_files/bloglogo.png">
+    <link rel="stylesheet" type="text/css" href="blog_files/screen.css">
+    <link rel="stylesheet" type="text/css" href="blog_files/css.css">
+    <link rel="stylesheet" type="text/css" href="blog_files/defaulten.css">
+    <!-- <script src="https://cdn.jsdelivr.net/npm/texme@0.7.0"></script> -->
+    <style>
+
+    .fblogo {
+        display: inline-block;
+        margin-left: auto;
+        margin-right: auto;
+        height: 30px;
+        width: 75%;
+    }
+
+    </style>
+
+</head>
+
+
+<!-- Google tag (gtag.js) Dallin Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LT97T5DE19"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-LT97T5DE19');
+</script>
+
+
+<body class="home-template">
+    <!-- Theme modified from the wonderful Coding Horror blog https://blog.codinghorror.com/ -->
+
+    <header class="site-head">
+        <div class="site-head-content">
+            <a class="blog-logo" href="/blog/mathbytes.html"><img src="blog_files/bloglogo.png" alt="Dallin Stewart Logo" width="64"
+                    height="64"></a>
+            <h1 class="blog-title"><a href="/blog/mathbytes.html">Math Bytes</a></h1>
+            <h2 class="blog-description">Math, Data Science, and Machine Learning</h2>
+        </div>
+    </header>
+
+    <div class="wrap clearfix">
+        <div class="clearfix"></div>
+
+        <main class="content" role="main">
+
+            <article class="post">
+                <header class="post-header">
+                    <span class="post-meta"><time datetime="2023-11-07">11 July 2023</time> </span>
+                    <h2 class="post-title"><a href="/blog/neighbors.html">How to Create Iron Man’s Jarvis with Python</a></h2>
+                </header>
+                <section class="post-content">
+                    <div class="kg-card-markdown">
+                        <p>A customized virtual assistant inspired by Jarvis from Iron Man | <a href='https://github.com/binDebug3/VirtualAssistant' target="_blank">View Code</a></p>
+
+                        <blockquote>"People worry that computers will get too smart and take over the world, but the real problem is that they’re too stupid and they’ve already taken over the world."</blockquote>
+                        <p>- Pedro Domingos</p>
+
+                        
+
+
+
+
+
+
+                        <h4>DYI Jarvis</h4>
+
+                 
+                        <p>In today's technology-driven world, the idea of having a personal virtual assistant, like Jarvis from the Iron Man movies, has become increasingly captivating. Inspired by the seamless interactions between Tony Stark and his AI companion, I have always wanted to have my own intelligent assistant to simplify daily life. This fascination inspired me to learn more about STEM and eventually led me on a journey to create my own customized virtual assistant using Python.
+</p>
+
+			<img src="blog_files/assistant/lila_3.png">
+			<figcaption>Lila, your customized virtual assistant</figcaption>
+
+                        <p>Imagine having an assistant that understands your voice commands, seamlessly performs tasks, and retrieves relevant information for you. By leveraging speech recognition and natural language processing, a personal assistant can interpret your requests and respond intuitively. From managing your schedule and sending emails to providing personalized recommendations, this digital companion can automate routine tasks and enhance your productivity.
+</p>
+
+                        <p>As I explore my development process, I'll cover various capabilities and features of my virtual assistant, which I named Lila. By integrating with external services and APIs, it can fetch real-time updates, retrieve data, and even extend its functionalities to suit specific needs. Regardless of your programming background, this guide will provide you with the necessary tools and knowledge to bring your digital companion to life. To give you an idea, here are a few of the features I have already implemented for my personal use:
+</p>
+
+   <ul>
+        <li><a href="launch_application.html">Launch an application on your computer</a></li>
+        <li><a href="retrieve_weather.html">Retrieve weather information</a></li>
+        <li><a href="google_search.html">Conduct a Google search</a></li>
+        <li><a href="check_email.html">Check for recent unread emails</a></li>
+        <li><a href="access_calendar.html">Access your Google Calendar</a></li>
+    </ul>
+
+
+
+                        <h4>Voice Interface</h4>
+
+                        <p>To create an interactive voice interface, we can leverage the power of Python packages such as speech_recognition and pyttsx3. These packages enable us to seamlessly integrate speech recognition and synthesis capabilities into our virtual assistant.
+</p>
+
+                        <p>With speech recognition, the assistant listens through the microphone, quietly analyzing the background for any spoken commands. It utilizes various open source transcription models to accurately transcribe what you say, allowing it to understand spoken words. Once the speech recognition model detects an activation word or phrase, the magic happens! The assistant intelligently parses the command, looking for specific keywords that help it understand your needs and intentions.
+</p>
+
+			<img src="blog_files/assistant/voice.jpg">
+			<figcaption></figcaption>
+
+                        <p>To get started, let's take a look at a code snippet that demonstrates how to record human speech and convert text into spoken words using the speech_recognition and pyttsx3 packages:
+</p>
+
+
+                        <pre>
+                            <code class="language-python">
+def mic_input():
+    """
+    Takes input from the microphone and returns it as a string
+    :return: (string) input from the microphone, (boolean) False if failure
+    """
+    try:
+        r = sr.Recognizer()
+        with sr.Microphone() as source:
+            print("Listening...")
+            r.energy_threshold = 4000
+            audio = r.listen(source, timeout=30, phrase_time_limit=20)
+
+        try:
+            print("Recognizing...")
+            command = r.recognize_google(audio, language='en-in').lower()
+            print(f"User said: {command}\n")
+        except Exception:
+            print("Say that again please...")
+            command = mic_input()
+        return command
+    except Exception as ex:
+        print(ex)
+        return False
+
+def tts(text):
+    """
+    Text to speech function
+    :param text: (string) text to be spoken
+    :return: (boolean) True if successful, False if failure
+    """
+    try:
+        engine.say(text)
+        engine.runAndWait()
+        engine.setProperty('rate', 175)
+        return True
+    except Exception as ex:
+        print(ex)
+        return False
+                            </code>
+                        </pre>
+
+
+
+                        <p>The mic_input() function is used to capture audio input from the microphone. It utilizes the SpeechRecognition library (sr) to listen to the microphone input for a specified duration and convert it to text while filtering out background noise. The function returns the recognized command as a string, and if there is a recognition failure, it prompts the user to repeat their command.
+</p>
+
+
+			<p>The tts function is responsible for converting text to speech using a text-to-speech engine in the say() method to speak aloud. The speech is then played using the runAndWait() method. If any error occurs during the text-to-speech conversion, the function returns False. With the basic code for interaction covered, let’s go over some of the specific features Lila has.
+</p>
+
+
+
+                        <h4>Gmail</h4>
+
+                        <p>In order to fulfill the user's request to send an email, the virtual assistant leverages the Gmail API. This API allows seamless integration with the user's Gmail account, enabling actions such as checking for unread emails and sending new ones. By utilizing a get_credentials() function, the virtual assistant ensures secure access to the user's Gmail account, obtaining and saving the necessary credentials for future use.
+</p>
+
+                        <pre>
+                            <code class="language-python">
+def check_unread():
+    """Shows basic usage of the Gmail API.
+    Lists the user's Gmail labels.
+    """
+    creds = get_credentials()
+
+    try:
+        # Call the Gmail API
+        service = build('gmail', 'v1', credentials=creds, cache_discovery=False)
+
+        # Define the search parameters for the email query
+        today = datetime.today() + timedelta(days=1)
+        one_day_ago = today - timedelta(days=3)
+        query = "is:unread after:{} before:{}".format(one_day_ago.strftime('%Y/%m/%d'), today.strftime('%Y/%m/%d'))
+
+        # Execute the email query
+        result = service.users().messages().list(userId='me', q=query).execute()
+
+        return process_query(result, service)
+
+    except HttpError as error:
+        print(f'An error occurred: {error}')
+
+                            </code>
+                        </pre>
+
+                        <p>To handle the task of checking for unread emails, the check_unread() function queries the user's inbox to find unread messages within a specified time range, typically the last 24 hours. Once the query is executed, the results are processed by the process_query() function.
+</p>
+
+			<img src="blog_files/assistant/gmail.jpg">
+			<figcaption>Gmail</figcaption>
+
+
+                        <p>This function extracts relevant information from the retrieved email messages, such as the sender, subject, and received time. It decodes the message content and prepares a summary of the unread emails. This summary can include the sender's name, subject, and other details, depending on the level of detail requested.
+</p>
+
+
+                        <p>By combining these functions, the virtual assistant can accurately report the number of unread emails in the last day and provide a summary of their key details. This functionality showcases the assistant's ability to interact with external services and handle email-related tasks, enhancing productivity and keeping the user informed about their inbox status.
+</p>
+
+
+
+
+                        <h4>Push Code to GitHub Automatically</h4>
+
+                        <p>Imagine you're working on a coding project and you want to easily push your code to a version control system like Git. That's where the virtual assistant comes in to help! With just a simple request, the assistant can help you push your code effortlessly.
+</p>
+
+
+                        <pre>
+                            <code class="language-python">
+def push_code(name, message=None, master=True):
+    try:
+        push_path = os.path.abspath(config.dir_dict[name])
+    except KeyError as ex:
+        print(ex)
+        return False
+
+    if not os.path.exists(push_path):
+        return False
+
+    if master:
+        master = "master"
+    else:
+        master = "main"
+
+    command = f"cd {push_path} && git pull origin {master} && git add ."
+
+    if message is None:
+        # add commit pull push with a default commit message
+        command += " && git commit -m 'pushing'"
+    else:
+        # add commit pull push with the passed-in commit message
+        command += f" && git commit -m '{message}'"
+
+    command += f" && git push origin {master}"
+
+    print("\n".join(command.split(" && ")))
+    subprocess.run(command, shell=True)
+
+    return True
+                            </code>
+                        </pre>
+
+                        <p>When you ask the virtual assistant to push your code, the push_code function takes a few parameters, such as the name of the project and an optional commit message to perform your request. Depending on the value of the master parameter, the function sets the default branch to either "master" or "main". It then forms a command that navigates to the project directory, pulls the latest changes from the remote repository, stages all the modified files, and commits them with a commit message. If you didn't provide a commit message, the function adds a default message like "pushing" to keep things simple. However, if you did provide a message, it incorporates that into the commit. Finally, the function completes the process by pushing the committed changes to the remote repository. 
+</p>
+
+			<img src="blog_files/assistant/github/jpg">
+			<figcaption>Github</figcaption>
+
+                        <p>The virtual assistant displays the commands it's executing, so you can stay informed about the actions being performed behind the scenes and add a layer of transparency. By utilizing this function, our virtual assistant makes it effortless for you to push your code and keep your project up to date with the latest changes. You can simply focus on your coding journey without worrying about the details of version control.
+</p>
+
+
+
+
+
+
+                        <h4>Check the Weather</h4>
+
+                        <p>Now let’s assume you're getting ready for the day, and you want to know what the weather has in store for you. With a simple request, the virtual assistant can fetch the current weather for any city you’d like.
+</p>
+
+                        <pre>
+                            <code class="language-python">
+def fetch_weather(city):
+    """
+    Get the weather in the city
+    :param city: (string) city
+    :return: (string) weather
+    """
+    api_key = config.weather_api_key
+    units_format = "&units=imperial"
+
+    weather_data = get_data(city, api_key, units_format)
+
+    if weather_data["cod"] == "404":
+        city = config.local_city
+        weather_data = get_data(city, api_key, units_format)
+
+    if weather_data["cod"] != "404":
+        main_data = weather_data["main"]
+        weather_description_data = weather_data["weather"][0]
+        weather_description = weather_description_data["description"]
+        current_temperature = main_data["temp"]
+        current_pressure = main_data["pressure"]
+        current_humidity = main_data["humidity"]
+        wind_data = weather_data["wind"]
+        wind_speed = wind_data["speed"]
+
+        final_response = f"""
+                The weather in {city} is currently {weather_description} 
+                with a temperature of {current_temperature} degrees fahrenheit
+        """
+        if not config.skip:
+            final_response += f"""
+                atmospheric pressure of {current_pressure} a m use, 
+                humidity of {current_humidity} percent 
+                and wind speed reaching {wind_speed} miles per hour"""
+
+        return final_response
+
+    return "Sorry Sir, I couldn't find the city in my database. Please try again"
+
+
+def get_data(city, api_key, units_format):
+    base_url = "http://api.openweathermap.org/data/2.5/weather?q="
+    complete_url = base_url + city + "&appid=" + api_key + units_format
+
+    response = requests.get(complete_url)
+    weather_data = response.json()
+
+    return weather_data
+                            </code>
+                        </pre>
+
+                        <p>When you ask the virtual assistant to check the weather, it taps into the fetch_weather function, which retrieves the weather information using an API and the name of the city as a parameter. Using the get_data function, the assistant sends a request to the OpenWeatherMap API, which responds with weather data as a JSON object.
+</p>
+
+                        <p>Once the weather data is obtained, the function extracts the relevant information such as the weather description, current temperature, atmospheric pressure, humidity, and wind speed. These details are formatted into a final response string, providing you with a snapshot of the current weather conditions.
+</p>
+
+
+
+
+                        <h4>Full Feature List</h4>
+
+                        <p>That was just a few of the many helpful features a virtual assistant is capable of! In the future, I’d like to develop a natural language understanding deep learning model that will allow the user to speak more freely as they interact with the virtual assistant instead of relying on keywords. If you’d like to view the code for more of the functionality, you can browse the full list of commands and functionalities below or view the project on <a href="https://github.com/binDebug3/Cool_Math/blob/main/Handwritten_Digits/nearest_neighbor.py" target="_blank">GitHub</a>.
+</p>
+
+
+    <ul>
+        <li>Launch: Open an application on your computer</li>
+        <li>Run: Execute another Python program</li>
+        <li>Push: Upload code to version control software</li>
+        <li>Switch window: Change the active window on your computer</li>
+        <li>Lock computer: Lock the computer screen</li>
+        <li>Screenshot: Capture a screenshot of the screen</li>
+        <li>System info: Retrieve system information</li>
+        <li>IP address: Display the IP address of the computer</li>
+        <li>Close notes: Close an open note-taking application</li>
+        <li>Note: Create a new note</li>
+        <li>Image: Open the most recent screenshot taken</li>
+        <li>Merge PDF: Combine two input PDF files</li>
+        <li>Jupiter: Convert an IPYNB file to PDF</li>
+        <li>Extract text: Extract all text from a PDF document</li>
+        <li>Joke: Tell a joke</li>
+        <li>XKCD: Open the most recent XKCD comic</li>
+        <li>Piano: Play background music by The Piano Guys</li>
+        <li>Date: Display the current date</li>
+        <li>Time: Provide the current time</li>
+        <li>Weather: Retrieve the weather information</li>
+        <li>News: Search for news articles</li>
+        <li>Go to: Open a specific URL in a web browser</li>
+        <li>Tell me about: Perform a Wikipedia search</li>
+        <li>Google: Conduct a Google search</li>
+        <li>YouTube: Perform a YouTube search</li>
+        <li>Calculate: Perform a Wolfram Alpha search</li>
+        <li>Where is: Conduct a Google Maps search</li>
+        <li>What is: Perform a Wolfram Alpha search</li>
+        <li>What can you do: Provide a list of capabilities</li>
+        <li>Development: Share upcoming capabilities</li>
+        <li>Keyword: Display a list of keywords</li>
+        <li>Silent mode: Switch to silent mode</li>
+        <li>Voice mode: Switch to voice mode</li>
+        <li>Earbud mode: Switch to earbud mode</li>
+        <li>Press mode: Switch to press mode</li>
+        <li>Terminal mode: Switch to terminal mode</li>
+        <li>Power down: Turn off the virtual assistant</li>
+        <li>Check email: Check for recent unread emails</li>
+        <li>Send email: Send an email</li>
+        <li>Check calendar: Access your Google Calendar</li>
+        <li>Add event: Add an event to your Google Calendar</li>
+        <li>To-do: Display your to-do list</li>
+        <li>Start my day: Provide the weather and to-do list to start your day</li>
+    </ul>
+
+
+                       
+
+
+
+
+                   
+
+
+
+
+
+                        
+                    </div>
+                </section>
+               
+
+            </article>
+            <nav class="pagination" role="navigation">
+                <!-- <span class="page-number">Page 1 of 286</span> -->
+                <a class="older-posts" href="/blog/list.html">Other Posts <span aria-hidden="true">→</span></a>
+            </nav>
+
+
+        </main>
+        <aside class="sidebar">
+
+<!-- Add a hire me link -->
+<h3>Resources</h3>
+
+<ul>
+    <li><a href="https://dallinstewart.com/">About Me</a></li>
+    <li><a href="https://www.linkedin.com/in/dallinstewart/">LinkedIn</a></li>
+    <li><a href="https://github.com/binDebug3">GitHub</a></li>
+    <li><a href="https://dallinstewart.com/#contact">Contact</a></li>
+    <!-- <li><a href="https://forms.gle/iahqDwnmJWUfA1oL7">Subscribe for email updates</a></li>  -->
+    <!-- <li><a href="/blog/feed.xml">RSS Feed</a></li> -->
+</ul>
+
+<ul>
+</ul>
+
+<p>This blog has been continuously published since 2023.</p>
+
+
+            <footer class="site-footer">
+                <section class="copyright">Copyright <a rel="author" href="https://www.linkedin.com/in/dallinstewart/">Dallin Stewart</a> © 2023<br>
+            </footer>
+        </aside>
+    </div>
+</body>
+
+
+<!-- This is how you load math if you want to -->
+<script>
+    MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']]
+        }
+    };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+<script> src="https://prismjs.com/download.html#themes=prism&languages=markup+css+clike+javascript+abap+abnf+actionscript+ada+agda+al+antlr4+apacheconf+apex+apl+applescript+aql+arduino+arff+armasm+arturo+asciidoc+aspnet+asm6502+asmatmel+autohotkey+autoit+avisynth+avro-idl+awk+bash+basic+batch+bbcode+bbj+bicep+birb+bison+bnf+bqn+brainfuck+brightscript+bro+bsl+c+csharp+cpp+cfscript+chaiscript+cil+cilkc+cilkcpp+clojure+cmake+cobol+coffeescript+concurnas+csp+cooklang+coq+crystal+css-extras+csv+cue+cypher+d+dart+dataweave+dax+dhall+diff+django+dns-zone-file+docker+dot+ebnf+editorconfig+eiffel+ejs+elixir+elm+etlua+erb+erlang+excel-formula+fsharp+factor+false+firestore-security-rules+flow+fortran+ftl+gml+gap+gcode+gdscript+gedcom+gettext+gherkin+git+glsl+gn+linker-script+go+go-module+gradle+graphql+groovy+haml+handlebars+haskell+haxe+hcl+hlsl+hoon+http+hpkp+hsts+ichigojam+icon+icu-message-format+idris+ignore+inform7+ini+io+j+java+javadoc+javadoclike+javastacktrace+jexl+jolie+jq+jsdoc+js-extras+json+json5+jsonp+jsstacktrace+js-templates+julia+keepalived+keyman+kotlin+kumir+kusto+latex+latte+less+lilypond+liquid+lisp+livescript+llvm+log+lolcode+lua+magma+makefile+markdown+markup-templating+mata+matlab+maxscript+mel+mermaid+metafont+mizar+mongodb+monkey+moonscript+n1ql+n4js+nand2tetris-hdl+naniscript+nasm+neon+nevod+nginx+nim+nix+nsis+objectivec+ocaml+odin+opencl+openqasm+oz+parigp+parser+pascal+pascaligo+psl+pcaxis+peoplecode+perl+php+phpdoc+php-extras+plant-uml+plsql+powerquery+powershell+processing+prolog+promql+properties+protobuf+pug+puppet+pure+purebasic+purescript+python+qsharp+q+qml+qore+r+racket+cshtml+jsx+tsx+reason+regex+rego+renpy+rescript+rest+rip+roboconf+robotframework+ruby+rust+sas+sass+scss+scala+scheme+shell-session+smali+smalltalk+smarty+sml+solidity+solution-file+soy+sparql+splunk-spl+sqf+sql+squirrel+stan+stata+iecst+stylus+supercollider+swift+systemd+t4-templating+t4-cs+t4-vb+tap+tcl+tt2+textile+toml+tremor+turtle+twig+typescript+typoscript+unrealscript+uorazor+uri+v+vala+vbnet+velocity+verilog+vhdl+vim+visual-basic+warpscript+wasm+web-idl+wgsl+wiki+wolfram+wren+xeora+xml-doc+xojo+xquery+yaml+yang+zig&plugins=line-numbers"</script>
+
+</html>
