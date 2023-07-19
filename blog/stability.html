@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+
+    <title>Your Computer Is Lying to You</title>
+    <link rel="shortcut icon" type="image/jpg" href="favicon.jpg">
+    <meta name="description" content="A brief demonstration of the hardware limitations that force your computer to misrepresent information">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link rel="shortcut icon" href="">
+    <link rel="apple-touch-icon" href="blog_files/bloglogo.png">
+    <link rel="stylesheet" type="text/css" href="blog_files/screen.css">
+    <link rel="stylesheet" type="text/css" href="blog_files/css.css">
+    <link rel="stylesheet" type="text/css" href="blog_files/defaulten.css">
+    <!-- <script src="https://cdn.jsdelivr.net/npm/texme@0.7.0"></script> -->
+    <style>
+
+    .fblogo {
+        display: inline-block;
+        margin-left: auto;
+        margin-right: auto;
+        height: 30px;
+        width: 75%;
+    }
+
+    </style>
+
+</head>
+
+
+<!-- Google tag (gtag.js) Dallin Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LT97T5DE19"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-LT97T5DE19');
+</script>
+
+
+<body class="home-template">
+    <!-- Theme modified from the wonderful Coding Horror blog https://blog.codinghorror.com/ -->
+
+    <header class="site-head">
+        <div class="site-head-content">
+            <a class="blog-logo" href="/blog/mathbytes.html"><img src="blog_files/bloglogo.png" alt="Dallin Stewart Logo" width="64"
+                    height="64"></a>
+            <h1 class="blog-title"><a href="/blog/mathbytes.html">Math Bytes</a></h1>
+            <h2 class="blog-description">Math, Data Science, and Machine Learning</h2>
+        </div>
+    </header>
+
+    <div class="wrap clearfix">
+        <div class="clearfix"></div>
+
+        <main class="content" role="main">
+
+            <article class="post">
+                <header class="post-header">
+                    <span class="post-meta"><time datetime="2023-07-18">18 July 2023</time> </span>
+                    <h2 class="post-title"><a href="/blog/classifier.html">Your Computer Is Lying to You</a></h2>
+                </header>
+                <section class="post-content">
+                    <div class="kg-card-markdown">
+                        <p>A brief demonstration of the hardware limitations that force your computer to misrepresent information | <a href='https://github.com/binDebug3/Cool_Math/blob/main/Computers_Lie/conditioning_stability.py' target="_blank">View Code</a></p>
+
+                        <blockquote>"People don’t understand computers. Computers are magical boxes that do things. "</blockquote>
+                        <p>- Bruce Scheneier</p>
+
+                        
+
+
+
+
+                        <h4>Why Your Computer Lie</h4>
+
+                 
+                        <p>Your computer lies to you all the time. It lies about the numbers it calculates, the images it displays, and even the programs it runs. But why does it do this? And how can you know when you can trust it? We'll explore a few of the reasons why computers have to misrepresent information, and how you can avoid situations where these changes cause problems. We'll also discuss concepts like function conditioning and algorithm stability, which are important for understanding how computers work.
+</p>
+
+                        <p>Whenever your computer does anything, it has to do math. However, the physical limitations of computer hardware and the design of these computations (such as floating point arithmetic) introduce errors due to their inherent finite precision of numerical representation. Computers use a fixed number of bits (binary digits) to store real numbers, limiting the range and accuracy of values they can represent. As a result, when dealing with numbers that have a vast range or require high precision, the numbers may be rounded or truncated during storage, leading toa  loss of information. 
+</p>
+
+			<img src="blog_files/stability/transistor.jpg">
+
+                        <p>Furthermore, floating-point arithmetic follows specific rules to perform operations like addition, subtraction, multiplication, and division on these approximate representations. These operations can introduce rounding errors, especially when combining numbers with vastly different magnitudes. Think adding 0.000001 to 10,000,000. This phenomenon is known as numerical instability or ill-conditioning. Over multiple computations, these small errors can accumulate and propagate, resulting in significant inaccuracies in the final results. 
+</p>
+
+                        <p>The challenge then lies in designing algorithms that minimize the amplification of errors, and selecting appropriate data types and precision levels to strike a balance between computational efficiency and numerical accuracy, especially in scientific and engineering applications where precision and reliability are crucial.
+</p>
+
+
+
+                        <h4>Underflow and Overflow</h4>
+
+                        <p>Underflow and overflow are two important concepts when discussing the representation of numerical values in computers. These phenomena occur when numbers exceed the limits of the finite range that can be stored using a specific data type, or when the magnitude of the number becomes too small to be accurately represented.
+</p>
+
+                        <p>Underflow happens when a computed result becomes too close to zero to be represented accurately. When numbers with very small magnitudes are involved in calculations, they might be rounded down to zero due to the limited precision of floating-point representations. This loss of significant digits can lead to significant loss of information and result in inaccurate or meaningless calculations. Underflow can especially affect iterative algorithms where small values are repeatedly multiplied or divided.
+</p>
+
+                        <p>Overflow occurs when a computed result exceeds the maximum value that can be represented by the chosen data type. When numbers with very large magnitudes are involved in calculations, they may exceed the range that the data type can handle. As a consequence, the representation "wraps around" to the minimum value, resulting in erroneous results. Overflow can be particularly problematic in algorithms that involve exponentiation, summation, or multiplication of large values.
+</p>
+
+			<img src="blog_files/stability/overflow.jpg">
+			<figcaption>No, not that kind of overflow</figcaption>
+
+                        <p>Underflow and overflow can force your computer to lie to you because they lead to inaccurate numerical results. These issues can misrepresent the accuracy and precision of computations, giving a false sense of reliability and potentially leading to erroneous conclusions or decisions. To ensure trustworthy results, it is essential to handle underflow and overflow carefully and be aware of their impact on numerical computations.
+</p>
+                      
+
+                        <h4>Conditioning</h4>
+
+                        <p>One way to handle the impact of these inaccuracies is by considering the condition number of a function. This mathematical concept quantifies the sensitivity of the function's output with respect to changes in its input. In simpler terms, it measures how much the output of the function is likely to change when there are small variations in the input. 
+</p>
+
+                        <p>Mathematically, the condition number is defined as the ratio of the relative change in the output to the relative change in the input. A high condition number indicates that the function is <em>ill-conditioned</em> and highly sensitive to input changes, while a low condition number suggests that the function is more stable and less sensitive to perturbations in the input.
+</p>
+
+			<img src="blog_files/stability/wilkinson.PNG">
+			<figcaption>Wilkinson Polynomial</figcaption>
+
+                        <p>Functions with large condition numbers can contribute to significant errors and instability in numerical computations, especially when dealing with ill-conditioned problems. Hence, it is important to consider the condition number of a function to ensure accurate and reliable results in various computational tasks.
+</p>
+
+			<img src="blog_files/stability/polynomial.png">
+			<figcaption><a href='https://kitchingroup.cheme.cmu.edu/blog/2014/02/21/Wilkinson-s-polynomial/'>The Kitchin Research Group</a></figcaption>
+
+                        <p>For example, for an ill-conditioned function like the Wilkinson Polynomial, even minor changes to the inputs and coefficients can cause large errors in the output, making these computations less reliable. This plot serves as a visual representation of the challenges and impact of dealing with ill-conditioned functions.
+</p>
+
+			<img src="blog_files/stability/perturbations.png">
+
+                        <p>Here, the unperturbed Wilkinson polynomial’s roots are shown as large points in the complex plane, while the perturbed roots resulting from 100 different variations of the function are depicted as smaller points. The scattering of the small points around the larger ones highlights how small variations in the polynomial’s coefficients can lead to significant deviations in the computed roots.
+</p>
+
+
+                        <h4>Stability</h4>
+
+                        <p>While conditioning refers to the sensitivity of a mathematical problem to changes in its input, stability relates to how accurately an algorithm computes the value of a function from exact input, by accounting for the amplification of errors during the computation. In other words, it measures how well the algorithm maintains its accuracy despite small errors in the input.
+</p>
+
+                        <p>A stable algorithm is one that produces results that are close to the true solution for a given problem by minimizing the amplification of errors during execution, even when subjected to slight changes in the input. As an example, consider the plot below, which demonstrates the effect of ill-conditioned functions on the accuracy and stability of polynomial fitting to data.
+</p>
+
+			<img src="blog_files/stability/least_squares.png">
+
+                       
+                        <p>The data points, represented by dots on the plot, are approximated by two different polynomials using the ordinary least squares technique. The red curve represents the unstable approach for this computation, while the green curve corresponds to the stable approach.
+</p>
+
+                        <p>The effect of the instability increases as the degree of the approximating polynomial increases, which we can see with this degree fourteen example. In contrast, the stable approach provides a smoother fit that closely matches the data points with significantly smaller errors. By employing numerical stable QR factorization and triangular solve algorithms, the stable approach reduces error amplification. As a result, it provides more robust and accurate polynomial fits, especially for higher degrees of the polynomial.
+</p>
+
+
+                        <h4>Can I Ever Trust My Computer?</h4>
+
+                        <p>You can rest assured, for most day to day situations and applications, computers have enough precision and memory to perform reliably. Furthermore, computer scientists design the software you enjoy in clever ways that mitigate the limitations of your hardware on the performance of your machine. However, these limitations are very real and they can cause legitimate problems, especially in industries that require precise calculations such as stock trading, cryptocurrency, and finance. If you’d like to see how I made the plots and calculations I showed in this article, you can view the source code on my <a href='https://github.com/binDebug3/Cool_Math/blob/main/Computers_Lie/conditioning_stability.py' target='_blank'>GitHub</a>.
+</p>
+
+
+
+
+
+
+
+
+
+                        
+                    </div>
+                </section>
+               
+
+            </article>
+            <nav class="pagination" role="navigation">
+                <!-- <span class="page-number">Page 1 of 286</span> -->
+                <a class="older-posts" href="/blog/list.html">Other Posts <span aria-hidden="true">→</span></a>
+            </nav>
+
+
+        </main>
+        <aside class="sidebar">
+
+<!-- Add a hire me link -->
+<h3>Resources</h3>
+
+<ul>
+    <li><a href="https://dallinstewart.com/">About Me</a></li>
+    <li><a href="https://www.linkedin.com/in/dallinstewart/">LinkedIn</a></li>
+    <li><a href="https://github.com/binDebug3">GitHub</a></li>
+    <li><a href="https://dallinstewart.com/#contact">Contact</a></li>
+    <!-- <li><a href="https://forms.gle/iahqDwnmJWUfA1oL7">Subscribe for email updates</a></li>  -->
+    <!-- <li><a href="/blog/feed.xml">RSS Feed</a></li> -->
+</ul>
+
+<ul>
+</ul>
+
+<p>This blog has been continuously published since 2023.</p>
+
+
+            <footer class="site-footer">
+                <section class="copyright">Copyright <a rel="author" href="https://www.linkedin.com/in/dallinstewart/">Dallin Stewart</a> © 2023<br>
+            </footer>
+        </aside>
+    </div>
+</body>
+
+
+<!-- This is how you load math if you want to -->
+<script>
+    MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']]
+        }
+    };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+<script> src="https://prismjs.com/download.html#themes=prism&languages=markup+css+clike+javascript+abap+abnf+actionscript+ada+agda+al+antlr4+apacheconf+apex+apl+applescript+aql+arduino+arff+armasm+arturo+asciidoc+aspnet+asm6502+asmatmel+autohotkey+autoit+avisynth+avro-idl+awk+bash+basic+batch+bbcode+bbj+bicep+birb+bison+bnf+bqn+brainfuck+brightscript+bro+bsl+c+csharp+cpp+cfscript+chaiscript+cil+cilkc+cilkcpp+clojure+cmake+cobol+coffeescript+concurnas+csp+cooklang+coq+crystal+css-extras+csv+cue+cypher+d+dart+dataweave+dax+dhall+diff+django+dns-zone-file+docker+dot+ebnf+editorconfig+eiffel+ejs+elixir+elm+etlua+erb+erlang+excel-formula+fsharp+factor+false+firestore-security-rules+flow+fortran+ftl+gml+gap+gcode+gdscript+gedcom+gettext+gherkin+git+glsl+gn+linker-script+go+go-module+gradle+graphql+groovy+haml+handlebars+haskell+haxe+hcl+hlsl+hoon+http+hpkp+hsts+ichigojam+icon+icu-message-format+idris+ignore+inform7+ini+io+j+java+javadoc+javadoclike+javastacktrace+jexl+jolie+jq+jsdoc+js-extras+json+json5+jsonp+jsstacktrace+js-templates+julia+keepalived+keyman+kotlin+kumir+kusto+latex+latte+less+lilypond+liquid+lisp+livescript+llvm+log+lolcode+lua+magma+makefile+markdown+markup-templating+mata+matlab+maxscript+mel+mermaid+metafont+mizar+mongodb+monkey+moonscript+n1ql+n4js+nand2tetris-hdl+naniscript+nasm+neon+nevod+nginx+nim+nix+nsis+objectivec+ocaml+odin+opencl+openqasm+oz+parigp+parser+pascal+pascaligo+psl+pcaxis+peoplecode+perl+php+phpdoc+php-extras+plant-uml+plsql+powerquery+powershell+processing+prolog+promql+properties+protobuf+pug+puppet+pure+purebasic+purescript+python+qsharp+q+qml+qore+r+racket+cshtml+jsx+tsx+reason+regex+rego+renpy+rescript+rest+rip+roboconf+robotframework+ruby+rust+sas+sass+scss+scala+scheme+shell-session+smali+smalltalk+smarty+sml+solidity+solution-file+soy+sparql+splunk-spl+sqf+sql+squirrel+stan+stata+iecst+stylus+supercollider+swift+systemd+t4-templating+t4-cs+t4-vb+tap+tcl+tt2+textile+toml+tremor+turtle+twig+typescript+typoscript+unrealscript+uorazor+uri+v+vala+vbnet+velocity+verilog+vhdl+vim+visual-basic+warpscript+wasm+web-idl+wgsl+wiki+wolfram+wren+xeora+xml-doc+xojo+xquery+yaml+yang+zig&plugins=line-numbers"</script>
+
+</html>
