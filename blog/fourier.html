@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+
+    <title>The Power of the Fast Fourier Transform for Data Quality</title>
+    <link rel="shortcut icon" type="image/jpg" href="favicon.jpg">
+    <meta name="description" content="A variety of signal processing techniques to augment noisy audio files and images">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link rel="shortcut icon" href="">
+    <link rel="apple-touch-icon" href="blog_files/bloglogo.png">
+    <link rel="stylesheet" type="text/css" href="blog_files/screen.css">
+    <link rel="stylesheet" type="text/css" href="blog_files/css.css">
+    <link rel="stylesheet" type="text/css" href="blog_files/defaulten.css">
+    <!-- <script src="https://cdn.jsdelivr.net/npm/texme@0.7.0"></script> -->
+    <style>
+
+    .fblogo {
+        display: inline-block;
+        margin-left: auto;
+        margin-right: auto;
+        height: 30px;
+        width: 75%;
+    }
+
+    </style>
+
+</head>
+
+
+<!-- Google tag (gtag.js) Dallin Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LT97T5DE19"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-LT97T5DE19');
+</script>
+
+
+<body class="home-template">
+    <!-- Theme modified from the wonderful Coding Horror blog https://blog.codinghorror.com/ -->
+
+    <header class="site-head">
+        <div class="site-head-content">
+            <a class="blog-logo" href="/blog/mathbytes.html"><img src="blog_files/bloglogo.png" alt="Dallin Stewart Logo" width="64"
+                    height="64"></a>
+            <h1 class="blog-title"><a href="/blog/mathbytes.html">Math Bytes</a></h1>
+            <h2 class="blog-description">Math, Data Science, and Machine Learning</h2>
+        </div>
+    </header>
+
+    <div class="wrap clearfix">
+        <div class="clearfix"></div>
+
+        <main class="content" role="main">
+
+            <article class="post">
+                <header class="post-header">
+                    <span class="post-meta"><time datetime="2023-04-07">4 July 2023</time> </span>
+                    <h2 class="post-title"><a href="/blog/neighbors.html">The Power of the Fast Fourier Transform for Data Quality</a></h2>
+                </header>
+                <section class="post-content">
+                    <div class="kg-card-markdown">
+                        <p>A variety of signal processing techniques to augment noisy audio files and images | <a href='https://github.com/binDebug3/Cool_Math/blob/main/Analyze_Sound/fourier_transform.ipynb' target="_blank">View Code</a></p>
+
+                        <blockquote>"Anytime a signal is processed, there's a good chance that a Fast Fourier Transform is involved… And if [scientists] had discovered it sooner, it may have put a stop to the nuclear arms race."</blockquote>
+                        <p>- Derek Muller (Veritasium)</p>
+
+                        
+
+
+
+
+
+
+                        <h4>The Fast Fourier Transform</h4>
+
+                 
+                        <p>The Discrete Fourier Transform (DFT) is a fascinating mathematical tool that breaks down complex signals, like audio data, into their fundamental frequency components. It's like discovering the hidden musical notes within a seemingly chaotic symphony. By representing a signal in terms of its constituent frequencies, the Fourier transform enables us to analyze, modify, and process the data with great precision. 
+</p>
+
+                        <p>One of its crucial applications lies in audio denoising, where unwanted noise can be isolated and removed by filtering out specific frequency components, leaving behind the clearer, more intelligible sound. Thanks to the Fourier transform's ability to unveil the underlying structure of signals, it has become an indispensable tool in modern audio processing, enhancing the quality of our listening experiences by eliminating distractions and revealing the true essence of human speech and music.
+</p>
+
+			<img src="blog_files/fourier/racecar.jpg">
+			<figcaption>No, even faster than that
+</figcaption>
+
+                        <p>The Fast Fourier Transform (FFT) is like a turbocharged version of the regular Fourier Transform. While both reveal frequency components in a signal, the FFT is faster because it cleverly reduces redundant calculations and takes advantage of patterns in the data. It's like finding a shortcut through a maze instead of wandering around aimlessly. By being more efficient, the FFT can process large amounts of data much quicker, making it the foundational technique in various fields like audio processing. It can swiftly identify and remove unwanted noise from audio, providing us with clearer, more enjoyable sound experiences quickly.
+</p>
+
+
+
+
+
+                        <h4>Convolution</h4>
+
+			<img src="blog_files/fourier/convolution,png">
+			<figcaption><a href="https://arxiv.org/pdf/1603.07285.pdf" target="_blank">Source</a></figcaption>
+
+                        <p>Convolution is another mathematical operation used in signal processing to mix two audio signals together. It combines the elements of two periodic sound samples to create a new sound vector. The process involves multiplying corresponding elements of the two samples and then summing them up to produce the resulting vector. However, when dealing with large audio files, this calculation can be computationally expensive. Thankfully, the DFT allows us to efficiently compute convolutions by using component-wise multiplication in the frequency domain, which significantly speeds up the process. This FFT approach reduces the computation time from O(n^2) to O(n log n), making smooth audio processing a possibility today.
+</p>
+
+
+
+
+
+
+
+                        <h4>Filtering</h4>
+
+                        <p>Imagine you have an audio file with some annoying background or white noise that's distracting you from the music you love or a video with a treasured memory. By taking advantage of the processing power of the FFT, we can identify, isolate, and remove unwanted noise from any audio.
+</p>
+
+			<img src="blog_files/fourier/soundwave.png">
+
+                        <p>First, we identify the frequencies we want to get rid of in the audio signal by applying the FFT to the original audio file. This operation returns a list of frequencies and the strength of their contribution to the audio. Second, we can then choose any range of frequencies to reduce or remove completely by setting them to zero. Finally, we take the inverse FFT (IFFT) of the resulting array to obtain a cleaned audio file without the unwanted noise. 
+</p>
+
+			<img src="blog_files/fourier/frequencies.png">
+
+
+			<p>This technique, known as spectral gating, is a common approach for cleaning audio files. By selectively removing specific frequency components corresponding to unwanted noise, spectral gating acts as a virtual "noise gate" for audio signals. It's like having a smart bouncer at a club who lets in only the good vibes and keeps the unwanted trouble out. Whether it's eliminating background hum, static, or any other annoying interference, spectral gating allows us to isolate and suppress those unwanted frequencies, leaving behind a pristine and enjoyable audio experience. Interestingly enough,the 2-dimensional version works for images as well. 
+</p>
+
+
+
+
+
+
+
+
+
+                        <h4>Cleaning Images</h4>
+
+
+			<img src="blog_files/fourier/original.png">
+
+                        <p>To clean images using the FFT, we can follow a similarly powerful process. First, we take the two-dimensional DFT of the image matrix, which transforms the image from the spatial domain to the frequency domain. This allows us to analyze the frequency components present in the image. Next, we identify spikes in the DFT, which are abnormally high frequency values. These spikes could be caused by noise or unwanted artifacts in the image. To do this, we plot the log of the magnitudes of the Fourier coefficients, making it easier to spot significant frequency spikes.
+</p>
+
+			<img src="blog_files/fourier/dft_image.png">
+
+                        <p>Once we've pinpointed these unwanted frequencies, we modify the corresponding entries in the DFT matrix to reduce or remove their influence. This is like selectively muting specific noise frequencies while keeping the essential image details intact. Finally, we perform the Inverse DFT (IDFT) on the modified DFT matrix, which brings the cleaned image back to the spatial domain. The result is a cleaner version of the original image, with the periodic noise and unwanted frequencies effectively reduced or eliminated.
+</p>
+
+
+
+                        <pre>
+                            <code class="language-python">
+    def clean(self, low_freq, high_freq):
+        """Remove a range of frequencies from the samples using the DFT. 
+
+        Parameters:
+            low_freq (float): Lower bound of the frequency range to zero out.
+            high_freq (float): Higher boound of the frequency range to zero out.
+        """
+        # set local variables
+        f = self.samples
+        n = len(self.samples)
+        r = self.rate
+        c = fftpack.fft(f)
+        
+        # find klow and khigh
+        klow = int(low_freq * n / r)
+        khigh = int(high_freq * n / r)
+        
+        # set the given ranges to zero
+        c[klow:khigh+1] = np.zeros(khigh-klow+1)
+        c[n-khigh:n-klow+1] = np.zeros(khigh-klow+1)
+        # update self.samples
+        self.samples = fftpack.ifft(c)
+                            </code>
+                        </pre>
+
+			<img src="blog_files/fourier/cleaned.png">
+
+                        <p>This technique can be particularly useful for images that contain periodic noise or are captured from screens or digital displays. By leveraging the DFT's ability to analyze and manipulate frequency components, we can enhance the quality and visual clarity of digital images, improving the overall viewing experience.
+
+</p>
+
+
+
+
+
+                        <h4>Source Code/h4>
+
+                        <p>While there is a lot of research on alternate techniques for signal processing and cleaning, the Fourier Transform is one of the most important and fundamental. The modern age of technology would not be the same without it. In the wake of the Oppenheimer movie release, world politics might look very different if it had been published sooner. If you would like to review my code for this project, it is available on my Github.
+</p>
+
+                       
+
+                     
+
+
+                   
+
+
+
+
+
+                        
+                    </div>
+                </section>
+               
+
+            </article>
+            <nav class="pagination" role="navigation">
+                <!-- <span class="page-number">Page 1 of 286</span> -->
+                <a class="older-posts" href="/blog/list.html">Other Posts <span aria-hidden="true">→</span></a>
+            </nav>
+
+
+        </main>
+        <aside class="sidebar">
+
+<!-- Add a hire me link -->
+<h3>Resources</h3>
+
+<ul>
+    <li><a href="https://dallinstewart.com/">About Me</a></li>
+    <li><a href="https://www.linkedin.com/in/dallinstewart/">LinkedIn</a></li>
+    <li><a href="https://github.com/binDebug3">GitHub</a></li>
+    <li><a href="https://dallinstewart.com/#contact">Contact</a></li>
+    <!-- <li><a href="https://forms.gle/iahqDwnmJWUfA1oL7">Subscribe for email updates</a></li>  -->
+    <!-- <li><a href="/blog/feed.xml">RSS Feed</a></li> -->
+</ul>
+
+<ul>
+</ul>
+
+<p>This blog has been continuously published since 2023.</p>
+
+
+            <footer class="site-footer">
+                <section class="copyright">Copyright <a rel="author" href="https://www.linkedin.com/in/dallinstewart/">Dallin Stewart</a> © 2023<br>
+            </footer>
+        </aside>
+    </div>
+</body>
+
+
+<!-- This is how you load math if you want to -->
+<script>
+    MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']]
+        }
+    };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+<script> src="https://prismjs.com/download.html#themes=prism&languages=markup+css+clike+javascript+abap+abnf+actionscript+ada+agda+al+antlr4+apacheconf+apex+apl+applescript+aql+arduino+arff+armasm+arturo+asciidoc+aspnet+asm6502+asmatmel+autohotkey+autoit+avisynth+avro-idl+awk+bash+basic+batch+bbcode+bbj+bicep+birb+bison+bnf+bqn+brainfuck+brightscript+bro+bsl+c+csharp+cpp+cfscript+chaiscript+cil+cilkc+cilkcpp+clojure+cmake+cobol+coffeescript+concurnas+csp+cooklang+coq+crystal+css-extras+csv+cue+cypher+d+dart+dataweave+dax+dhall+diff+django+dns-zone-file+docker+dot+ebnf+editorconfig+eiffel+ejs+elixir+elm+etlua+erb+erlang+excel-formula+fsharp+factor+false+firestore-security-rules+flow+fortran+ftl+gml+gap+gcode+gdscript+gedcom+gettext+gherkin+git+glsl+gn+linker-script+go+go-module+gradle+graphql+groovy+haml+handlebars+haskell+haxe+hcl+hlsl+hoon+http+hpkp+hsts+ichigojam+icon+icu-message-format+idris+ignore+inform7+ini+io+j+java+javadoc+javadoclike+javastacktrace+jexl+jolie+jq+jsdoc+js-extras+json+json5+jsonp+jsstacktrace+js-templates+julia+keepalived+keyman+kotlin+kumir+kusto+latex+latte+less+lilypond+liquid+lisp+livescript+llvm+log+lolcode+lua+magma+makefile+markdown+markup-templating+mata+matlab+maxscript+mel+mermaid+metafont+mizar+mongodb+monkey+moonscript+n1ql+n4js+nand2tetris-hdl+naniscript+nasm+neon+nevod+nginx+nim+nix+nsis+objectivec+ocaml+odin+opencl+openqasm+oz+parigp+parser+pascal+pascaligo+psl+pcaxis+peoplecode+perl+php+phpdoc+php-extras+plant-uml+plsql+powerquery+powershell+processing+prolog+promql+properties+protobuf+pug+puppet+pure+purebasic+purescript+python+qsharp+q+qml+qore+r+racket+cshtml+jsx+tsx+reason+regex+rego+renpy+rescript+rest+rip+roboconf+robotframework+ruby+rust+sas+sass+scss+scala+scheme+shell-session+smali+smalltalk+smarty+sml+solidity+solution-file+soy+sparql+splunk-spl+sqf+sql+squirrel+stan+stata+iecst+stylus+supercollider+swift+systemd+t4-templating+t4-cs+t4-vb+tap+tcl+tt2+textile+toml+tremor+turtle+twig+typescript+typoscript+unrealscript+uorazor+uri+v+vala+vbnet+velocity+verilog+vhdl+vim+visual-basic+warpscript+wasm+web-idl+wgsl+wiki+wolfram+wren+xeora+xml-doc+xojo+xquery+yaml+yang+zig&plugins=line-numbers"</script>
+
+</html>
