@@ -103,7 +103,7 @@
 
                         <h4>Convolution</h4>
 
-			<img src="blog_files/fourier/convolution,png">
+			<img src="blog_files/fourier/convolution.png">
 			<figcaption><a href="https://arxiv.org/pdf/1603.07285.pdf" target="_blank">Source</a></figcaption>
 
                         <p>Convolution is another mathematical operation used in signal processing to mix two audio signals together. It combines the elements of two periodic sound samples to create a new sound vector. The process involves multiplying corresponding elements of the two samples and then summing them up to produce the resulting vector. However, when dealing with large audio files, this calculation can be computationally expensive. Thankfully, the DFT allows us to efficiently compute convolutions by using component-wise multiplication in the frequency domain, which significantly speeds up the process. This FFT approach reduces the computation time from O(n^2) to O(n log n), making smooth audio processing a possibility today.
@@ -143,11 +143,13 @@
 
 
 			<img src="blog_files/fourier/original.png">
+			<figcaption>A raw imaged to improve</figcaption>
 
                         <p>To clean images using the FFT, we can follow a similarly powerful process. First, we take the two-dimensional DFT of the image matrix, which transforms the image from the spatial domain to the frequency domain. This allows us to analyze the frequency components present in the image. Next, we identify spikes in the DFT, which are abnormally high frequency values. These spikes could be caused by noise or unwanted artifacts in the image. To do this, we plot the log of the magnitudes of the Fourier coefficients, making it easier to spot significant frequency spikes.
 </p>
 
 			<img src="blog_files/fourier/dft_image.png">
+			<figcaption>The result of a 2D DFT on the image</figcaption>
 
                         <p>Once we've pinpointed these unwanted frequencies, we modify the corresponding entries in the DFT matrix to reduce or remove their influence. This is like selectively muting specific noise frequencies while keeping the essential image details intact. Finally, we perform the Inverse DFT (IDFT) on the modified DFT matrix, which brings the cleaned image back to the spatial domain. The result is a cleaner version of the original image, with the periodic noise and unwanted frequencies effectively reduced or eliminated.
 </p>
@@ -182,6 +184,7 @@
                         </pre>
 
 			<img src="blog_files/fourier/cleaned.png">
+			<figcaption>Now that we've cleaned the image, you can read the month!</figcaption>
 
                         <p>This technique can be particularly useful for images that contain periodic noise or are captured from screens or digital displays. By leveraging the DFT's ability to analyze and manipulate frequency components, we can enhance the quality and visual clarity of digital images, improving the overall viewing experience.
 
@@ -191,7 +194,7 @@
 
 
 
-                        <h4>Source Code/h4>
+                        <h4>Source Code</h4>
 
                         <p>While there is a lot of research on alternate techniques for signal processing and cleaning, the Fourier Transform is one of the most important and fundamental. The modern age of technology would not be the same without it. In the wake of the Oppenheimer movie release, world politics might look very different if it had been published sooner. If you would like to review my code for this project, it is available on my Github.
 </p>
