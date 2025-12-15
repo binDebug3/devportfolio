@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dating You is the Best</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- RESET & BASICS --- */
+        * { box-sizing: border-box; }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9; /* Soft light gray */
+            font-family: 'Lato', sans-serif;
+            color: #333;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- HEADER --- */
+        header {
+            text-align: center;
+            padding: 80px 20px 60px;
+            background: white;
+            border-bottom: 1px solid #eaeaea;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif; /* Elegant serif for title */
+            font-size: 3.5rem;
+            margin: 0;
+            color: #222;
+            letter-spacing: -1px;
+        }
+
+        p.subtitle {
+            margin-top: 15px;
+            font-size: 1.1rem;
+            color: #666;
+            font-weight: 400;
+        }
+
+        /* --- GALLERY GRID (MASONRY STYLE) --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* This creates the Pinterest-style staggered layout */
+        .gallery {
+            column-count: 3; 
+            column-gap: 20px;
+        }
+
+        /* The Card for each photo */
+        .photo-card {
+            background: white;
+            margin-bottom: 20px; /* Space between items vertically */
+            break-inside: avoid; /* Prevents item from being cut in half across columns */
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.2s ease;
+        }
+
+        .photo-card:hover {
+            transform: translateY(-2px); /* Subtle lift on hover */
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .photo-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .caption {
+            padding: 15px 20px;
+            font-size: 0.95rem;
+            color: #555;
+            line-height: 1.5;
+            text-align: left;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 900px) {
+            .gallery { column-count: 2; }
+            h1 { font-size: 2.5rem; }
+        }
+
+        @media (max-width: 600px) {
+            .gallery { column-count: 1; }
+            h1 { font-size: 2rem; }
+            header { padding: 50px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Dating You is the Best</h1>
+        <p class="subtitle">A look back at our last year together</p>
+    </header>
+
+    <div class="container">
+        <div class="gallery" id="gallery-feed">
+            <p style="text-align:center; width:100%;">Loading memories...</p>
+        </div>
+    </div>
+
+    <script>
+        // CONFIGURATION
+        // Based on your folder structure: devportfolio/blog/iloveyou.html
+        // We need to go UP one level, then into images/LC
+        const CAPTIONS_FILE_URL = '../images/LC/captions.txt';
+        const IMAGE_BASE_URL = '../images/LC/';
+
+        const galleryContainer = document.getElementById('gallery-feed');
+
+        // Function to create HTML for a single photo card
+        function createCard(filename, caption) {
+            return `
+                <div class="photo-card">
+                    <img src="${IMAGE_BASE_URL}${filename.trim()}" alt="${caption}" loading="lazy">
+                    ${caption ? `<div class="caption">${caption}</div>` : ''}
+                </div>
+            `;
+        }
+
+        // Fetch the list and build the gallery
+        fetch(CAPTIONS_FILE_URL)
+            .then(response => {
+                if (!response.ok) throw new Error("Could not find captions.txt");
+                return response.text();
+            })
+            .then(text => {
+                // Clear the "Loading" message
+                galleryContainer.innerHTML = '';
+                
+                // Split text by new lines to get each entry
+                const lines = text.split('\n');
+
+                lines.forEach(line => {
+                    // Ignore empty lines
+                    if (!line.trim()) return;
+
+                    // Split line by the pipe symbol |
+                    // Format: filename.jpg | Caption Text
+                    const parts = line.split('|');
+                    
+                    if (parts.length >= 1) {
+                        const filename = parts[0];
+                        // If there is a second part, use it as caption, otherwise empty string
+                        const caption = parts[1] ? parts[1].trim() : '';
+                        
+                        // Add to gallery
+                        galleryContainer.innerHTML += createCard(filename, caption);
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                galleryContainer.innerHTML = `
+                    <div style="text-align:center; padding:50px;">
+                        <h3>Oops!</h3>
+                        <p>I couldn't load the memories list.</p>
+                        <p>Make sure <strong>captions.txt</strong> is in <em>devportfolio/images/LC/</em></p>
+                        <p>Error: ${error.message}</p>
+                    </div>
+                `;
+            });
+    </script>
+</body>
+</html>
