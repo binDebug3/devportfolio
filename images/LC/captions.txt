@@ -1,5 +1,5 @@
-2024_8_1.HEIC|Caption1
-2024_11_1.HEIC|Caption2
+2024_8_1.JPG|Caption1
+2024_11_1.JPG|Caption2
 2024_11_2.JPG|Caption3
 2025_1_1.JPG|Caption4
 2025_1_2.jpg|Caption5
@@ -21,7 +21,7 @@
 2025_8_2.JPG|Caption21
 2025_9_1.jpg|Caption22
 2025_9_2.jpg|Caption23
-2025_9_3.heic|Caption24
+2025_9_3.JPG|Caption24
 2025_10_1.JPG|Caption25
 2025_10_2.JPG|Caption26
 2025_11_1.JPG|Caption27
