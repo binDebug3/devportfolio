@@ -24,24 +24,45 @@
 
         /* --- HEADER --- */
         header {
+            position: relative;
             text-align: center;
             padding: 80px 20px 60px;
-            background: white;
+            background-image: url('blog_files/elsie/title_background.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             border-bottom: 1px solid #eaeaea;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5); /* Semitransparent black overlay */
+            z-index: 1;
+        }
+
+        header h1,
+        header p.subtitle {
+            position: relative;
+            z-index: 2;
         }
 
         h1 {
             font-family: 'Dancing Script', cursive; /* Cursive font for title */
             font-size: 3.5rem;
             margin: 0;
-            color: #222;
+            color: white;
             letter-spacing: -1px;
         }
 
         p.subtitle {
             margin-top: 15px;
             font-size: 1.1rem;
-            color: #666;
+            color: white;
             font-weight: 400;
         }
 
