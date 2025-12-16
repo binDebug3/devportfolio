@@ -16,7 +16,7 @@
         body {
             margin: 0;
             padding: 0;
-            background-color: #f9f9f9; /* Soft light gray */
+            background-color: #f9f9f9;
             font-family: 'Lato', sans-serif;
             color: #333;
             -webkit-font-smoothing: antialiased;
@@ -26,12 +26,14 @@
         header {
             position: relative;
             text-align: center;
-            padding: 80px 20px 60px;
+            padding: 80px 20px 40px;
+            /* Background image path from your previous code */
             background-image: url('blog_files/elsie/title_background.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             border-bottom: 1px solid #eaeaea;
+            color: white;
         }
 
         header::before {
@@ -41,58 +43,86 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: rgba(0, 0, 0, 0.5); /* Semitransparent black overlay */
+            background-color: rgba(0, 0, 0, 0.5);
             z-index: 1;
         }
 
-        header h1,
-        header p.subtitle {
+        .header-content {
             position: relative;
             z-index: 2;
         }
 
         h1 {
-            font-family: 'Dancing Script', cursive; /* Cursive font for title */
+            font-family: 'Dancing Script', cursive;
             font-size: 3.5rem;
             margin: 0;
-            color: white;
             letter-spacing: -1px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
         p.subtitle {
             margin-top: 15px;
             font-size: 1.1rem;
-            color: white;
             font-weight: 400;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
         }
 
-        /* --- GALLERY GRID (MASONRY STYLE) --- */
+        /* --- AUDIO PLAYER --- */
+        .audio-container {
+            margin-top: 20px;
+        }
+        
+        audio {
+            height: 30px;
+            opacity: 0.9;
+            border-radius: 20px;
+        }
+
+        /* --- COUNTER --- */
+        #counter {
+            margin-top: 25px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            background: rgba(255, 255, 255, 0.2);
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 50px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        /* --- GALLERY GRID --- */
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 40px 20px;
         }
 
-        /* This creates the Pinterest-style staggered layout */
         .gallery {
             column-count: 3; 
             column-gap: 20px;
         }
 
-        /* The Card for each photo */
+        /* --- PHOTO CARD STYLES --- */
         .photo-card {
+            position: relative;
             background: white;
-            margin-bottom: 20px; /* Space between items vertically */
-            break-inside: avoid; /* Prevents item from being cut in half across columns */
+            margin-bottom: 20px;
+            break-inside: avoid;
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            transition: transform 0.2s ease;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: pointer;
+            border: 4px solid transparent; /* Prepare for seasonal colors */
         }
 
         .photo-card:hover {
-            transform: translateY(-2px); /* Subtle lift on hover */
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
         }
 
         .photo-card img {
@@ -101,12 +131,80 @@
             display: block;
         }
 
-        .caption {
-            padding: 15px 20px;
+        /* --- HOVER CAPTIONS --- */
+        .caption-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 15px;
             font-size: 0.95rem;
-            color: #555;
-            line-height: 1.5;
-            text-align: left;
+            text-align: center;
+            opacity: 0; /* Hidden by default */
+            transition: opacity 0.3s ease;
+        }
+
+        .photo-card:hover .caption-overlay {
+            opacity: 1; /* Show on hover */
+        }
+
+        /* --- SEASONAL BORDERS --- */
+        /* Winter: Dec, Jan, Feb */
+        .season-winter { border-color: #a2d2ff; } 
+        /* Spring: Mar, Apr, May */
+        .season-spring { border-color: #b7e4c7; }
+        /* Summer: Jun, Jul, Aug */
+        .season-summer { border-color: #fde2e4; }
+        /* Fall: Sep, Oct, Nov */
+        .season-fall { border-color: #ffddd2; }
+
+
+        /* --- LIGHTBOX (Option B: Elegant Zoom) --- */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .lightbox.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 85vh;
+            border-radius: 4px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1);
+        }
+
+        .lightbox.active .lightbox-content {
+            transform: scale(1); /* Zoom in effect */
+        }
+
+        .lightbox-caption {
+            position: absolute;
+            bottom: 40px;
+            color: white;
+            font-size: 1.2rem;
+            text-shadow: 0 2px 4px black;
+            text-align: center;
+            width: 100%;
+            pointer-events: none;
         }
 
         /* --- RESPONSIVE --- */
@@ -119,14 +217,35 @@
             .gallery { column-count: 1; }
             h1 { font-size: 2rem; }
             header { padding: 50px 20px; }
+            /* On mobile, show captions always or rely on click? 
+               Lets keep hover logic (tap to see) for simplicity */
         }
+        /* Force captions to show on mobile (screens smaller than 768px) */
+        /* @media (max-width: 768px) {
+            .caption-overlay {
+                opacity: 1 !important; 
+                background: rgba(0, 0, 0, 0.6); 
+                padding: 10px; 
+            }
+        } */
     </style>
 </head>
 <body>
 
     <header>
-        <h1>Dating You is the Best</h1>
-        <p class="subtitle">There were so many fun pictures, I was definitely holding back. Here are a few highlights from our year together :)</p>
+        <div class="header-content">
+            <h1>Dating You is the Best</h1>
+            <p class="subtitle">There were so many fun pictures, I was definitely holding back. Here are a few highlights from our year together :)</p>
+            
+            <div id="counter">Calculating time together...</div>
+
+            <div class="audio-container">
+                <audio controls>
+                    <source src="blog_files/elsie/better_place.mp3" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+            </div>
+        </div>
     </header>
 
     <div class="container">
@@ -135,67 +254,107 @@
         </div>
     </div>
 
+    <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+        <img id="lightbox-img" class="lightbox-content" src="" alt="">
+        <div id="lightbox-caption" class="lightbox-caption"></div>
+    </div>
+
     <script>
-        // CONFIGURATION
-        // Based on your folder structure: devportfolio/blog/iloveyou.html
-        // We need to go UP one level, then into images/LC
+        // --- 1. CONFIGURATION ---
         const CAPTIONS_FILE_URL = '../images/LC/captions.txt';
         const IMAGE_BASE_URL = '../images/LC/';
+        const START_DATE = new Date("October 11, 2024 00:00:00").getTime();
 
+        // --- 2. COUNTER LOGIC ---
+        function updateCounter() {
+            const now = new Date().getTime();
+            const distance = now - START_DATE;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("counter").innerHTML = 
+                `Together for: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }
+        setInterval(updateCounter, 1000);
+        updateCounter(); // Run immediately
+
+        // --- 3. GALLERY GENERATION ---
         const galleryContainer = document.getElementById('gallery-feed');
 
-        // Function to create HTML for a single photo card
+        // Helper to determine season class from filename (YYYY_M_I)
+        function getSeasonClass(filename) {
+            const parts = filename.split('_');
+            if (parts.length < 2) return ''; // Fallback
+            
+            const month = parseInt(parts[1]); 
+            if ([12, 1, 2].includes(month)) return 'season-winter';
+            if ([3, 4, 5].includes(month)) return 'season-spring';
+            if ([6, 7, 8].includes(month)) return 'season-summer';
+            if ([9, 10, 11].includes(month)) return 'season-fall';
+            return '';
+        }
+
         function createCard(filename, caption) {
+            const seasonClass = getSeasonClass(filename);
+            // Escape single quotes in caption for the onclick attribute
+            const safeCaption = caption.replace(/'/g, "\\'");
+            
             return `
-                <div class="photo-card">
+                <div class="photo-card ${seasonClass}" onclick="openLightbox('${filename}', '${safeCaption}')">
                     <img src="${IMAGE_BASE_URL}${filename.trim()}" alt="${caption}" loading="lazy">
-                    ${caption ? `<div class="caption">${caption}</div>` : ''}
+                    ${caption ? `<div class="caption-overlay">${caption}</div>` : ''}
                 </div>
             `;
         }
 
-        // Fetch the list and build the gallery
         fetch(CAPTIONS_FILE_URL)
             .then(response => {
                 if (!response.ok) throw new Error("Could not find captions.txt");
                 return response.text();
             })
             .then(text => {
-                // Clear the "Loading" message
                 galleryContainer.innerHTML = '';
-                
-                // Split text by new lines to get each entry
                 const lines = text.split('\n');
 
                 lines.forEach(line => {
-                    // Ignore empty lines
                     if (!line.trim()) return;
-
-                    // Split line by the pipe symbol |
-                    // Format: filename.jpg | Caption Text
                     const parts = line.split('|');
-                    
                     if (parts.length >= 1) {
                         const filename = parts[0];
-                        // If there is a second part, use it as caption, otherwise empty string
                         const caption = parts[1] ? parts[1].trim() : '';
-                        
-                        // Add to gallery
                         galleryContainer.innerHTML += createCard(filename, caption);
                     }
                 });
             })
             .catch(error => {
                 console.error('Error:', error);
-                galleryContainer.innerHTML = `
-                    <div style="text-align:center; padding:50px;">
-                        <h3>Oops!</h3>
-                        <p>I couldn't load the memories list.</p>
-                        <p>Make sure <strong>captions.txt</strong> is in <em>devportfolio/images/LC/</em></p>
-                        <p>Error: ${error.message}</p>
-                    </div>
-                `;
+                galleryContainer.innerHTML = `<p style="text-align:center">Error loading memories: ${error.message}</p>`;
             });
+
+        // --- 4. LIGHTBOX LOGIC ---
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxCap = document.getElementById('lightbox-caption');
+
+        function openLightbox(filename, caption) {
+            lightboxImg.src = IMAGE_BASE_URL + filename.trim();
+            lightboxCap.innerText = caption;
+            lightbox.classList.add('active');
+        }
+
+        function closeLightbox(e) {
+            // Close if clicking the background (lightbox) or the image itself
+            // If you ONLY want background click to close, check e.target === lightbox
+            if (e.target !== lightboxCap) {
+                lightbox.classList.remove('active');
+                setTimeout(() => {
+                    lightboxImg.src = ''; // Clear source after fade out
+                }, 300);
+            }
+        }
     </script>
 </body>
 </html>
