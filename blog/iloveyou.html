@@ -288,13 +288,14 @@
             const now = new Date().getTime();
             const distance = now - START_DATE;
 
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const years = Math.floor(distance / (1000 * 60 * 60 * 24 * 365.25));
+            const days = Math.floor((distance % (1000 * 60 * 60 * 24 * 365.25)) / (1000 * 60 * 60 * 24));
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
             document.getElementById("counter").innerHTML = 
-                `Together for: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+                `Together for: ${years}y ${days}d ${hours}h ${minutes}m ${seconds}s`;
         }
         setInterval(updateCounter, 1000);
         updateCounter();
