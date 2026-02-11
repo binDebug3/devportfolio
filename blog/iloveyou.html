@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Dating You is the Best</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,19 +13,20 @@
         /* --- RESET & BASICS --- */
         * { box-sizing: border-box; }
         
-        body {
+        html, body {
             margin: 0;
             padding: 0;
             background-color: #f9f9f9;
             font-family: 'Lato', sans-serif;
             color: #333;
             -webkit-font-smoothing: antialiased;
-            /* Prevent background scrolling when lightbox is open on mobile */
-            overflow-x: hidden; 
         }
 
-        body.lightbox-open {
+        /* STRICT SCROLL LOCK FOR MOBILE */
+        body.lightbox-open, html.lightbox-open {
             overflow: hidden;
+            height: 100vh;
+            touch-action: none; 
         }
 
         /* --- HEADER --- */
@@ -169,16 +170,20 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.92); /* Slightly darker bg */
+            background: rgba(0, 0, 0, 0.92);
             z-index: 1000;
             display: flex;
-            flex-direction: column; /* Stack image and caption vertically */
+            flex-direction: column; 
             justify-content: center;
             align-items: center;
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.3s ease, visibility 0.3s ease;
             padding: 20px;
+            
+            /* --- CRITICAL FIX: Stop Background Scroll --- */
+            touch-action: none; 
+            overscroll-behavior: contain;
         }
 
         .lightbox.active {
@@ -188,34 +193,31 @@
 
         .lightbox-content {
             max-width: 100%;
-            max-height: 80vh; /* Leave room for caption below */
+            max-height: 80vh; 
             border-radius: 4px;
             box-shadow: 0 0 20px rgba(0,0,0,0.5);
             transform: scale(0.95);
             transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1);
             object-fit: contain;
+            pointer-events: none; /* Let clicks pass through to container (optional) */
         }
 
         .lightbox.active .lightbox-content {
             transform: scale(1); 
         }
 
-        /* Updated Lightbox Caption Styles */
+        /* Lightbox Caption Styles */
         .lightbox-caption {
-            margin-top: 20px; /* Space between image and caption */
-            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent dark background */
+            margin-top: 20px; 
+            background-color: rgba(0, 0, 0, 0.7);
             padding: 15px 25px;
             border-radius: 30px;
             color: white;
             font-size: 1.1rem;
             text-align: center;
             pointer-events: none;
-            
-            /* Constraints */
             width: auto;
-            max-width: 90%; /* Nice on mobile */
-            
-            /* Animation for caption appearing */
+            max-width: 90%; 
             opacity: 0;
             transform: translateY(20px);
             transition: all 0.3s ease 0.1s;
@@ -228,7 +230,6 @@
 
         /* --- RESPONSIVE --- */
         @media (min-width: 901px) {
-            /* Desktop Constraints for caption box */
              .lightbox-caption {
                  max-width: 600px; 
                  font-size: 1.2rem;
@@ -280,7 +281,6 @@
         // --- 1. CONFIGURATION ---
         const CAPTIONS_FILE_URL = '../images/LC/captions.txt';
         const IMAGE_BASE_URL = '../images/LC/';
-        // UPDATED TIME: Dec 19, 2024 at 9:00 PM (21:00:00)
         const START_DATE = new Date("December 19, 2024 21:00:00").getTime();
 
         // --- 2. COUNTER LOGIC ---
@@ -288,7 +288,6 @@
             const now = new Date().getTime();
             const distance = now - START_DATE;
 
-            // Math to calculate time units
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
@@ -297,9 +296,8 @@
             document.getElementById("counter").innerHTML = 
                 `Together for: ${days}d ${hours}h ${minutes}m ${seconds}s`;
         }
-        // Update every second
         setInterval(updateCounter, 1000);
-        updateCounter(); // Initial run
+        updateCounter();
 
         // --- 3. GALLERY GENERATION ---
         const galleryContainer = document.getElementById('gallery-feed');
@@ -318,7 +316,6 @@
         function createCard(filename, caption) {
             const seasonClass = getSeasonClass(filename);
             const safeCaption = caption.replace(/'/g, "\\'");
-            // We pass empty string if no caption exists so lightbox doesn't show "undefined"
             const captionArg = caption ? safeCaption : '';
             
             return `
@@ -357,22 +354,28 @@
         const lightboxImg = document.getElementById('lightbox-img');
         const lightboxCap = document.getElementById('lightbox-caption');
         const body = document.body;
+        const html = document.documentElement; // Grab HTML element too
 
         function openLightbox(filename, caption) {
             lightboxImg.src = IMAGE_BASE_URL + filename.trim();
-            // Only show caption box if there is text
             lightboxCap.innerText = caption;
             lightboxCap.style.display = caption ? 'block' : 'none';
             
             lightbox.classList.add('active');
-            body.classList.add('lightbox-open'); // Prevent background scrolling
+            
+            // Lock background scrolling more aggressively
+            body.classList.add('lightbox-open');
+            html.classList.add('lightbox-open');
         }
 
         function closeLightbox(e) {
-            // Close if clicking background OR if called by swipe gesture (e.target === lightbox)
             if (e.target !== lightboxCap && e.target !== lightboxImg) {
                 lightbox.classList.remove('active');
+                
+                // Unlock background
                 body.classList.remove('lightbox-open');
+                html.classList.remove('lightbox-open');
+                
                 setTimeout(() => {
                     lightboxImg.src = ''; 
                 }, 300);
@@ -382,24 +385,20 @@
         // --- MOBILE SWIPE DETECTION ---
         let touchStartY = 0;
         let touchEndY = 0;
-        const minSwipeDistance = 50; // Minimum pixels down to trigger close
+        const minSwipeDistance = 75; // Made it slightly more sensitive
 
         lightbox.addEventListener('touchstart', function(e) {
-            // Record initial touch position
             touchStartY = e.changedTouches[0].screenY;
         }, {passive: true});
 
         lightbox.addEventListener('touchend', function(e) {
-            // Record final touch position
             touchEndY = e.changedTouches[0].screenY;
             handleSwipeGesture();
         }, {passive: true});
 
         function handleSwipeGesture() {
             const distance = touchEndY - touchStartY;
-            // If swiped down significantly (positive distance > min)
             if (distance > minSwipeDistance) {
-                 // Trigger close by passing the lightbox itself as the "target"
                 closeLightbox({ target: lightbox });
             }
         }

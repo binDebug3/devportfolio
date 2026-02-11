@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Valentine's Day</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Playfair+Display:ital@0;1&family=Short+Stack&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --paper-color: #fdfcf0;
+            --tape-color: rgba(211, 211, 211, 0.4);
+            --accent-red: #a33b3b;
+            --text-color: #333;
+        }
+
+        body {
+            background-color: #e5e5e5;
+            background-image: url('https://www.transparenttextures.com/patterns/pinstriped-suit.png'); /* Subtle texture */
+            color: var(--text-color);
+            font-family: 'Short Stack', cursive;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .scrapbook-page {
+            background-color: var(--paper-color);
+            width: 90%;
+            max-width: 900px;
+            margin: 40px 0;
+            padding: 60px 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: relative;
+            border: 1px solid #d1d1d1;
+        }
+
+        /* Hero Section */
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 4rem;
+            color: var(--accent-red);
+            margin-bottom: 20px;
+        }
+
+        /* Polaroid Styling */
+        .polaroid {
+            background: white;
+            padding: 15px 15px 40px 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            display: inline-block;
+            margin: 20px;
+            text-align: center;
+            text-decoration: none;
+            color: #333;
+            transition: transform 0.3s ease;
+            border: 1px solid #eee;
+        }
+
+        .polaroid img {
+            width: 250px;
+            height: 250px;
+            object-fit: cover;
+            background-color: #eee; /* Placeholder color */
+        }
+
+        .hero-photo {
+            transform: rotate(-2deg);
+        }
+
+        /* Grid for the other 9 images */
+        .photo-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 40px 0;
+        }
+
+        /* Random rotations for scrapbook feel */
+        .polaroid:nth-child(even) { transform: rotate(3deg); }
+        .polaroid:nth-child(odd) { transform: rotate(-3deg); }
+        .polaroid:nth-child(3n) { transform: rotate(1.5deg); }
+
+        .polaroid:hover {
+            transform: scale(1.05) rotate(0deg) !important;
+            z-index: 10;
+        }
+
+        /* Countdown Timer */
+        #countdown-container {
+            text-align: center;
+            margin: 60px 0;
+            padding: 30px;
+            border-top: 2px dashed var(--tape-color);
+            border-bottom: 2px dashed var(--tape-color);
+        }
+
+        .timer-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        #timer {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent-red);
+        }
+
+        /* The Note (The Presentation) */
+        .note-section {
+            background: #fff;
+            padding: 40px;
+            margin: 60px auto;
+            max-width: 600px;
+            box-shadow: 2px 2px 15px rgba(0,0,0,0.05);
+            position: relative;
+            line-height: 1.8;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            border-left: 5px solid var(--accent-red);
+        }
+
+        .note-section::before {
+            content: '❤';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            color: var(--accent-red);
+        }
+
+        /* The Signature */
+        .signature {
+            text-align: right;
+            margin-top: 30px;
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            color: var(--accent-red);
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.9rem;
+            opacity: 0.6;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="scrapbook-page">
+    <header>
+        <h1>[Headline Placeholder]</h1>
+        <div class="polaroid hero-photo">
+            <img src="https://via.placeholder.com/250" alt="Our favorite memory">
+            <p>Our favorite moment</p>
+        </div>
+    </header>
+
+    <div id="countdown-container">
+        <div class="timer-title">Counting down to the big day...</div>
+        <div id="timer">Calculating time...</div>
+    </div>
+
+    <div class="photo-grid">
+        <div class="polaroid"><img src="https://via.placeholder.com/250" alt="Memory"><p>Memory 2</p></div>
+        <div class="polaroid"><img src="https://via.placeholder.com/250" alt="Memory"><p>Memory 3</p></div>
+        <div class="polaroid"><img src="https://via.placeholder.com/250" alt="Memory"><p>Memory 4</p></div>
+        <div class="polaroid"><img src="https://via.placeholder.com/250" alt="Memory"><p>Memory 5</p></div>
+        <div class="polaroid"><img src="https://via.placeholder.com/250" alt="Memory"><p>Memory 6</p></div>
+        <div class="polaroid"><img src="https://via.placeholder.com/250" alt="Memory"><p>Memory 7</p></div>
+        <div class="polaroid"><img src="https://via.placeholder.com/250" alt="Memory"><p>Memory 8</p></div>
+        <div class="polaroid"><img src="https://via.placeholder.com/250" alt="Memory"><p>Memory 9</p></div>
+        <div class="polaroid"><img src="https://via.placeholder.com/250" alt="Memory"><p>Memory 10</p></div>
+    </div>
+
+    <section class="note-section">
+        <p><i>[Placeholder: Write your heartfelt note here. Talk about your favorite memories together, how much she means to you, and how excited you are for the future.]</i></p>
+        
+        <p><i>[More space for your note... maybe include an inside joke or a lyric from your song.]</i></p>
+
+        <div class="signature">
+            [Your Name]
+        </div>
+    </section>
+
+    <footer>
+        &copy; 2026 | Happy Valentine's Day
+    </footer>
+</div>
+
+<script>
+    // Set the target date: May 9, 2026 at 11:00 AM
+    const weddingDate = new Date("May 9, 2026 11:00:00").getTime();
+
+    const countdown = setInterval(function() {
+        const now = new Date().getTime();
+        const distance = weddingDate - now;
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById("timer").innerHTML = days + "d " + hours + "h "
+        + minutes + "m " + seconds + "s ";
+
+        if (distance < 0) {
+            clearInterval(countdown);
+            document.getElementById("timer").innerHTML = "The Adventure Begins!";
+        }
+    }, 1000);
+</script>
+
+</body>
+</html>
