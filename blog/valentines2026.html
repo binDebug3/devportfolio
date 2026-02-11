@@ -63,14 +63,14 @@
         }
 
         .polaroid img {
-            width: 200px;
-            height: 200px;
+            width: 100px;
+            height: 100px;
             object-fit: cover;
             background-color: #eee;
         }
 
         .hero-photo {
-            transform: rotate(-2deg);
+            transform: rotate(-2deg) scale(3);
         }
 
         .photo-grid {
@@ -78,7 +78,7 @@
             flex-wrap: wrap;
             justify-content: center;
             margin: 60px 0;
-            min-height: 600px; /* Space for expanding images */
+            min-height: 300px; /* Space for expanding images */
         }
 
         /* Initial random rotations */
@@ -87,7 +87,7 @@
 
         /* The Expansion Class */
         .polaroid.expanded {
-            transform: scale(2) rotate(0deg) !important;
+            transform: scale(3) rotate(2deg) !important;
             z-index: 100;
             box-shadow: 0 20px 50px rgba(0,0,0,0.3);
         }
@@ -157,7 +157,7 @@
 
 <div class="scrapbook-page">
     <header>
-        <h1>[Headline Placeholder]</h1>
+        <h1>Happy Valentine's Day My Fiancee :)</h1>
         <div class="polaroid hero-photo">
             <img src="../images/LC/valphotos/IMG_7541.jpg" alt="Hero Image">
             <p>Our favorite moment</p>
@@ -184,7 +184,7 @@
 
     <section class="note-section">
         <p><i>[Placeholder: Your Valentine's Note]</i></p>
-        <div class="signature">[Your Name]</div>
+        <div class="signature">Dallin</div>
     </section>
 
     <footer>&copy; 2026 | Happy Valentine's Day</footer>
