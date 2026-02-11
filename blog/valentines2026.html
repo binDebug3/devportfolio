@@ -15,13 +15,14 @@
 
         body {
             background-color: #e5e5e5;
-            background-image: url('https://www.transparenttextures.com/patterns/pinstriped-suit.png'); /* Subtle texture */
+            background-image: url('https://www.transparenttextures.com/patterns/pinstriped-suit.png');
             color: var(--text-color);
             font-family: 'Short Stack', cursive;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
+            overflow-x: hidden; /* Prevent scrollbars when images expand */
         }
 
         .scrapbook-page {
@@ -35,7 +36,6 @@
             border: 1px solid #d1d1d1;
         }
 
-        /* Hero Section */
         header {
             text-align: center;
             margin-bottom: 50px;
@@ -54,41 +54,42 @@
             padding: 15px 15px 40px 15px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.15);
             display: inline-block;
-            margin: 20px;
+            margin: 25px;
             text-align: center;
-            text-decoration: none;
-            color: #333;
-            transition: transform 0.3s ease;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
             border: 1px solid #eee;
+            position: relative;
+            z-index: 1;
         }
 
         .polaroid img {
-            width: 250px;
-            height: 250px;
+            width: 200px;
+            height: 200px;
             object-fit: cover;
-            background-color: #eee; /* Placeholder color */
+            background-color: #eee;
         }
 
         .hero-photo {
             transform: rotate(-2deg);
         }
 
-        /* Grid for the other 9 images */
         .photo-grid {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            margin: 40px 0;
+            margin: 60px 0;
+            min-height: 600px; /* Space for expanding images */
         }
 
-        /* Random rotations for scrapbook feel */
-        .polaroid:nth-child(even) { transform: rotate(3deg); }
-        .polaroid:nth-child(odd) { transform: rotate(-3deg); }
-        .polaroid:nth-child(3n) { transform: rotate(1.5deg); }
+        /* Initial random rotations */
+        .grid-item:nth-child(even) { transform: rotate(3deg); }
+        .grid-item:nth-child(odd) { transform: rotate(-3deg); }
 
-        .polaroid:hover {
-            transform: scale(1.05) rotate(0deg) !important;
-            z-index: 10;
+        /* The Expansion Class */
+        .polaroid.expanded {
+            transform: scale(2) rotate(0deg) !important;
+            z-index: 100;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
         }
 
         /* Countdown Timer */
@@ -112,11 +113,11 @@
             color: var(--accent-red);
         }
 
-        /* The Note (The Presentation) */
+        /* The Note Section */
         .note-section {
             background: #fff;
             padding: 40px;
-            margin: 60px auto;
+            margin: 100px auto 60px auto;
             max-width: 600px;
             box-shadow: 2px 2px 15px rgba(0,0,0,0.05);
             position: relative;
@@ -136,7 +137,6 @@
             color: var(--accent-red);
         }
 
-        /* The Signature */
         .signature {
             text-align: right;
             margin-top: 30px;
@@ -159,7 +159,7 @@
     <header>
         <h1>[Headline Placeholder]</h1>
         <div class="polaroid hero-photo">
-            <img src="https://via.placeholder.com/250" alt="Our favorite memory">
+            <img src="https://via.placeholder.com/250" alt="Hero Image">
             <p>Our favorite moment</p>
         </div>
     </header>
@@ -169,54 +169,59 @@
         <div id="timer">Calculating time...</div>
     </div>
 
-    <div class="photo-grid">
-        <div class="polaroid"><img src="https://via.placeholder.com/250" alt="Memory"><p>Memory 2</p></div>
-        <div class="polaroid"><img src="https://via.placeholder.com/250" alt="Memory"><p>Memory 3</p></div>
-        <div class="polaroid"><img src="https://via.placeholder.com/250" alt="Memory"><p>Memory 4</p></div>
-        <div class="polaroid"><img src="https://via.placeholder.com/250" alt="Memory"><p>Memory 5</p></div>
-        <div class="polaroid"><img src="https://via.placeholder.com/250" alt="Memory"><p>Memory 6</p></div>
-        <div class="polaroid"><img src="https://via.placeholder.com/250" alt="Memory"><p>Memory 7</p></div>
-        <div class="polaroid"><img src="https://via.placeholder.com/250" alt="Memory"><p>Memory 8</p></div>
-        <div class="polaroid"><img src="https://via.placeholder.com/250" alt="Memory"><p>Memory 9</p></div>
-        <div class="polaroid"><img src="https://via.placeholder.com/250" alt="Memory"><p>Memory 10</p></div>
+    <div class="photo-grid" id="photo-grid">
+        <div class="polaroid grid-item"><img src="https://via.placeholder.com/200" alt="Photo 1"><p>Memory 1</p></div>
+        <div class="polaroid grid-item"><img src="https://via.placeholder.com/200" alt="Photo 2"><p>Memory 2</p></div>
+        <div class="polaroid grid-item"><img src="https://via.placeholder.com/200" alt="Photo 3"><p>Memory 3</p></div>
+        <div class="polaroid grid-item"><img src="https://via.placeholder.com/200" alt="Photo 4"><p>Memory 4</p></div>
+        <div class="polaroid grid-item"><img src="https://via.placeholder.com/200" alt="Photo 5"><p>Memory 5</p></div>
+        <div class="polaroid grid-item"><img src="https://via.placeholder.com/200" alt="Photo 6"><p>Memory 6</p></div>
+        <div class="polaroid grid-item"><img src="https://via.placeholder.com/200" alt="Photo 7"><p>Memory 7</p></div>
+        <div class="polaroid grid-item"><img src="https://via.placeholder.com/200" alt="Photo 8"><p>Memory 8</p></div>
+        <div class="polaroid grid-item"><img src="https://via.placeholder.com/200" alt="Photo 9"><p>Memory 9</p></div>
+        <div class="polaroid grid-item"><img src="https://via.placeholder.com/200" alt="Photo 10"><p>Memory 10</p></div>
     </div>
 
     <section class="note-section">
-        <p><i>[Placeholder: Write your heartfelt note here. Talk about your favorite memories together, how much she means to you, and how excited you are for the future.]</i></p>
-        
-        <p><i>[More space for your note... maybe include an inside joke or a lyric from your song.]</i></p>
-
-        <div class="signature">
-            [Your Name]
-        </div>
+        <p><i>[Placeholder: Your Valentine's Note]</i></p>
+        <div class="signature">[Your Name]</div>
     </section>
 
-    <footer>
-        &copy; 2026 | Happy Valentine's Day
-    </footer>
+    <footer>&copy; 2026 | Happy Valentine's Day</footer>
 </div>
 
 <script>
-    // Set the target date: May 9, 2026 at 11:00 AM
+    // --- 1. WEDDING COUNTDOWN ---
     const weddingDate = new Date("May 9, 2026 11:00:00").getTime();
-
-    const countdown = setInterval(function() {
+    setInterval(function() {
         const now = new Date().getTime();
         const distance = weddingDate - now;
-
         const days = Math.floor(distance / (1000 * 60 * 60 * 24));
         const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        document.getElementById("timer").innerHTML = days + "d " + hours + "h "
-        + minutes + "m " + seconds + "s ";
-
-        if (distance < 0) {
-            clearInterval(countdown);
-            document.getElementById("timer").innerHTML = "The Adventure Begins!";
-        }
+        document.getElementById("timer").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
     }, 1000);
+
+    // --- 2. IMAGE EXPANSION SLIDESHOW ---
+    const gridItems = document.querySelectorAll('.grid-item');
+    let currentIndex = 0;
+
+    function expandNextImage() {
+        // Remove 'expanded' class from all images
+        gridItems.forEach(item => item.classList.remove('expanded'));
+
+        // Add 'expanded' class to the current image
+        gridItems[currentIndex].classList.add('expanded');
+
+        // Move to next index
+        currentIndex = (currentIndex + 1) % gridItems.length;
+    }
+
+    // Start the cycle every 3 seconds
+    setInterval(expandNextImage, 3000);
+    // Trigger the first one immediately
+    expandNextImage();
 </script>
 
 </body>
